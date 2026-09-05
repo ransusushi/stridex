@@ -1,14 +1,16 @@
 <?php
 /**
- * StrideX — Header + Footer only
+ * StrideX — Header, Hero, Footer only
  */
 
+// ---------- Site config ----------
 $site = [
     'brand'   => 'StrideX',
     'tagline' => 'MOVE IN STYLE. LIVE WITHOUT LIMITS.',
     'year'    => date('Y'),
 ];
 
+// ---------- Navigation ----------
 $navLinks = [
     ['label' => 'Home',        'href' => 'stride.php'],
     ['label' => 'Shop',        'href' => '#shop'],
@@ -18,6 +20,7 @@ $navLinks = [
     ['label' => 'About Us',    'href' => '#about'],
 ];
 
+// ---------- Footer ----------
 $footerGroups = [
     'SHOP' => [
         ['label' => 'Men', 'href' => '#men'],
@@ -41,9 +44,16 @@ $footerGroups = [
     ],
 ];
 
+// ---------- Helpers ----------
 function icon(string $name): string {
     $icons = [
-        'send' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7Z"/></svg>',
+        // Header icons
+        'search' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>',
+        'user'   => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
+        'bag'    => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 7h14l-1 13H6L5 7Z"/><path d="M9 7a3 3 0 1 1 6 0"/></svg>',
+        'arrow'  => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>',
+        // Footer icon
+        'send'   => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7Z"/></svg>',
     ];
     return $icons[$name] ?? '';
 }
@@ -64,28 +74,49 @@ function e(string $s): string { return htmlspecialchars($s, ENT_QUOTES, 'UTF-8')
 
 <header class="site-header">
     <div class="container header-inner">
-        <a href="#home" class="logo">
-            <img src="image/stridex-logo.png" alt="<?= e($site['brand']) ?>">
-        </a>
+        <a href="#home" class="logo"><img src="image/stridex-logo.png" alt="<?= e($site['brand']) ?>"></a>
         <nav class="main-nav" aria-label="Primary">
             <ul>
                 <?php foreach ($navLinks as $link): ?>
-                    <li><a href="<?= e($link['href']) ?>"><?= e($link['label']) ?></a></li>
+                    <li><a href="<?= e($link['href']) ?>"><?= e(strtoupper($link['label'])) ?></a></li>
                 <?php endforeach; ?>
             </ul>
         </nav>
+        <div class="header-actions">
+            <button class="icon-btn" aria-label="Search"><?= icon('search') ?></button>
+            <button class="icon-btn" aria-label="Account"><?= icon('user') ?></button>
+            <button class="icon-btn cart" aria-label="Cart"><?= icon('bag') ?><span class="cart-count">0</span></button>
+        </div>
     </div>
 </header>
 
-<!-- ====== All main content removed ====== -->
+<!-- ============ HERO ============ -->
+<section class="hero" id="home">
+    <div class="container hero-inner">
+        <div class="hero-copy">
+            <span class="eyebrow">EVERY STEP COUNTS.</span>
+            <h1 class="hero-title">BUILT<br><span class="outline">FOR THE</span><br>STREETS</h1>
+            <p class="hero-lead">Performance. Comfort. Style. Every step you take,<br>we&rsquo;ve got your back.</p>
+            <div class="hero-ctas">
+                <a href="#shop" class="btn btn--primary">SHOP NOW <?= icon('arrow') ?></a>
+                <a href="#collections" class="btn btn--ghost">EXPLORE COLLECTION</a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat"><span class="stat-num">12K+</span><span class="stat-label">ATHLETES</span></div>
+                <div class="stat"><span class="stat-num">98%</span><span class="stat-label">SATISFACTION</span></div>
+                <div class="stat"><span class="stat-num">50+</span><span class="stat-label">STYLES</span></div>
+            </div>
+        </div>
+    </div>
+</section>
 
+<!-- ============ FOOTER ============ -->
 <footer class="site-footer">
     <div class="container footer-inner">
         <div class="footer-brand-custom">
             <img src="image/stridex-logo.png" alt="<?= e($site['brand']) ?>" class="footer-logo-img">
             <p class="footer-tag"><?= e($site['tagline']) ?></p>
         </div>
-
         <div class="footer-links">
             <?php foreach ($footerGroups as $title => $links): ?>
                 <div class="footer-col">
@@ -97,7 +128,7 @@ function e(string $s): string { return htmlspecialchars($s, ENT_QUOTES, 'UTF-8')
                     </ul>
                 </div>
             <?php endforeach; ?>
-
+            <!-- GET THE DROP column -->
             <div class="footer-col footer-subscribe">
                 <h4 class="footer-heading">GET THE DROP</h4>
                 <form class="subscribe-form" action="#" method="post">
@@ -107,7 +138,6 @@ function e(string $s): string { return htmlspecialchars($s, ENT_QUOTES, 'UTF-8')
             </div>
         </div>
     </div>
-
     <div class="container footer-bottom">
         <p>&copy; <?= e((string)$site['year']) ?> <?= e(strtoupper($site['brand'])) ?>. All rights reserved.</p>
         <p class="legal">
