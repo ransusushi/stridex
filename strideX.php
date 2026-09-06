@@ -1,6 +1,6 @@
 <?php
 /**
- * StrideX — Header, Hero, Products, Footer
+ * StrideX — Header, Hero, Products, Mission, Footer
  */
 
 // ---------- Site config ----------
@@ -12,14 +12,13 @@ $site = [
 
 // ---------- Navigation ----------
 $navLinks = [
-    ['label' => 'Home',        'href' => 'stride.php'],
+    ['label' => 'Home',        'href' => '/stride/strideX.php'],
     ['label' => 'Shop',        'href' => '#shop'],
-    ['label' => 'Men',         'href' => 'men.php'],
-    ['label' => 'Women',       'href' => 'women.php'],
+    ['label' => 'Men',         'href' => '#'],
+    ['label' => 'Women',       'href' => '#'],
     ['label' => 'Collections', 'href' => '#collections'],
     ['label' => 'About Us',    'href' => '#about'],
 ];
-
 // ---------- Featured products ----------
 $products = [
     [
@@ -81,7 +80,7 @@ $footerGroups = [
     ],
 ];
 
-// ---------- Helpers ----------
+
 function icon(string $name): string {
     $icons = [
         // Header
@@ -126,7 +125,7 @@ function e(string $s): string { return htmlspecialchars($s, ENT_QUOTES, 'UTF-8')
 
 <header class="site-header">
     <div class="container header-inner">
-        <a href="#home" class="logo"><img src="images/stridex-logo.png" alt="<?= e($site['brand']) ?>"></a>
+        <a href="#home" class="logo"><img src="image/stridex-logo.png" alt="<?= e($site['brand']) ?>"></a>
         <nav class="main-nav" aria-label="Primary">
             <ul>
                 <?php foreach ($navLinks as $link): ?>
@@ -194,13 +193,26 @@ function e(string $s): string { return htmlspecialchars($s, ENT_QUOTES, 'UTF-8')
     </div>
 </section>
 
+<!-- ============ MISSION ============ -->
+<section class="mission" id="mission">
+    <div class="mission-inner">
+        <div class="mission-visual">
+            <img src="image/mission-shoes.png" alt="StrideX flyknit sneaker">
+        </div>
+        <div class="mission-copy">
+            <h2 class="section-title">OUR MISSION</h2>
+            <div class="rule"></div>
+            <p>StrideX is committed to providing high-quality sports footwear that combines comfort, durability, and modern design. We aim to empower athletes, students, and active individuals to perform at their best by delivering shoes that support every step of their journey.</p>
+        </div>
+    </div>
+</section>
+
 <!-- ============ FOOTER ============ -->
 <footer class="site-footer">
     <div class="container footer-inner">
         <div class="footer-brand-custom">
-            <img src="images/stridex-logo.png" alt="<?= e($site['brand']) ?>" class="footer-logo-img">
+            <img src="image/stridex-logo.png" alt="<?= e($site['brand']) ?>" class="footer-logo-img">
             <p class="footer-tag"><?= e($site['tagline']) ?></p>
-            <p class="footer-description">Lightweight, engineered footwear for athletes, students, and everyday movers.</p>
         </div>
         <div class="footer-links">
             <?php foreach ($footerGroups as $title => $links): ?>
@@ -213,7 +225,6 @@ function e(string $s): string { return htmlspecialchars($s, ENT_QUOTES, 'UTF-8')
                     </ul>
                 </div>
             <?php endforeach; ?>
-            <!-- GET THE DROP -->
             <div class="footer-col footer-subscribe">
                 <h4 class="footer-heading">GET THE DROP</h4>
                 <form class="subscribe-form" action="#" method="post">
@@ -236,4 +247,4 @@ function e(string $s): string { return htmlspecialchars($s, ENT_QUOTES, 'UTF-8')
 </footer>
 
 </body>
-</html>     
+</html>
