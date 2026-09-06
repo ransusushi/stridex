@@ -117,7 +117,6 @@ function e(string $s): string { return htmlspecialchars($s, ENT_QUOTES, 'UTF-8')
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= e($site['brand']) ?> — Built for the Streets</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
