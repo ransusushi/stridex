@@ -157,9 +157,7 @@ ul { list-style: none; margin: 0; padding: 0; }
     position: relative;
     overflow: hidden;
     background:
-        /* darken the left half so headline stays legible */
         linear-gradient(to right, rgba(6,6,6,.95) 0%, rgba(6,6,6,.7) 30%, rgba(6,6,6,.15) 60%, rgba(6,6,6,0) 80%),
-        /* studio floor + smoke photo */
         url('../image/hero.png') 40% / 100%,
         var(--bg);
 }
@@ -234,7 +232,6 @@ ul { list-style: none; margin: 0; padding: 0; }
     max-height: 640px;
     object-fit: contain;
     object-position: center;
-   
 }
 
 /* ---------- Products ---------- */
@@ -343,7 +340,7 @@ ul { list-style: none; margin: 0; padding: 0; }
 }
 .mission-inner {
     display: grid;
-    grid-template-columns: 0.8fr 1.2fr; 
+    grid-template-columns: 0.8fr 1.2fr;
     gap: 0;
     align-items: stretch;
     min-height: 400px;
@@ -352,7 +349,6 @@ ul { list-style: none; margin: 0; padding: 0; }
 .mission-visual {
     position: relative;
     overflow: hidden;
-    /* diagonal cut on the right edge, into the dark panel */
     clip-path: polygon(0 0, 100% 0, 88% 100%, 0 100%);
 }
 .mission-visual img {
@@ -366,13 +362,11 @@ ul { list-style: none; margin: 0; padding: 0; }
     padding: 50px 100px 100px 200px;
     background: var(--bg);
 }
-.mission-copy .section-title { 
+.mission-copy .section-title {
     margin-bottom: 100px;
-    font-size: 150px; 
+    font-size: 150px;
     line-height: 0;
 }
-
-
 .mission-copy p {
     color: var(--muted);
     font-size: 25px;
@@ -440,11 +434,7 @@ ul { list-style: none; margin: 0; padding: 0; }
     align-items: center;
     min-height: 560px;
     max-width: none;
-    
-}
-.cta-inner {
-    /* ... keep the rest ... */
-    padding: 60px 64px 60px 100px; 
+    padding: 60px 64px 60px 100px;
 }
 .cta-title {
     font-family: var(--font-display);
@@ -455,9 +445,12 @@ ul { list-style: none; margin: 0; padding: 0; }
     text-transform: uppercase;
     margin: 0 0 24px;
 }
+.cta-title .cta-highlight {
+    color: var(--accent);
+}
 .cta-lead {
     color: var(--muted);
-    max-width: 420px;
+    max-width: 520px;
     margin: 0 0 32px;
     font-size: 15px;
     line-height: 1.55;
@@ -483,9 +476,68 @@ ul { list-style: none; margin: 0; padding: 0; }
     max-height: 600px;
     object-fit: contain;
     mix-blend-mode: screen;
-    margin-left: -800px; 
+    margin-left: -800px;
 }
 
+/* ---------- CTA Form & Features ---------- */
+.cta-form-row {
+    margin: 28px 0 20px;
+}
+.cta-form {
+    display: flex;
+    gap: 12px;
+    max-width: 520px;
+    flex-wrap: wrap;
+}
+.cta-form input {
+    flex: 1;
+    min-width: 200px;
+    padding: 14px 20px;
+    background: rgba(255, 255, 255, .05);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    color: #fff;
+    font-size: 14px;
+    outline: none;
+    transition: border-color var(--transition);
+}
+.cta-form input:focus {
+    border-color: var(--accent);
+}
+.cta-form input::placeholder {
+    color: var(--muted);
+}
+.cta-form .btn {
+    white-space: nowrap;
+}
+
+.cta-features {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+}
+.cta-feature {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--muted);
+}
+.cta-feature .check-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+    width: 18px;
+    height: 18px;
+}
+.cta-feature .check-icon svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* ---------- Footer ---------- */
 /* ---------- Footer ---------- */
 .site-footer {
     background: var(--bg);
@@ -496,9 +548,9 @@ ul { list-style: none; margin: 0; padding: 0; }
 
 .footer-inner {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    grid-template-columns: 1fr 2fr;
     align-items: start;
-    gap: 40px;
+    gap: 60px;
     max-width: none;
     padding-left: 64px;
     padding-right: 64px;
@@ -511,26 +563,17 @@ ul { list-style: none; margin: 0; padding: 0; }
 }
 
 .footer-brand-custom {
-    flex-shrink: 0; 
+    flex-shrink: 0;
     justify-self: start;
     display: flex;
     flex-direction: column;
     gap: 10px;
     text-align: left;
-    padding-right: 40px;
+    padding-right: 20px;
 }
 
-.footer-logo-text {
-    font-family: var(--font-sans);
-    font-size: 42px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    line-height: 1;
-    margin: 0;
-    color: #fff;
-}
 .footer-logo-img {
-    height: 100px;
+    height: 40px;
     width: auto;
     max-width: 100%;
     display: block;
@@ -544,15 +587,24 @@ ul { list-style: none; margin: 0; padding: 0; }
     margin: 0;
 }
 
+.footer-description {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+    max-width: 300px;
+    margin: 8px 0 0;
+}
+
 .footer-links {
-    display: flex;
-    gap: 80px;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+    justify-items: start;
 }
 
 .footer-col {
     flex: none;
-    min-width: 120px;
+    min-width: 100px;
 }
 
 .footer-heading {
@@ -561,6 +613,7 @@ ul { list-style: none; margin: 0; padding: 0; }
     letter-spacing: .25em;
     margin: 0 0 22px;
     color: #fff;
+    text-transform: uppercase;
 }
 
 .footer-col ul {
@@ -572,37 +625,17 @@ ul { list-style: none; margin: 0; padding: 0; }
 .footer-col a {
     color: var(--muted);
     font-size: 14px;
+    transition: color var(--transition);
 }
 
 .footer-col a:hover {
     color: var(--accent);
 }
 
-.footer-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 24px;
-    border-top: 1px solid var(--line);
-    font-size: 11px;
-    letter-spacing: .2em;
-    color: var(--muted);
-    text-transform: uppercase;
-}
-
-.footer-bottom .legal {
-    display: flex;
-    gap: 0px;
-    /* Footer description */
-.footer-description {
-    color: var(--muted);
-    font-size: 13px;
-    line-height: 1.6;
-    max-width: 300px;
-    margin: 8px 0 0;
-}
-
 /* Subscribe form */
+.footer-subscribe {
+    grid-column: 4 / 5;
+}
 .subscribe-form {
     display: flex;
     align-items: center;
@@ -638,116 +671,152 @@ ul { list-style: none; margin: 0; padding: 0; }
 .subscribe-form button:hover {
     color: var(--accent);
 }
-}
-/* ---------- Collections Page ---------- */
-.collection-banner {
-    padding: 120px 0 80px;
-    background: linear-gradient(to right, rgba(0,0,0,.9), rgba(0,0,0,0)), url('../images/3333.png') center / cover no-repeat;
-    border-bottom: 1px solid var(--line);
-}
 
-.collection-banner-text {
-    text-align: center;
-    color: var(--muted);
-    font-size: 18px;
-    max-width: 600px;
-    margin: 20px auto 0;
-}
-
-.collection-grid-section {
-    padding: 80px 0;
-    background: var(--bg);
-}
-
-.collection-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 30px;
-}
-
-.collection-card {
-    background: var(--panel);
-    border-radius: var(--radius);
-    overflow: hidden;
-    text-decoration: none;
-    color: var(--text);
-    transition: transform var(--transition), box-shadow var(--transition);
-}
-
-.collection-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-}
-
-.collection-card-media {
-    position: relative;
-    aspect-ratio: 16 / 9; 
-    overflow: hidden;
+.footer-bottom {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-}
-
-.collection-card-media img {
-    width: 80%;
-    height: auto;
-    object-fit: contain;
-    transition: transform .5s ease;
-}
-
-.collection-card:hover .collection-card-media img {
-    transform: scale(1.1);
-}
-
-.collection-card-info {
-    padding: 25px 30px 30px;
-    text-align: center;
-    background: var(--bg);
-}
-
-.collection-card-title {
-    font-family: var(--font-display);
-    font-size: 28px;
-    letter-spacing: .05em;
-    margin: 0 0 10px;
-    color: #fff;
-}
-
-.collection-card-desc {
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    font-size: 11px;
+    letter-spacing: .2em;
     color: var(--muted);
-    font-size: 14px;
-    margin: 0 0 15px;
+    text-transform: uppercase;
 }
 
-/* Responsive for Collections Page */
+.footer-bottom .legal {
+    display: flex;
+    gap: 0px;
+}
+
+/* ---------- Responsive Footer ---------- */
+@media (max-width: 1024px) {
+    .footer-inner {
+        grid-template-columns: 1fr;
+        justify-items: start;
+        gap: 40px;
+    }
+    .footer-links {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 40px 60px;
+        width: 100%;
+    }
+    .footer-subscribe {
+        grid-column: 1 / 3;
+    }
+    .footer-brand-custom {
+        padding-right: 0;
+    }
+}
+
+@media (max-width: 640px) {
+    .footer-inner {
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-bottom: 30px;
+    }
+    .footer-bottom {
+        flex-direction: column;
+        gap: 12px;
+        padding: 20px 20px 0;
+        text-align: center;
+    }
+    .footer-links {
+        grid-template-columns: 1fr 1fr;
+        gap: 28px;
+    }
+    .footer-subscribe {
+        grid-column: 1 / 3;
+    }
+    .footer-bottom .legal {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
 .subscribe-form {
     display: flex;
     align-items: center;
-    border-bottom: 2px solid rgba(255,255,255,.1);
+    border-bottom: 1px solid rgba(180, 0, 0, 0.2);
     padding-bottom: 4px;
     margin-top: 6px;
 }
 .subscribe-form input {
     background: transparent;
     border: none;
-    padding: 10px 0;
+    padding: 8px 0;
     color: #fff;
     font-size: 14px;
     outline: none;
     flex: 1;
 }
-.subscribe-form input::placeholder { color: var(--muted); }
+.subscribe-form input::placeholder {
+    color: var(--muted);
+}
 .subscribe-form button {
     background: transparent;
     border: none;
-    color: var(--accent);
+    color: #fff;
     cursor: pointer;
     padding: 4px 0 4px 12px;
     display: flex;
     align-items: center;
 }
-.subscribe-form button svg { width: 20px; height: 20px; }
-.subscribe-form button:hover { color: var(--text); }
+.subscribe-form button svg {
+    width: 18px;
+    height: 18px;
+}
+.subscribe-form button:hover {
+    color: var(--accent);
+}
+
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    font-size: 11px;
+    letter-spacing: .2em;
+    color: var(--muted);
+    text-transform: uppercase;
+}
+
+.footer-bottom .legal {
+    display: flex;
+    gap: 0px;
+}
+/* CTA Form Validation */
+.cta-form .form-group {
+    flex: 1;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.cta-form .form-group input {
+    width: 100%;
+    padding: 14px 20px;
+    background: rgba(255, 255, 255, .05);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    color: #fff;
+    font-size: 14px;
+    outline: none;
+    transition: border-color var(--transition);
+}
+.cta-form .form-group input:focus {
+    border-color: var(--accent);
+}
+.cta-form .form-group input::placeholder {
+    color: var(--muted);
+}
+.error-message {
+    color: var(--accent);
+    font-size: 12px;
+    min-height: 18px;
+    display: block;
+}
+
 /* ---------- Responsive ---------- */
 @media (max-width: 1024px) {
     .main-nav { display: none; }
@@ -770,6 +839,24 @@ ul { list-style: none; margin: 0; padding: 0; }
     .footer-links   { gap: 40px 60px; }
 }
 
+@media (max-width: 768px) {
+    .cta-form {
+        flex-direction: column;
+    }
+    .cta-form input {
+        min-width: auto;
+        width: 100%;
+    }
+    .cta-form .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    .cta-features {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
 @media (max-width: 640px) {
     .container { padding: 0 20px; }
     .header-inner { height: 64px; gap: 16px; }
@@ -788,4 +875,4 @@ ul { list-style: none; margin: 0; padding: 0; }
     .footer-bottom { flex-direction: column; gap: 12px; }
     .mission-copy { padding: 40px 20px; }
     .cta-inner    { padding: 40px 20px; min-height: 0; }
-} 
+}
