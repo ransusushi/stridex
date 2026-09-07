@@ -52,7 +52,22 @@
                 justify-content: center;
             }
         }
-    </style>
+    .main-nav ul {
+        display: flex !important;
+        gap: 44px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    .main-nav ul li {
+        list-style: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    .main-nav ul li a {
+        white-space: nowrap !important;
+        display: inline-block !important;
+    }
+</style>
 </head>
 <body>
 

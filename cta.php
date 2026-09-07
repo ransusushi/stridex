@@ -28,37 +28,41 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const form = document.getElementById('ctaForm');
-        const emailInput = document.getElementById('cta-email');
-        const errorSpan = document.getElementById('cta-error');
+        document.querySelectorAll('.cta-form').forEach(function(form) {
+            const emailInput = form.querySelector('input[type="email"]');
+            const errorSpan = form.querySelector('.error-message');
+            if (!emailInput || !errorSpan) return;
 
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            errorSpan.textContent = '';
-            errorSpan.style.color = '';
-            emailInput.style.borderColor = '';
+            // One listener handles BOTH Enter (native submit) and button click
+            // (a submit button click natively fires the form's 'submit' event too).
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                errorSpan.textContent = '';
+                errorSpan.style.color = '';
+                emailInput.style.borderColor = '';
 
-            const email = emailInput.value.trim();
-            if (!email) {
-                errorSpan.textContent = 'Please enter your email address.';
-                emailInput.style.borderColor = '#ff5a1f';
-                return;
-            }
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailPattern.test(email)) {
-                errorSpan.textContent = 'Please enter a valid email address (e.g., name@domain.com).';
-                emailInput.style.borderColor = '#ff5a1f';
-                return;
-            }
-            errorSpan.textContent = "You're in! Check your inbox for your 15% off code.";
-            errorSpan.style.color = '#4ade80';
-            emailInput.value = '';
-        });
+                const email = emailInput.value.trim();
+                if (!email) {
+                    errorSpan.textContent = 'Please enter your email address.';
+                    emailInput.style.borderColor = '#ff5a1f';
+                    return;
+                }
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailPattern.test(email)) {
+                    errorSpan.textContent = 'Please enter a valid email address (e.g., name@domain.com).';
+                    emailInput.style.borderColor = '#ff5a1f';
+                    return;
+                }
+                errorSpan.textContent = "You're in! Check your inbox for your 15% off code.";
+                errorSpan.style.color = '#4ade80';
+                emailInput.value = '';
+            });
 
-        emailInput.addEventListener('input', function() {
-            errorSpan.textContent = '';
-            errorSpan.style.color = '';
-            emailInput.style.borderColor = '';
+            emailInput.addEventListener('input', function() {
+                errorSpan.textContent = '';
+                errorSpan.style.color = '';
+                emailInput.style.borderColor = '';
+            });
         });
     });
 </script>

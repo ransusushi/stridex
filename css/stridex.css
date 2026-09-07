@@ -489,26 +489,39 @@ ul { list-style: none; margin: 0; padding: 0; }
     max-width: 520px;
     flex-wrap: wrap;
 }
-.cta-form input {
+.cta-form .form-group {
     flex: 1;
     min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.cta-form .form-group input {
+    width: 100%;
     padding: 14px 20px;
     background: rgba(255, 255, 255, .05);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
+    border: 1px solid var(--line, rgba(255,255,255,.12));
+    border-radius: var(--radius, 4px);
     color: #fff;
     font-size: 14px;
     outline: none;
-    transition: border-color var(--transition);
+    transition: border-color .25s ease;
 }
-.cta-form input:focus {
-    border-color: var(--accent);
+.cta-form .form-group input:focus {
+    border-color: var(--accent, #ff5a1f);
 }
-.cta-form input::placeholder {
-    color: var(--muted);
+.cta-form .form-group input::placeholder {
+    color: var(--muted, #9a9a9a);
 }
 .cta-form .btn {
     white-space: nowrap;
+}
+
+.error-message {
+    color: var(--accent, #ff5a1f);
+    font-size: 12px;
+    min-height: 18px;
+    display: block;
 }
 
 .cta-features {
@@ -522,13 +535,13 @@ ul { list-style: none; margin: 0; padding: 0; }
     align-items: center;
     gap: 8px;
     font-size: 13px;
-    color: var(--muted);
+    color: var(--muted, #9a9a9a);
 }
 .cta-feature .check-icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    color: var(--accent);
+    color: var(--accent, #ff5a1f);
     width: 18px;
     height: 18px;
 }
@@ -537,7 +550,25 @@ ul { list-style: none; margin: 0; padding: 0; }
     height: 16px;
 }
 
-/* ---------- Footer ---------- */
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .cta-form {
+        flex-direction: column;
+    }
+    .cta-form .form-group {
+        min-width: auto;
+        width: 100%;
+    }
+    .cta-form .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    .cta-features {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
 /* ---------- Footer ---------- */
 .site-footer {
     background: var(--bg);
@@ -733,91 +764,10 @@ ul { list-style: none; margin: 0; padding: 0; }
         justify-content: center;
     }
 }
-.subscribe-form {
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid rgba(180, 0, 0, 0.2);
-    padding-bottom: 4px;
-    margin-top: 6px;
-}
-.subscribe-form input {
-    background: transparent;
-    border: none;
-    padding: 8px 0;
-    color: #fff;
-    font-size: 14px;
-    outline: none;
-    flex: 1;
-}
-.subscribe-form input::placeholder {
-    color: var(--muted);
-}
-.subscribe-form button {
-    background: transparent;
-    border: none;
-    color: #fff;
-    cursor: pointer;
-    padding: 4px 0 4px 12px;
-    display: flex;
-    align-items: center;
-}
-.subscribe-form button svg {
-    width: 18px;
-    height: 18px;
-}
-.subscribe-form button:hover {
-    color: var(--accent);
-}
 
-.footer-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 24px;
-    border-top: 1px solid var(--line);
-    font-size: 11px;
-    letter-spacing: .2em;
-    color: var(--muted);
-    text-transform: uppercase;
-}
 
-.footer-bottom .legal {
-    display: flex;
-    gap: 0px;
-}
-/* CTA Form Validation */
-.cta-form .form-group {
-    flex: 1;
-    min-width: 200px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-.cta-form .form-group input {
-    width: 100%;
-    padding: 14px 20px;
-    background: rgba(255, 255, 255, .05);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    color: #fff;
-    font-size: 14px;
-    outline: none;
-    transition: border-color var(--transition);
-}
-.cta-form .form-group input:focus {
-    border-color: var(--accent);
-}
-.cta-form .form-group input::placeholder {
-    color: var(--muted);
-}
-.error-message {
-    color: var(--accent);
-    font-size: 12px;
-    min-height: 18px;
-    display: block;
-}
 
-/* ---------- Responsive ---------- */
+/* ---------- General Responsive ---------- */
 @media (max-width: 1024px) {
     .main-nav { display: none; }
     .hero-inner,

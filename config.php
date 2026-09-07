@@ -8,11 +8,11 @@ $site = [
 // ---------- Navigation ----------
 $navLinks = [
     ['label' => 'Home',        'href' => '/stride/index.php'],
-    ['label' => 'Shop',        'href' => '#shop'],
+    ['label' => 'Shop',        'href' => '/stride/index.php#shop'],
     ['label' => 'Men',         'href' => '/stride/nav/men.php'],
     ['label' => 'Women',       'href' => '/stride/nav/women.php'],
-    ['label' => 'Collections', 'href' => '#collections'],
-    ['label' => 'About Us',    'href' => '#about'],
+    ['label' => 'Collections', 'href' => '/stride/nav/collection.php'],
+    ['label' => 'About Us',    'href' => '/stride/index.php#about'],
 ];
 
 // ---------- Featured products ----------
@@ -63,24 +63,24 @@ $features = [
 // ---------- Footer ----------
 $footerGroups = [
     'SHOP' => [
-        ['label' => 'Men', 'href' => '#men'],
-        ['label' => 'Women', 'href' => '#women'],
-        ['label' => 'Collections', 'href' => '#collections'],
+        ['label' => 'Men',         'href' => '/stride/nav/men.php'],
+        ['label' => 'Women',       'href' => '/stride/nav/women.php'],
+        ['label' => 'Collections', 'href' => '/stride/nav/collection.php'],
     ],
     'COMPANY' => [
-        ['label' => 'About Us', 'href' => '#about'],
+        ['label' => 'About Us',    'href' => '#about'],
         ['label' => 'Our Mission', 'href' => '#mission'],
         ['label' => 'Why StrideX', 'href' => '#why'],
     ],
     'SUPPORT' => [
-        ['label' => 'Contact', 'href' => '#contact'],
+        ['label' => 'Contact',           'href' => '#contact'],
         ['label' => 'Shipping & Returns', 'href' => '#shipping'],
-        ['label' => 'FAQ', 'href' => '#faq'],
+        ['label' => 'FAQ',               'href' => '#faq'],
     ],
     'FOLLOW US' => [
         ['label' => 'Instagram', 'href' => '#'],
-        ['label' => 'Facebook', 'href' => '#'],
-        ['label' => 'TikTok', 'href' => '#'],
+        ['label' => 'Facebook',  'href' => '#'],
+        ['label' => 'TikTok',    'href' => '#'],
     ],
 ];
 
