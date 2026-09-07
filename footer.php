@@ -1,7 +1,7 @@
 <footer class="site-footer">
     <div class="container footer-inner">
         <div class="footer-brand-custom">
-            <img src="image/stridex-logo.png" alt="<?= e($site['brand']) ?>" class="footer-logo-img">
+            <img src="/stride/image/stridex-logo.png" alt="<?= e($site['brand']) ?>" class="footer-logo-img">
             <p class="footer-tag"><?= e($site['tagline']) ?></p>
         </div>
         <div class="footer-links">

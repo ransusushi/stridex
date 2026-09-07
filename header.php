@@ -58,7 +58,7 @@
 
 <header class="site-header">
     <div class="container header-inner">
-        <a href="#home" class="logo"><img src="image/stridex-logo.png" alt="<?= e($site['brand']) ?>" style="height:50px;width:auto;"></a>
+        <a href="#home" class="logo"><img src="/stride/image/stridex-logo.png" alt="<?= e($site['brand']) ?>" style="height:50px;width:auto;"></a>
         <nav class="main-nav" aria-label="Primary">
             <ul>
                 <?php foreach ($navLinks as $link): ?>
