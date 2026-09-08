@@ -1,10 +1,32 @@
+<?php
+/* ---- Handle the footer signup (PHP only, no JavaScript) ---- */
+$subEmail = '';
+$subMsg   = '';
+$subState = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['form_id'] ?? '') === 'footer') {
+    $subEmail = trim($_POST['email'] ?? '');
+
+    if ($subEmail === '') {
+        $subMsg   = 'Please enter your email address.';
+        $subState = 'is-error';
+    } elseif (!filter_var($subEmail, FILTER_VALIDATE_EMAIL)) {
+        $subMsg   = 'Please enter a valid email address.';
+        $subState = 'is-error';
+    } else {
+        // TODO: save $subEmail to your database or mailing list here.
+        $subMsg   = "You're subscribed. Watch your inbox for the next drop.";
+        $subState = 'is-success';
+        $subEmail = '';
+    }
+}
+?>
 <!-- ============ FOOTER ============ -->
 <footer class="site-footer">
     <div class="container footer-inner">
         <div class="footer-brand-custom">
             <img src="/stride/image/stridex-logo.png" alt="<?= e($site['brand']) ?>" class="footer-logo-img">
             <p class="footer-tag"><?= e($site['tagline']) ?></p>
-            <p class="footer-description">Lightweight, engineered footwear for athletes, students, and everyday movers.</p>
         </div>
         <div class="footer-links">
             <?php foreach ($footerGroups as $title => $links): ?>
@@ -17,17 +39,10 @@
                     </ul>
                 </div>
             <?php endforeach; ?>
-            <div class="footer-col footer-subscribe">
-                <h4 class="footer-heading">GET THE DROP</h4>
-                <form class="subscribe-form" action="#" method="post">
-                    <input type="email" placeholder="your@email.com" required>
-                    <button type="submit" aria-label="Subscribe"><?= icon('send') ?></button>
-                </form>
-            </div>
         </div>
     </div>
     <div class="container footer-bottom">
-        <p>&copy; 2028 <?= e(strtoupper($site['brand'])) ?>. ALL RIGHTS RESERVED.</p>
+        <p>&copy; <?= date('Y') ?> <?= e(strtoupper($site['brand'])) ?>. ALL RIGHTS RESERVED.</p>
         <p class="legal">
             <a href="#">PRIVACY</a>
             <span>&middot;</span>

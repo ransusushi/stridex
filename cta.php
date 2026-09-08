@@ -1,68 +1,67 @@
-<section class="cta" id="about">
+<?php
+/* ---- Handle the CTA signup (PHP only, no JavaScript) ---- */
+$ctaEmail = '';
+$ctaMsg   = '';
+$ctaState = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['form_id'] ?? '') === 'cta') {
+    $ctaEmail = trim($_POST['email'] ?? '');
+
+    if ($ctaEmail === '') {
+        $ctaMsg   = 'Please enter your email address.';
+        $ctaState = 'is-error';
+    } elseif (!filter_var($ctaEmail, FILTER_VALIDATE_EMAIL)) {
+        $ctaMsg   = 'Please enter a valid email address (e.g., name@domain.com).';
+        $ctaState = 'is-error';
+    } else {
+        // TODO: save $ctaEmail to your database or mailing list here.
+        $ctaMsg   = "You're in! Check your inbox for your 15% off code.";
+        $ctaState = 'is-success';
+        $ctaEmail = '';   // clear the field on success
+    }
+}
+?>
+<section class="cta" id="newsletter" aria-labelledby="cta-title">
     <div class="container cta-inner">
         <div class="cta-copy">
             <span class="eyebrow">MOVE IN STYLE.</span>
-            <h2 class="cta-title">LIVE WITHOUT<br><span class="cta-highlight">LIMITS.</span></h2>
-            <p class="cta-lead">StrideX is here to keep you moving with confidence,<br>comfort, and unstoppable energy. Join over 12,000 athletes pushing past boundaries worldwide.</p>
+            <h2 class="cta-title" id="cta-title">LIVE WITHOUT <span class="cta-highlight">LIMITS.</span></h2>
+            <p class="cta-lead">StrideX is here to keep you moving with confidence, comfort,
+                and unstoppable energy. Join over 12,000 athletes pushing past boundaries worldwide.</p>
 
             <div class="cta-form-row">
-                <form class="cta-form" id="ctaForm" action="#" method="post" novalidate>
+                <form class="cta-form" action="#newsletter" method="post">
+                    <input type="hidden" name="form_id" value="cta">
                     <div class="form-group">
-                        <input type="email" id="cta-email" placeholder="Enter your email address..." required>
-                        <span class="error-message" id="cta-error"></span>
+                        <label class="sr-only" for="cta-email">Email address</label>
+                        <input type="email" id="cta-email" name="email" autocomplete="email"
+                               placeholder="Enter your email address..."
+                               value="<?= e($ctaEmail) ?>"
+                               aria-describedby="cta-msg"
+                               <?= $ctaState === 'is-error' ? 'class="is-invalid" aria-invalid="true"' : '' ?>
+                               required>
+                        <span class="form-message <?= e($ctaState) ?>" id="cta-msg" role="status">
+                            <?= e($ctaMsg) ?>
+                        </span>
                     </div>
-                    <button type="submit" class="btn btn--primary">JOIN THE MOVEMENT <?= icon('arrow') ?></button>
+                    <button type="submit" class="btn btn--primary">
+                        JOIN THE MOVEMENT <?= icon('arrow') ?>
+                    </button>
                 </form>
             </div>
 
-            <div class="cta-features">
-                <span class="cta-feature"><span class="check-icon"><?= icon('check') ?></span> 15% Off First Order</span>
-                <span class="cta-feature"><span class="check-icon"><?= icon('check') ?></span> Early Access to Mockup Drops</span>
-            </div>
+            <ul class="cta-features">
+                <li class="cta-feature">
+                    <span class="check-icon"><?= icon('check') ?></span> 15% Off First Order
+                </li>
+                <li class="cta-feature">
+                    <span class="check-icon"><?= icon('check') ?></span> Early Access to Mockup Drops
+                </li>
+            </ul>
         </div>
-        <div class="cta-visual" aria-hidden="true">
-            <img src="image/stridex-cta-shoes.png" alt="StrideX sneaker">
+
+        <div class="cta-visual">
+            <img src="image/stridex-cta-shoes.png" alt="" loading="lazy" decoding="async">
         </div>
     </div>
 </section>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('.cta-form').forEach(function(form) {
-            const emailInput = form.querySelector('input[type="email"]');
-            const errorSpan = form.querySelector('.error-message');
-            if (!emailInput || !errorSpan) return;
-
-            // One listener handles BOTH Enter (native submit) and button click
-            // (a submit button click natively fires the form's 'submit' event too).
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                errorSpan.textContent = '';
-                errorSpan.style.color = '';
-                emailInput.style.borderColor = '';
-
-                const email = emailInput.value.trim();
-                if (!email) {
-                    errorSpan.textContent = 'Please enter your email address.';
-                    emailInput.style.borderColor = '#ff5a1f';
-                    return;
-                }
-                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailPattern.test(email)) {
-                    errorSpan.textContent = 'Please enter a valid email address (e.g., name@domain.com).';
-                    emailInput.style.borderColor = '#ff5a1f';
-                    return;
-                }
-                errorSpan.textContent = "You're in! Check your inbox for your 15% off code.";
-                errorSpan.style.color = '#4ade80';
-                emailInput.value = '';
-            });
-
-            emailInput.addEventListener('input', function() {
-                errorSpan.textContent = '';
-                errorSpan.style.color = '';
-                emailInput.style.borderColor = '';
-            });
-        });
-    });
-</script>
