@@ -16,8 +16,8 @@ $orderCount = $stmt->fetchColumn();
 $stmt = $pdo->query("SELECT COUNT(*) FROM users");
 $userCount = $stmt->fetchColumn();
 
-// Get all products with stock
-$stmt = $pdo->query("SELECT id, name, quantity FROM products ORDER BY id DESC");
+// Get all products with stock and image
+$stmt = $pdo->query("SELECT id, name, image, quantity FROM products ORDER BY id DESC");
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Handle quick stock update
@@ -27,7 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_stock'])) {
     if ($product_id > 0 && $new_quantity >= 0) {
         $stmt = $pdo->prepare("UPDATE products SET quantity = ? WHERE id = ?");
         $stmt->execute([$new_quantity, $product_id]);
-        // Refresh page to show updated values
         header('Location: index.php');
         exit;
     }
@@ -52,6 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_stock'])) {
         .stock-table { width: 100%; border-collapse: collapse; margin-top: 40px; color: var(--text); }
         .stock-table th { text-align: left; padding: 12px 0; border-bottom: 1px solid var(--line); font-weight: 600; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); }
         .stock-table td { padding: 12px 0; border-bottom: 1px solid var(--line); vertical-align: middle; }
+        .stock-table .product-thumb { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; background: #111; }
         .stock-table .low-stock { color: var(--accent); font-weight: 600; }
         .stock-table form { display: flex; gap: 8px; align-items: center; }
         .stock-table input[type="number"] { width: 60px; padding: 4px 8px; background: rgba(255,255,255,.05); border: 1px solid var(--line); border-radius: var(--radius); color: #fff; text-align: center; }
@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_stock'])) {
                 <li><a href="index.php">Dashboard</a></li>
                 <li><a href="products.php">Products</a></li>
                 <li><a href="orders.php">Orders</a></li>
-                <li><a href="../login/logout.php">Logout</a></li>
+                <li><a href="../auth/logout.php">Logout</a></li>
             </ul>
         </nav>
     </div>
@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_stock'])) {
         <div class="admin-nav">
             <a href="products.php">Manage Products</a>
             <a href="orders.php">Manage Orders</a>
-            <a href="../login/logout.php">Logout</a>
+            <a href="/stride/auth/logout.php">Logout</a>
         </div>
 
         <div class="admin-grid">
@@ -98,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_stock'])) {
             </div>
         </div>
 
-        <!-- Stock Overview -->
+        <!-- Stock Overview with Images -->
         <h2 style="font-family: var(--font-display); text-transform: uppercase; margin-top: 60px; margin-bottom: 20px;">Stock Overview</h2>
         <?php if (empty($products)): ?>
             <p>No products yet.</p>
@@ -106,6 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_stock'])) {
             <table class="stock-table">
                 <thead>
                     <tr>
+                        <th>Image</th>
                         <th>Product</th>
                         <th>Current Stock</th>
                         <th>Update Quantity</th>
@@ -114,10 +115,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_stock'])) {
                 <tbody>
                     <?php foreach ($products as $p): ?>
                         <tr>
-                            <td><?= e($p['name']) ?></td>
                             <td>
-    <?= $p['quantity'] ?>
-</td>
+                                <?php if (!empty($p['image']) && file_exists('../' . $p['image'])): ?>
+                                    <img src="../<?= e($p['image']) ?>" alt="<?= e($p['name']) ?>" class="product-thumb">
+                                <?php else: ?>
+                                    <div style="width:50px; height:50px; background:#111; border-radius:4px; display:flex; align-items:center; justify-content:center; color:#666; font-size:10px;">No img</div>
+                                <?php endif; ?>
+                            </td>
+                            <td><?= e($p['name']) ?></td>
+                            <td class="<?= $p['quantity'] <= 5 ? 'low-stock' : '' ?>">
+                                <?= $p['quantity'] ?>
+                            </td>
                             <td>
                                 <form method="post">
                                     <input type="hidden" name="product_id" value="<?= $p['id'] ?>">

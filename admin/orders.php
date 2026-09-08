@@ -35,7 +35,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <li><a href="index.php">Dashboard</a></li>
                 <li><a href="products.php">Products</a></li>
                 <li><a href="orders.php">Orders</a></li>
-                <li><a href="../login/logout.php">Logout</a></li>
+                <a href="/stride/auth/logout.php">Logout</a>
             </ul>
         </nav>
     </div>

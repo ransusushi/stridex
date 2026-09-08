@@ -1,7 +1,8 @@
 <?php
-require_once 'database/config.php';
+require_once '../database/config.php';
+
 if (!isLoggedIn()) {
-    header('Location: login/login.php?redirect=cart.php');
+    header('Location: ../auth/login.php?redirect=cart.php');
     exit;
 }
 
@@ -10,21 +11,17 @@ $total = 0;
 foreach ($cartItems as $item) {
     $total += $item['price'] * $item['quantity'];
 }
-if (!isLoggedIn()) {
-    header('Location: login/login.php?redirect=cart.php');
-    exit;
-}
 ?>
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Shopping Cart — <?= e($site['brand']) ?></title>
+    <title>Shopping Cart – <?= e($site['brand']) ?></title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/stridex.css">
+    <link rel="stylesheet" href="../css/stridex.css">
     <style>
         .cart-page { padding: 80px 0; background: var(--bg); }
         .cart-table { width: 100%; border-collapse: collapse; color: var(--text); }
@@ -48,8 +45,7 @@ if (!isLoggedIn()) {
     </style>
 </head>
 <body>
-
-<?php include 'header.php'; ?>
+<?php include '../includes/header.php'; ?>
 
 <section class="cart-page">
     <div class="container">
@@ -58,7 +54,7 @@ if (!isLoggedIn()) {
         <?php if (empty($cartItems)): ?>
             <div class="cart-empty">
                 <p>Your cart is empty.</p>
-                <a href="index.php" class="btn btn--primary" style="margin-top: 20px;">START SHOPPING</a>
+                <a href="shop.php" class="btn btn--primary" style="margin-top: 20px;">START SHOPPING</a>
             </div>
         <?php else: ?>
             <table class="cart-table">
@@ -76,23 +72,23 @@ if (!isLoggedIn()) {
                         <tr>
                             <td>
                                 <div style="display: flex; align-items: center; gap: 16px;">
-                                    <img src="<?= e($item['image']) ?>" alt="<?= e($item['name']) ?>" class="cart-item-img">
+                                    <img src="../<?= e($item['image']) ?>" alt="<?= e($item['name']) ?>" class="cart-item-img">
                                     <span class="cart-item-name"><?= e($item['name']) ?></span>
                                 </div>
                             </td>
                             <td class="cart-item-price">$<?= number_format($item['price'], 2) ?></td>
                             <td>
-                                <form method="get" action="add_to_cart.php" style="display: flex; align-items: center; gap: 8px;">
+                                <form method="get" action="/stride/add_to_cart.php" style="display: flex; align-items: center; gap: 8px;">
                                     <input type="hidden" name="id" value="<?= e($id) ?>">
                                     <input type="hidden" name="action" value="update">
-                                    <input type="hidden" name="redirect" value="cart.php">
+                                    <input type="hidden" name="redirect" value="pages/cart.php">
                                     <input type="number" name="quantity" value="<?= (int)$item['quantity'] ?>" min="1" class="cart-quantity-input">
                                     <button type="submit" class="btn btn--primary" style="padding: 6px 12px; font-size: 10px;">Update</button>
                                 </form>
                             </td>
                             <td>$<?= number_format($item['price'] * $item['quantity'], 2) ?></td>
                             <td>
-                                <a href="add_to_cart.php?id=<?= e($id) ?>&action=remove&redirect=cart.php" class="cart-remove">Remove</a>
+                                <a href="/stride/add_to_cart.php?id=<?= e($id) ?>&action=remove&redirect=pages/cart.php" class="cart-remove">Remove</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -107,13 +103,13 @@ if (!isLoggedIn()) {
             </table>
 
             <div class="cart-actions">
-                <a href="add_to_cart.php?action=clear&redirect=cart.php" class="btn btn--outline">CLEAR CART</a>
+                <a href="/stride/add_to_cart.php?action=clear&redirect=pages/cart.php" class="btn btn--outline">CLEAR CART</a>
                 <a href="checkout.php" class="btn btn--primary">PROCEED TO CHECKOUT</a>
             </div>
         <?php endif; ?>
     </div>
 </section>
 
-<?php include 'footer.php'; ?>
+<?php include '../includes/footer.php'; ?>
 </body>
 </html>

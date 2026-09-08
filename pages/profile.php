@@ -1,9 +1,9 @@
 <?php
-require_once 'database/config.php';
+require_once '../database/config.php';
 
 // Protect page: require login
 if (!isLoggedIn()) {
-    header('Location: login/login.php?redirect=profile.php');
+    header('Location: ../auth/login.php?redirect=profile.php');
     exit;
 }
 
@@ -51,7 +51,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/stridex.css">
+    <link rel="stylesheet" href="../css/stridex.css">
     <style>
         .profile-page { padding: 80px 0; background: var(--bg); }
         .profile-card { max-width: 600px; margin: 0 auto; background: #0e0e0e; padding: 30px; border-radius: var(--radius); border: 1px solid var(--line); }
@@ -82,7 +82,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </style>
 </head>
 <body>
-<?php include 'header.php'; ?>
+<?php include '../includes/header.php'; ?>
 
 <section class="profile-page">
     <div class="container">
@@ -192,6 +192,6 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 </script>
 
-<?php include 'footer.php'; ?>
+<?php include '../includes/footer.php'; ?>
 </body>
 </html>

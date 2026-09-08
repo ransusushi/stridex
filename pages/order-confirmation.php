@@ -1,5 +1,5 @@
 <?php
-require_once 'database/config.php';
+require_once '../database/config.php';
 
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     header('Location: index.php');
@@ -30,7 +30,7 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/stridex.css">
+    <link rel="stylesheet" href="../css/stridex.css">
     <style>
         .confirmation-page { padding: 80px 0; background: var(--bg); text-align: center; }
         .confirmation-box { max-width: 600px; margin: 0 auto; background: #0e0e0e; padding: 40px; border-radius: var(--radius); border: 1px solid var(--line); }
@@ -42,7 +42,7 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </style>
 </head>
 <body>
-<?php include 'header.php'; ?>
+<?php include '../includes/header.php'; ?>
 
 <section class="confirmation-page">
     <div class="container">
@@ -76,11 +76,11 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </p>
             </div>
 
-            <a href="index.php" class="btn btn--primary">CONTINUE SHOPPING</a>
+            <a href="shop.php" class="btn btn--primary">CONTINUE SHOPPING</a>
         </div>
     </div>
 </section>
 
-<?php include 'footer.php'; ?>
+<?php include '../includes/footer.php'; ?>
 </body>
 </html>

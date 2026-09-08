@@ -1,39 +1,18 @@
 <?php
-require_once 'database/config.php';
+require_once '../database/config.php';
 
 // Protect checkout: require login
 if (!isLoggedIn()) {
-    header('Location: login/login.php?redirect=checkout.php');
+    header('Location: ../auth/login.php?redirect=checkout.php');
     exit;
 }
 
-// ✅ NEW: If admin, redirect to order management dashboard
+// ✅ If admin, redirect to order management dashboard
 if (isAdmin()) {
-    // Show a message then redirect
-    echo '<!DOCTYPE html>
-    <html>
-    <head>
-        <meta http-equiv="refresh" content="2;url=admin/orders.php">
-        <style>
-            body { background: #000; color: #fff; font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; text-align: center; }
-            .box { background: #0e0e0e; padding: 40px; border-radius: 8px; border: 1px solid rgba(255,255,255,.12); }
-            .box h1 { color: #ff5a1f; }
-            .box p { color: #9a9a9a; }
-        </style>
-    </head>
-    <body>
-        <div class="box">
-            <h1>🔐 Admin Access</h1>
-            <p>You are logged in as admin.</p>
-            <p>Redirecting to <strong>Order Management Dashboard</strong>...</p>
-            <p style="font-size: 12px; margin-top: 20px;"><a href="admin/orders.php" style="color: #ff5a1f;">Click here if you are not redirected</a></p>
-        </div>
-    </body>
-    </html>';
+    header('Location: ../admin/orders.php');
     exit;
 }
 
-// If cart is empty, redirect back
 $cartItems = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
 $total = 0;
 foreach ($cartItems as $item) {
@@ -115,11 +94,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/stridex.css">
-    <link rel="stylesheet" href="css/checkout.css">
+    <link rel="stylesheet" href="../css/stridex.css">
+    <link rel="stylesheet" href="../css/checkout.css">
 </head>
 <body>
-<?php include 'header.php'; ?>
+<?php include '../includes/header.php'; ?>
 
 <section class="checkout-page">
     <div class="container">
@@ -205,6 +184,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
     </div>
 </section>
 
-<?php include 'footer.php'; ?>
+<?php include '../includes/footer.php'; ?>
 </body>
 </html>

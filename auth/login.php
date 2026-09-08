@@ -37,7 +37,7 @@ $redirect = isset($_GET['redirect']) ? $_GET['redirect'] : 'index.php';
 </head>
 <body>
 
-<?php include '../header.php'; ?>
+<?php include '../includes/header.php'; ?>
 
 <section class="auth-page">
     <div class="container">
@@ -51,7 +51,7 @@ $redirect = isset($_GET['redirect']) ? $_GET['redirect'] : 'index.php';
                 <div class="success"><?= htmlspecialchars($message) ?></div>
             <?php endif; ?>
 
-            <form method="POST" action="auth_function.php">
+            <form method="POST" action="auth_function.php?redirect=<?= urlencode($redirect) ?>">
                 <label for="email">Email Address</label>
                 <input type="email" id="email" name="email" required>
 
@@ -73,6 +73,6 @@ $redirect = isset($_GET['redirect']) ? $_GET['redirect'] : 'index.php';
     </div>
 </section>
 
-<?php include '../footer.php'; ?>
+<?php include '../includes/footer.php'; ?>
 </body>
 </html>

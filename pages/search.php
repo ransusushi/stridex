@@ -1,23 +1,23 @@
 <?php
-require_once 'database/config.php'; 
+require_once '../database/config.php';
 
-// Get the search query
 $query = isset($_GET['q']) ? trim($_GET['q']) : '';
-
-// Get all products from config (already merged in $allProducts)
-global $allProducts;
 $results = [];
 
 if (!empty($query)) {
-    $queryLower = strtolower($query);
-    foreach ($allProducts as $p) {
-        // Search in name and color
-        $nameLower = strtolower($p['name']);
-        $colorLower = strtolower($p['color']);
-        if (strpos($nameLower, $queryLower) !== false || strpos($colorLower, $queryLower) !== false) {
-            $results[] = $p;
-        }
-    }
+    $pdo = getConnection();
+    $stmt = $pdo->prepare("
+        SELECT p.*, 
+               COALESCE(AVG(r.rating), 0) AS avg_rating, 
+               COUNT(r.id) AS review_count
+        FROM products p
+        LEFT JOIN reviews r ON p.id = r.product_id
+        WHERE p.name LIKE ? OR p.color LIKE ?
+        GROUP BY p.id
+    ");
+    $like = '%' . $query . '%';
+    $stmt->execute([$like, $like]);
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 $pageTitle = "Search Results";
@@ -31,7 +31,7 @@ $pageTitle = "Search Results";
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/stridex.css">
+    <link rel="stylesheet" href="../css/stridex.css">
     <style>
         .search-page { padding: 80px 0; background: var(--bg); }
         .search-form { max-width: 600px; margin: 0 auto 40px; display: flex; gap: 12px; }
@@ -65,14 +65,12 @@ $pageTitle = "Search Results";
     </style>
 </head>
 <body>
-
-<?php include 'header.php'; ?>
+<?php include '../includes/header.php'; ?>
 
 <section class="search-page">
     <div class="container">
         <h1 class="section-title" style="margin-bottom: 20px;">SEARCH</h1>
 
-        <!-- Search Form -->
         <form class="search-form" action="search.php" method="get">
             <input type="text" name="q" placeholder="Search for shoes..." value="<?= e($query) ?>" required>
             <button type="submit" class="btn btn--primary">SEARCH <?= icon('arrow') ?></button>
@@ -96,24 +94,39 @@ $pageTitle = "Search Results";
             <div class="product-grid">
                 <?php foreach ($results as $p): ?>
                     <article class="product-card">
-                        <div class="product-media <?= e($p['bg']) ?>">
+                        <div class="product-media <?= e($p['bg'] ?? 'bg-black') ?>">
                             <?php if (!empty($p['badge'])): ?>
                                 <span class="product-badge"><?= e($p['badge']) ?></span>
                             <?php endif; ?>
-                            <img src="<?= e($p['image']) ?>" alt="<?= e($p['name']) ?>">
+                            <?php if (!empty($p['image']) && file_exists('../' . $p['image'])): ?>
+                                <img src="../<?= e($p['image']) ?>" alt="<?= e($p['name']) ?>">
+                            <?php else: ?>
+                                <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:#111; color:#666; font-size:14px;">No Image</div>
+                            <?php endif; ?>
                         </div>
                         <div class="product-info">
-                            <p class="product-color"><?= e($p['color']) ?></p>
+                            <p class="product-color"><?= e($p['color'] ?? 'N/A') ?></p>
                             <div class="product-row">
                                 <h3 class="product-name"><?= e($p['name']) ?></h3>
                                 <span class="product-price">$<?= e($p['price']) ?></span>
                             </div>
                             <div class="product-rating">
-                                <?= star_row((int)$p['rating']) ?>
-                                <span class="reviews">(<?= (int)$p['reviews'] ?>)</span>
+                                <?php
+                                $avg = round($p['avg_rating'], 1);
+                                $count = (int)$p['review_count'];
+                                if ($count > 0) {
+                                    echo star_row($avg);
+                                    echo ' <span class="reviews">(' . $count . ')</span>';
+                                } else {
+                                    echo '<span class="reviews">No reviews</span>';
+                                }
+                                ?>
                             </div>
-                            <div class="product-actions">
-                                <a href="add_to_cart.php?id=<?= e($p['id']) ?>&action=add" class="btn btn--primary btn--small">ADD TO CART</a>
+                            <p style="color: var(--muted); font-size: 12px; margin-top: 6px;">
+                                <?= $p['quantity'] ?? 0 ?> in stock
+                            </p>
+                            <div class="product-actions" style="margin-top: 16px;">
+                                <a href="/stride/add_to_cart.php?id=<?= e($p['id']) ?>&action=add" class="btn btn--primary btn--small">ADD TO CART</a>
                             </div>
                         </div>
                     </article>
@@ -123,6 +136,6 @@ $pageTitle = "Search Results";
     </div>
 </section>
 
-<?php include 'footer.php'; ?>
+<?php include '../includes/footer.php'; ?>
 </body>
 </html>

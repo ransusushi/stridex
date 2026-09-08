@@ -1,5 +1,5 @@
 <?php
-// Fetch products with average rating and review count
+// Fetch products from database
 try {
     $pdo = getConnection();
     $stmt = $pdo->query("
@@ -44,7 +44,7 @@ try {
                             $avg = round($p['avg_rating'], 1);
                             $count = (int)$p['review_count'];
                             if ($count > 0) {
-                                echo star_row($avg); // assumes star_row accepts float and shows filled stars proportionally
+                                echo star_row($avg);
                                 echo ' <span class="reviews">(' . $count . ')</span>';
                             } else {
                                 echo '<span class="reviews">No reviews</span>';
@@ -55,11 +55,11 @@ try {
                             <?= $p['quantity'] ?? 0 ?> in stock
                         </p>
                         <div class="product-actions" style="margin-top: 16px;">
-                            <a href="product.php?id=<?= e($p['id']) ?>" class="btn btn--primary" style="padding: 10px 20px; font-size: 10px;">VIEW DETAILS</a>
+                            <a href="/stride/add_to_cart.php?id=<?= e($p['id']) ?>&action=add" class="btn btn--primary" style="padding: 10px 20px; font-size: 10px;">ADD TO CART</a>
                         </div>
                     </div>
                 </article>
             <?php endforeach; ?>
         <?php endif; ?>
     </div>
-</section>  
+</section>

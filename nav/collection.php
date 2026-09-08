@@ -57,7 +57,7 @@ $collections = [
 </head>
 <body>
 
-<?php include '../header.php'; ?>
+<?php include '../includes/header.php'; ?>
 
 <!-- ============ COLLECTIONS HERO ============ -->
 <section class="collections-hero" id="collections">
@@ -104,6 +104,6 @@ $collections = [
 
 
 
-<?php include '../footer.php'; ?>
+<?php include '../includes/footer.php'; ?>
 </body>
 </html>

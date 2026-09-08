@@ -132,12 +132,3 @@ $womenProducts = [
 $allProducts = array_merge($products, $menProducts, $womenProducts);
 
 // ---------- Helper: get product by ID ----------
-function getProductById($id) {
-    global $allProducts;
-    foreach ($allProducts as $p) {
-        if ($p['id'] == $id) {
-            return $p;
-        }
-    }
-    return null;
-}

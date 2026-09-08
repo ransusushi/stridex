@@ -14,9 +14,9 @@ $site = [
 // ---------- Navigation ----------
 $navLinks = [
     ['label' => 'Home',        'href' => '/stride/index.php'],
-    ['label' => 'Shop',        'href' => '/stride/shop.php'],
+    ['label' => 'Shop',        'href' => '/stride/pages/shop.php'],
     ['label' => 'Collections', 'href' => '/stride/nav/collection.php'],
-    ['label' => 'About Us',    'href' => '/stride/nav/about.php'],   // ← changed
+    ['label' => 'About Us',    'href' => '/stride/nav/about.php'],
 ];
 
 // ---------- Feature bullets ----------
@@ -30,10 +30,9 @@ $features = [
 // ---------- Footer ----------
 $footerGroups = [
     'SHOP' => [
-        ['label' => 'All Products', 'href' => '/stride/shop.php'],
+        ['label' => 'All Products', 'href' => '/stride/pages/shop.php'],
         ['label' => 'Collections',  'href' => '/stride/nav/collection.php'],
     ],
-
     'COMPANY' => [
         ['label' => 'About Us',    'href' => '#about'],
         ['label' => 'Our Mission', 'href' => '#mission'],
@@ -84,20 +83,20 @@ function star_row(int $rating, int $max = 5): string {
 
 function e(string $s): string { return htmlspecialchars($s, ENT_QUOTES, 'UTF-8'); }
 
-// ---------- Load product data ----------
-require_once __DIR__ . '/../data.php';
+// ---------- Load product data (optional) ----------
+require_once __DIR__ . '/data.php';
 
 // ---------- Database connection ----------
 function getConnection(): PDO
 {
-   $host = '127.0.0.1';
+    $host = '127.0.0.1';
     $port = '3307';
-    $db   = 'stridex_db';   
-    $user = 'root';         
-    $pass = '';           
+    $db   = 'stridex_db';
+    $user = 'root';
+    $pass = '';
     try {
         $pdo = new PDO(
-            "mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4", 
+            "mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4",
             $user,
             $pass
         );
@@ -146,4 +145,12 @@ function requireAdmin()
         header('Location: ../index.php');
         exit;
     }
+}
+
+// ---------- Cart helper ----------
+function getProductById($id) {
+    $pdo = getConnection();
+    $stmt = $pdo->prepare("SELECT * FROM products WHERE id = ?");
+    $stmt->execute([$id]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
 }
