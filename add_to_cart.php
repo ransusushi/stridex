@@ -1,5 +1,10 @@
 <?php
 require_once 'database/config.php'; 
+if (!isLoggedIn()) {
+    $redirect = isset($_GET['redirect']) ? $_GET['redirect'] : 'index.php';
+    header('Location: login/login.php?redirect=' . urlencode($redirect));
+    exit;
+}
 
 // Get product id and action
 $id = isset($_GET['id']) ? $_GET['id'] : '';
@@ -17,10 +22,6 @@ if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
 
-// Find the product in all product arrays (we need a function to get product by id)
-// Since we don't have a single product array, we'll create a helper in config.php
-// Let's define a function to get product by id in config.php
-// For now, we'll just handle the cart actions
 
 switch ($action) {
     case 'add':

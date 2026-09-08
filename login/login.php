@@ -2,7 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-require '../database/config.php';   // ← correct path
+require '../database/config.php';
 
 $status  = $_GET['status'] ?? null;
 $message = $_GET['message'] ?? null;
@@ -51,7 +51,7 @@ $redirect = isset($_GET['redirect']) ? $_GET['redirect'] : 'index.php';
                 <div class="success"><?= htmlspecialchars($message) ?></div>
             <?php endif; ?>
 
-            <form method="POST" action="auth_function.php?redirect=<?= urlencode($redirect) ?>">
+            <form method="POST" action="auth_function.php">
                 <label for="email">Email Address</label>
                 <input type="email" id="email" name="email" required>
 

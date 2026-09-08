@@ -1,5 +1,8 @@
 <?php
-session_start();   // <-- START SESSION
+// Start session only if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // ---------- Site configuration ----------
 $site = [
@@ -89,13 +92,14 @@ require_once __DIR__ . '/../data.php';
 // ---------- Database connection ----------
 function getConnection(): PDO
 {
-    $host = 'localhost';
-    $db   = 'stridex_db'; 
-    $user = 'root';
-    $pass = 'root';
+   $host = '127.0.0.1';
+    $port = '3307';
+    $db   = 'stridex_db';   
+    $user = 'root';         
+    $pass = '';           
     try {
         $pdo = new PDO(
-            "mysql:host=$host;dbname=$db;charset=utf8mb4",
+            "mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4", 
             $user,
             $pass
         );
@@ -104,29 +108,6 @@ function getConnection(): PDO
     } catch (PDOException $e) {
         die("Connection failed: " . $e->getMessage());
     }
-    // ---------- Authentication Functions ----------
-function isLoggedIn(): bool
-{
-    return isset($_SESSION['user_id']);
-}
-
-function getCurrentUser()
-{
-    if (!isLoggedIn()) return null;
-    $pdo = getConnection();
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
-    $stmt->execute([$_SESSION['user_id']]);
-    return $stmt->fetch(PDO::FETCH_ASSOC);
-}
-
-function logout()
-{
-    unset($_SESSION['user_id']);
-    if (isset($_COOKIE['remember_token'])) {
-        setcookie('remember_token', '', time() - 3600, '/');
-    }
-    session_destroy();
-}
 }
 
 // ---------- Authentication Functions ----------
@@ -152,4 +133,19 @@ function logout()
         setcookie('remember_token', '', time() - 3600, '/');
     }
     session_destroy();
+}
+
+function isAdmin(): bool
+{
+    if (!isLoggedIn()) return false;
+    $user = getCurrentUser();
+    return ($user && isset($user['role']) && $user['role'] === 'admin');
+}
+
+function requireAdmin()
+{
+    if (!isAdmin()) {
+        header('Location: ../index.php');
+        exit;
+    }
 }

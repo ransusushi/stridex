@@ -2,40 +2,43 @@
 // ---------- Featured products (homepage) ----------
 $products = [
     [
-        'id'      => 'f1',
-        'name'    => 'STRIDEX URBAN',
-        'color'   => 'Midnight Red',
-        'price'   => '79.99',
-        'rating'  => 4,
-        'reviews' => 246,
-        'image'   => 'image/bestseller.png',
-        'bg'      => 'bg-red',
-        'badge'   => 'BESTSELLER',
-        'swatches'=> ['#c8102e', '#111', '#e8e8e8'],
+        'id'       => 'f1',
+        'name'     => 'STRIDEX URBAN',
+        'color'    => 'Midnight Red',
+        'price'    => '79.99',
+        'rating'   => 4,
+        'reviews'  => 246,
+        'image'    => 'image/bestseller.png',
+        'bg'       => 'bg-red',
+        'badge'    => 'BESTSELLER',
+        'swatches' => ['#c8102e', '#111', '#e8e8e8'],
+        'quantity' => 10,   // <-- added
     ],
     [
-        'id'      => 'f2',
-        'name'    => 'STRIDEX FLEX',
-        'color'   => 'Cloud White',
-        'price'   => '79.99',
-        'rating'  => 4,
-        'reviews' => 246,
-        'image'   => 'image/newdrop.png',
-        'bg'      => 'bg-black',
-        'badge'   => 'NEW DROP',
-        'swatches'=> ['#ffffff', '#111', '#e8e8e8'],
+        'id'       => 'f2',
+        'name'     => 'STRIDEX FLEX',
+        'color'    => 'Cloud White',
+        'price'    => '79.99',
+        'rating'   => 4,
+        'reviews'  => 246,
+        'image'    => 'image/newdrop.png',
+        'bg'       => 'bg-black',
+        'badge'    => 'NEW DROP',
+        'swatches' => ['#ffffff', '#111', '#e8e8e8'],
+        'quantity' => 10,   // <-- added
     ],
     [
-        'id'      => 'f3',
-        'name'    => 'STRIDEX CORE',
-        'color'   => 'Carbon Gray',
-        'price'   => '89.99',
-        'rating'  => 4,
-        'reviews' => 246,
-        'image'   => 'image/limited.png',
-        'bg'      => 'bg-gray',
-        'badge'   => 'LIMITED',
-        'swatches'=> ['#ff5a1f', '#111', '#e8e8e8'],
+        'id'       => 'f3',
+        'name'     => 'STRIDEX CORE',
+        'color'    => 'Carbon Gray',
+        'price'    => '89.99',
+        'rating'   => 4,
+        'reviews'  => 246,
+        'image'    => 'image/limited.png',
+        'bg'       => 'bg-gray',
+        'badge'    => 'LIMITED',
+        'swatches' => ['#ff5a1f', '#111', '#e8e8e8'],
+        'quantity' => 10,   // <-- added
     ],
 ];
 
@@ -52,6 +55,7 @@ $menProducts = [
         'bg'       => 'bg-red',
         'badge'    => 'BESTSELLER',
         'swatches' => ['#c8102e', '#111', '#e8e8e8'],
+        'quantity' => 10,
     ],
     [
         'id'       => 'm2',
@@ -64,6 +68,7 @@ $menProducts = [
         'bg'       => 'bg-black',
         'badge'    => 'NEW DROP',
         'swatches' => ['#ffffff', '#111', '#e8e8e8'],
+        'quantity' => 10,
     ],
     [
         'id'       => 'm3',
@@ -76,6 +81,7 @@ $menProducts = [
         'bg'       => 'bg-gray',
         'badge'    => 'LIMITED',
         'swatches' => ['#ff5a1f', '#111', '#e8e8e8'],
+        'quantity' => 10,
     ],
 ];
 
@@ -92,6 +98,7 @@ $womenProducts = [
         'bg'       => 'bg-red',
         'badge'    => 'NEW DROP',
         'swatches' => ['#ff5a1f', '#fff', '#111'],
+        'quantity' => 10,
     ],
     [
         'id'       => 'w2',
@@ -104,6 +111,7 @@ $womenProducts = [
         'bg'       => 'bg-black',
         'badge'    => 'BESTSELLER',
         'swatches' => ['#fff', '#111', '#e8e8e8'],
+        'quantity' => 10,
     ],
     [
         'id'       => 'w3',
@@ -116,10 +124,11 @@ $womenProducts = [
         'bg'       => 'bg-gray',
         'badge'    => 'LIMITED',
         'swatches' => ['#111', '#fff', '#e8e8e8'],
+        'quantity' => 10,
     ],
 ];
 
-// ---------- Merge all products for cart and search ----------
+// ---------- Merge all products for cart ----------
 $allProducts = array_merge($products, $menProducts, $womenProducts);
 
 // ---------- Helper: get product by ID ----------

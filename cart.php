@@ -1,5 +1,9 @@
 <?php
 require_once 'database/config.php';
+if (!isLoggedIn()) {
+    header('Location: login/login.php?redirect=cart.php');
+    exit;
+}
 
 $cartItems = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
 $total = 0;
