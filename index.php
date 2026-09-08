@@ -1,5 +1,5 @@
 <?php
-require_once 'config.php';
+require_once 'database/config.php';
 include 'header.php';
 include 'hero.php';
 include 'products.php';

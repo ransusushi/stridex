@@ -1,4 +1,7 @@
 <?php
+session_start();   // <-- START SESSION
+
+// ---------- Site configuration ----------
 $site = [
     'brand'   => 'StrideX',
     'tagline' => 'MOVE IN STYLE. LIVE WITHOUT LIMITS.',
@@ -13,43 +16,6 @@ $navLinks = [
     ['label' => 'Women',       'href' => '/stride/nav/women.php'],
     ['label' => 'Collections', 'href' => '/stride/nav/collection.php'],
     ['label' => 'About Us',    'href' => '/stride/index.php#about'],
-];
-
-// ---------- Featured products ----------
-$products = [
-    [
-        'name'    => 'STRIDEX URBAN',
-        'color'   => 'Midnight Red',
-        'price'   => '79.99',
-        'rating'  => 4,
-        'reviews' => 246,
-        'image'   => 'image/bestseller.png',
-        'bg'      => 'bg-red',
-        'badge'   => 'BESTSELLER',
-        'swatches'=> ['#c8102e', '#111', '#e8e8e8'],
-    ],
-    [
-        'name'    => 'STRIDEX FLEX',
-        'color'   => 'Cloud White',
-        'price'   => '79.99',
-        'rating'  => 4,
-        'reviews' => 246,
-        'image'   => 'image/newdrop.png',
-        'bg'      => 'bg-black',
-        'badge'   => 'NEW DROP',
-        'swatches'=> ['#ffffff', '#111', '#e8e8e8'],
-    ],
-    [
-        'name'    => 'STRIDEX CORE',
-        'color'   => 'Carbon Gray',
-        'price'   => '89.99',
-        'rating'  => 4,
-        'reviews' => 246,
-        'image'   => 'image/limited.png',
-        'bg'      => 'bg-gray',
-        'badge'   => 'LIMITED',
-        'swatches'=> ['#ff5a1f', '#111', '#e8e8e8'],
-    ],
 ];
 
 // ---------- Feature bullets ----------
@@ -116,4 +82,74 @@ function star_row(int $rating, int $max = 5): string {
 }
 
 function e(string $s): string { return htmlspecialchars($s, ENT_QUOTES, 'UTF-8'); }
-?>
+
+// ---------- Load product data ----------
+require_once __DIR__ . '/../data.php';
+
+// ---------- Database connection ----------
+function getConnection(): PDO
+{
+    $host = 'localhost';
+    $db   = 'stridex_db'; 
+    $user = 'root';
+    $pass = 'root';
+    try {
+        $pdo = new PDO(
+            "mysql:host=$host;dbname=$db;charset=utf8mb4",
+            $user,
+            $pass
+        );
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        return $pdo;
+    } catch (PDOException $e) {
+        die("Connection failed: " . $e->getMessage());
+    }
+    // ---------- Authentication Functions ----------
+function isLoggedIn(): bool
+{
+    return isset($_SESSION['user_id']);
+}
+
+function getCurrentUser()
+{
+    if (!isLoggedIn()) return null;
+    $pdo = getConnection();
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
+    $stmt->execute([$_SESSION['user_id']]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+function logout()
+{
+    unset($_SESSION['user_id']);
+    if (isset($_COOKIE['remember_token'])) {
+        setcookie('remember_token', '', time() - 3600, '/');
+    }
+    session_destroy();
+}
+}
+
+// ---------- Authentication Functions ----------
+
+function isLoggedIn(): bool
+{
+    return isset($_SESSION['user_id']);
+}
+
+function getCurrentUser()
+{
+    if (!isLoggedIn()) return null;
+    $pdo = getConnection();
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
+    $stmt->execute([$_SESSION['user_id']]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+function logout()
+{
+    unset($_SESSION['user_id']);
+    if (isset($_COOKIE['remember_token'])) {
+        setcookie('remember_token', '', time() - 3600, '/');
+    }
+    session_destroy();
+}

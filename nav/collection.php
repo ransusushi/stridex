@@ -1,5 +1,5 @@
 <?php
-require_once '../config.php';
+require_once '../database/config.php';
 $pageTitle = "Collections";
 $pageHeading = "OUR COLLECTIONS";
 

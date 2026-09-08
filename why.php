@@ -1,4 +1,3 @@
-<!-- ============ WHY STRIDEX ============ -->
 <section class="why" id="why">
     <div class="container">
         <p class="eyebrow center">THE DIFFERENCE</p><h2 class="section-title center">WHY CHOOSE STRIDEX?</h2>

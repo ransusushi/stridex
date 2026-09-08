@@ -1,10 +1,11 @@
 <?php
-require_once '../config.php';
+require_once '../database/config.php'; 
 $pageTitle = "Men's Collection";
 $pageHeading = "MEN'S SHOES";
 
 $menProducts = [
     [
+        'id'       => 'm1',  
         'name'     => 'STRIDEX URBAN',
         'color'    => 'Midnight Red',
         'price'    => '79.99',
@@ -16,7 +17,8 @@ $menProducts = [
         'swatches' => ['#c8102e', '#111', '#e8e8e8'],
     ],
     [
-        'name'     => 'STRIDEX FLEX',
+        'id'       => 'm2',
+        'name'     => 'STRIDEX SHIFT',
         'color'    => 'Cloud White',
         'price'    => '79.99',
         'rating'   => 4,
@@ -27,6 +29,7 @@ $menProducts = [
         'swatches' => ['#ffffff', '#111', '#e8e8e8'],
     ],
     [
+        'id'       => 'm3',
         'name'     => 'STRIDEX CORE',
         'color'    => 'Carbon Gray',
         'price'    => '89.99',
@@ -76,6 +79,10 @@ $menProducts = [
                     <p class="product-color"><?= e($p['color']) ?></p>
                     <div class="product-row"><h3 class="product-name"><?= e($p['name']) ?></h3><span class="product-price">$<?= e($p['price']) ?></span></div>
                     <div class="product-rating"><?= star_row((int)$p['rating']) ?><span class="reviews">(<?= (int)$p['reviews'] ?>)</span></div>
+                    <!-- ADD TO CART BUTTON -->
+                    <div class="product-actions" style="margin-top: 16px;">
+                        <a href="../add_to_cart.php?id=<?= e($p['id']) ?>&action=add" class="btn btn--primary" style="padding: 10px 20px; font-size: 10px;">ADD TO CART</a>
+                    </div>
                 </div>
             </article>
         <?php endforeach; ?>

@@ -82,9 +82,28 @@
             </ul>
         </nav>
         <div class="header-actions">
-            <button class="icon-btn" aria-label="Search"><?= icon('search') ?></button>
-            <button class="icon-btn" aria-label="Account"><?= icon('user') ?></button>
-            <button class="icon-btn cart" aria-label="Cart"><?= icon('bag') ?><span class="cart-count">0</span></button>
+           <a href="search.php" class="icon-btn" aria-label="Search"><?= icon('search') ?></a>
+            <?php if (isLoggedIn()): ?>
+    <a href="profile.php" class="icon-btn" aria-label="Account"><?= icon('user') ?></a>
+    <a href="login/logout.php" class="icon-btn" style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .1em;">Logout</a>
+<?php else: ?>
+    <a href="login/login.php" class="icon-btn" aria-label="Log In"><?= icon('user') ?></a>
+<?php endif; ?>
+            
+            <a href="cart.php" class="icon-btn cart" aria-label="Cart">
+    <?= icon('bag') ?>
+    <span class="cart-count">
+        <?php 
+        $count = 0;
+        if (isset($_SESSION['cart'])) {
+            foreach ($_SESSION['cart'] as $item) {
+                $count += $item['quantity'];
+            }
+        }
+        echo $count;
+        ?>
+    </span>
+</a>
         </div>
     </div>
 </header>

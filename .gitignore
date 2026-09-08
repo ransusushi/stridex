@@ -1,3 +1,6 @@
 image/
 men/
 women/
+login/auth_function.php
+login/auth_validation.php
+login/logout.php

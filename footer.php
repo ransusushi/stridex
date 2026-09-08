@@ -39,6 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['form_id'] ?? '') === 'foot
                     </ul>
                 </div>
             <?php endforeach; ?>
+        
         </div>
     </div>
     <div class="container footer-bottom">

@@ -1,41 +1,43 @@
 <?php
-require_once '../config.php';
+require_once '../database/config.php';
 $pageTitle = "Women's Collection";
 $pageHeading = "WOMEN'S SHOES";
 
-
 $womenProducts = [
     [
-        'name' => 'STRIDEX LUXE',
-        'color' => 'Rose Gold',
-        'price' => '99.99',
-        'rating' => 5,
-        'reviews' => 189,
-        'image' => '../women/newdrop.png',
-        'bg' => 'bg-red',
-        'badge' => 'NEW DROP',
+        'id'       => 'w1',
+        'name'     => 'STRIDEX LUNA',
+        'color'    => 'Rose Gold',
+        'price'    => '99.99',
+        'rating'   => 5,
+        'reviews'  => 189,
+        'image'    => '../women/newdrop.png',
+        'bg'       => 'bg-red',
+        'badge'    => 'NEW DROP',
         'swatches' => ['#ff5a1f', '#fff', '#111'],
     ],
     [
-        'name' => 'STRIDEX AURA',
-        'color' => 'Pearl White',
-        'price' => '84.99',
-        'rating' => 4,
-        'reviews' => 160,
-        'image' => '../women/bestseller.png',
-        'bg' => 'bg-black',
-        'badge' => 'BESTSELLER',
+        'id'       => 'w2',
+        'name'     => 'STRIDEX VIVA',
+        'color'    => 'Pearl White',
+        'price'    => '84.99',
+        'rating'   => 4,
+        'reviews'  => 160,
+        'image'    => '../women/bestseller.png',
+        'bg'       => 'bg-black',
+        'badge'    => 'BESTSELLER',
         'swatches' => ['#fff', '#111', '#e8e8e8'],
     ],
     [
-        'name' => 'STRIDEX FLOW',
-        'color' => 'Monochrome',
-        'price' => '89.99',
-        'rating' => 5,
-        'reviews' => 210,
-        'image' => '../women/limited.png',
-        'bg' => 'bg-gray',
-        'badge' => 'LIMITED',
+        'id'       => 'w3',
+        'name'     => 'STRIDEX NOVA',
+        'color'    => 'Monochrome',
+        'price'    => '89.99',
+        'rating'   => 5,
+        'reviews'  => 210,
+        'image'    => '../women/limited.png',
+        'bg'       => 'bg-gray',
+        'badge'    => 'LIMITED',
         'swatches' => ['#111', '#fff', '#e8e8e8'],
     ],
 ];
@@ -77,6 +79,10 @@ $womenProducts = [
                     <p class="product-color"><?= e($p['color']) ?></p>
                     <div class="product-row"><h3 class="product-name"><?= e($p['name']) ?></h3><span class="product-price">$<?= e($p['price']) ?></span></div>
                     <div class="product-rating"><?= star_row((int)$p['rating']) ?><span class="reviews">(<?= (int)$p['reviews'] ?>)</span></div>
+                    <!-- ADD TO CART BUTTON -->
+                    <div class="product-actions" style="margin-top: 16px;">
+                        <a href="../add_to_cart.php?id=<?= e($p['id']) ?>&action=add" class="btn btn--primary" style="padding: 10px 20px; font-size: 10px;">ADD TO CART</a>
+                    </div>
                 </div>
             </article>
         <?php endforeach; ?>

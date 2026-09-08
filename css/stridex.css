@@ -428,12 +428,13 @@ ul { list-style: none; margin: 0; padding: 0; }
     position: relative;
 }
 .cta-inner {
-    position: relative;            /* stacking context for the two columns */
+    height: auto;
+    position: relative;          
     display: grid;
-    grid-template-columns: minmax(0, 560px) 1fr;
-    gap: 40px;
+    grid-template-columns: minmax(0, 1000px) 1fr;
+    gap: 50px;
     align-items: center;
-    min-height: 560px;
+    min-height: 600px;
     max-width: none;
     padding: 60px 64px 60px 100px;
 }
@@ -473,25 +474,17 @@ ul { list-style: none; margin: 0; padding: 0; }
     align-items: center;
     justify-content: center;
 }
-.cta-visual::before {
-    content: "";
-    position: absolute;
-    inset: 8% 6%;
-    background: radial-gradient(ellipse at center,
-                rgba(255, 90, 31, .22) 0%, transparent 70%);
-    filter: blur(28px);
-    z-index: 0;
-    pointer-events: none;
-}
-.cta-visual img {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    max-height: 600px;
-    object-fit: contain;
-    mix-blend-mode: screen;
-    transform: translateX(-55%);   /* was margin-left: -800px */
-}
+
+    .cta-visual img {
+        position: relative;
+        z-index: 1;
+        height: 1000%;
+        width: 100%;
+        max-height: 6000px;
+        object-fit: contain;
+        mix-blend-mode: screen;
+        transform: translateX(-55%);   /* was margin-left: -800px */
+    }
 
 /* ---------- CTA Form & Features ---------- */
 .cta-form-row { margin: 28px 0 20px; }
