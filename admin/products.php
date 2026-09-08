@@ -3,19 +3,20 @@ require_once '../database/config.php';
 requireAdmin();
 
 $pdo = getConnection();
+$message = '';
 
-// Handle quick stock update
+// Handle stock update
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_stock'])) {
     $product_id = (int)$_POST['product_id'];
     $new_quantity = (int)$_POST['quantity'];
     if ($product_id > 0 && $new_quantity >= 0) {
         $stmt = $pdo->prepare("UPDATE products SET quantity = ? WHERE id = ?");
         $stmt->execute([$new_quantity, $product_id]);
-        header('Location: products.php');
-        exit;
+        $message = '<div style="color: #4ade80; padding: 10px; background: #0e0e0e; border-radius: 4px; margin-bottom: 20px;">✅ Stock updated successfully!</div>';
     }
 }
 
+// Fetch all products
 $stmt = $pdo->query("SELECT * FROM products ORDER BY id DESC");
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -32,12 +33,15 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         .admin-table th { text-align: left; padding: 12px 0; border-bottom: 1px solid var(--line); font-weight: 600; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); }
         .admin-table td { padding: 12px 0; border-bottom: 1px solid var(--line); vertical-align: middle; }
         .admin-table .low-stock { color: var(--accent); font-weight: 600; }
+        .admin-table .product-thumb { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; background: #111; }
         .actions { display: flex; gap: 8px; flex-wrap: wrap; }
         .btn--small { padding: 6px 12px; font-size: 10px; }
         .btn--danger { background: #ff5a1f; color: #fff; }
         .btn--danger:hover { background: #e04a10; }
         .stock-form { display: flex; gap: 6px; align-items: center; }
         .stock-form input[type="number"] { width: 60px; padding: 4px 8px; background: rgba(255,255,255,.05); border: 1px solid var(--line); border-radius: var(--radius); color: #fff; text-align: center; }
+        .stock-form .btn { padding: 4px 12px; font-size: 10px; }
+        .message { margin-bottom: 20px; }
     </style>
 </head>
 <body>
@@ -63,6 +67,8 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <a href="product_add.php" class="btn btn--primary">Add New Product</a>
         </div>
 
+        <?= $message ?>
+
         <?php if (empty($products)): ?>
             <p>No products yet.</p>
         <?php else: ?>
@@ -70,6 +76,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <thead>
                     <tr>
                         <th>ID</th>
+                        <th>Image</th>
                         <th>Name</th>
                         <th>Price</th>
                         <th>Stock</th>
@@ -81,18 +88,19 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <?php foreach ($products as $p): ?>
                         <tr>
                             <td><?= $p['id'] ?></td>
-                            <td><?= e($p['name']) ?></td>
-                            <td>$<?= number_format($p['price'], 2) ?></td>
-                            <td class="<?= $p['quantity'] <= 5 ? 'low-stock' : '' ?>">
-                                <?= $p['quantity'] ?>
-                                <?php if ($p['quantity'] <= 5): ?>
-                                    ⚠️
+                            <td>
+                                <?php if (!empty($p['image']) && file_exists('../' . $p['image'])): ?>
+                                    <img src="../<?= e($p['image']) ?>" alt="<?= e($p['name']) ?>" class="product-thumb">
+                                <?php else: ?>
+                                    <span style="color: var(--muted); font-size: 11px;">No image</span>
                                 <?php endif; ?>
                             </td>
+                            <td><?= e($p['name']) ?></td>
+                            <td>$<?= number_format($p['price'], 2) ?></td>
                             <td>
                                 <form method="post" class="stock-form">
                                     <input type="hidden" name="product_id" value="<?= $p['id'] ?>">
-                                    <input type="number" name="quantity" value="<?= $p['quantity'] ?>" min="0">
+                                    <input type="number" name="quantity" value="<?= $p['quantity'] ?? 0 ?>" min="0">
                                     <button type="submit" name="update_stock" class="btn btn--primary btn--small">Update</button>
                                 </form>
                             </td>

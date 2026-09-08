@@ -1,5 +1,9 @@
 <?php
 require_once '../database/config.php';
+$pdo = getConnection();
+$stmt = $pdo->prepare("SELECT * FROM products WHERE gender = 'women' OR gender = 'unisex' ORDER BY id DESC");
+$stmt->execute();
+$womenProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $pageTitle = "Collections";
 $pageHeading = "OUR COLLECTIONS";
 

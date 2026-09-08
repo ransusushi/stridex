@@ -3,7 +3,7 @@
         <div class="mission-visual"><img src="image/mission-shoes.png" alt="StrideX flyknit sneaker"></div>
         <div class="mission-copy">
             <h2 class="section-title">OUR MISSION</h2><div class="rule"></div>
-            <p>StrideX is committed to providing high-quality sports footwear that combines comfort, durability, and modern design. We aim to empower athletes, students, and active individuals to perform at their best by delivering shoes that support every step of their journey.</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipiscing elit non occaecat ullamco, voluptate dignissimos minim. Do excepteur at vero ea cillum, reprehenderit commodo velit nisi consectetur at ut sunt.</p>
         </div>
     </div>
 </section>

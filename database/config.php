@@ -14,11 +14,9 @@ $site = [
 // ---------- Navigation ----------
 $navLinks = [
     ['label' => 'Home',        'href' => '/stride/index.php'],
-    ['label' => 'Shop',        'href' => '/stride/index.php#shop'],
-    ['label' => 'Men',         'href' => '/stride/nav/men.php'],
-    ['label' => 'Women',       'href' => '/stride/nav/women.php'],
+    ['label' => 'Shop',        'href' => '/stride/shop.php'],
     ['label' => 'Collections', 'href' => '/stride/nav/collection.php'],
-    ['label' => 'About Us',    'href' => '/stride/index.php#about'],
+    ['label' => 'About Us',    'href' => '/stride/nav/about.php'],   // ← changed
 ];
 
 // ---------- Feature bullets ----------
@@ -32,10 +30,10 @@ $features = [
 // ---------- Footer ----------
 $footerGroups = [
     'SHOP' => [
-        ['label' => 'Men',         'href' => '/stride/nav/men.php'],
-        ['label' => 'Women',       'href' => '/stride/nav/women.php'],
-        ['label' => 'Collections', 'href' => '/stride/nav/collection.php'],
+        ['label' => 'All Products', 'href' => '/stride/shop.php'],
+        ['label' => 'Collections',  'href' => '/stride/nav/collection.php'],
     ],
+
     'COMPANY' => [
         ['label' => 'About Us',    'href' => '#about'],
         ['label' => 'Our Mission', 'href' => '#mission'],

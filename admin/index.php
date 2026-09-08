@@ -115,12 +115,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_stock'])) {
                     <?php foreach ($products as $p): ?>
                         <tr>
                             <td><?= e($p['name']) ?></td>
-                            <td class="<?= $p['quantity'] <= 5 ? 'low-stock' : '' ?>">
-                                <?= $p['quantity'] ?>
-                                <?php if ($p['quantity'] <= 5): ?>
-                                    ⚠️
-                                <?php endif; ?>
-                            </td>
+                            <td>
+    <?= $p['quantity'] ?>
+</td>
                             <td>
                                 <form method="post">
                                     <input type="hidden" name="product_id" value="<?= $p['id'] ?>">
