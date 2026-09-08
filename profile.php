@@ -1,6 +1,7 @@
 <?php
 require_once 'database/config.php';
 
+// Protect page: require login
 if (!isLoggedIn()) {
     header('Location: login/login.php?redirect=profile.php');
     exit;
@@ -12,6 +13,7 @@ $pdo = getConnection();
 $error = '';
 $success = '';
 
+// Handle profile update
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
     $first_name = trim($_POST['first_name']);
     $last_name  = trim($_POST['last_name']);
@@ -30,11 +32,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
             $stmt = $pdo->prepare("UPDATE users SET first_name = ?, last_name = ?, email = ? WHERE id = ?");
             $stmt->execute([$first_name, $last_name, $email, $_SESSION['user_id']]);
             $success = 'Profile updated successfully!';
-            $user = getCurrentUser();
+            $user = getCurrentUser(); // refresh
         }
     }
 }
 
+// Get user's orders
 $stmt = $pdo->prepare("SELECT * FROM orders WHERE user_id = ? ORDER BY id DESC");
 $stmt->execute([$_SESSION['user_id']]);
 $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -93,6 +96,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="success"><?= e($success) ?></div>
             <?php endif; ?>
 
+            <!-- View Mode -->
             <div id="view-mode">
                 <div class="info-row">
                     <span class="label">First Name</span>
@@ -110,19 +114,27 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <span class="label">Joined</span>
                     <span class="value"><?= date('M d, Y', strtotime($user['created_at'])) ?></span>
                 </div>
+                <div class="info-row">
+                    <span class="label">Role</span>
+                    <span class="value"><?= ucfirst(e($user['role'] ?? 'User')) ?></span>
+                </div>
                 <div class="edit-toggle">
                     <a onclick="toggleEdit()">Edit Profile</a>
                 </div>
             </div>
 
+            <!-- Edit Mode -->
             <div id="edit-mode" class="edit-form">
                 <form method="post">
                     <label for="first_name">First Name</label>
                     <input type="text" id="first_name" name="first_name" value="<?= e($user['first_name']) ?>" required>
+
                     <label for="last_name">Last Name</label>
                     <input type="text" id="last_name" name="last_name" value="<?= e($user['last_name']) ?>" required>
+
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" value="<?= e($user['email']) ?>" required>
+
                     <button type="submit" name="update_profile" class="btn btn--primary">Save Changes</button>
                 </form>
                 <div class="edit-toggle" style="margin-top:10px;">
@@ -131,6 +143,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </div>
 
+        <!-- Order History -->
         <div class="order-history">
             <h2>Your Transactions</h2>
             <?php if (empty($orders)): ?>
