@@ -30,7 +30,6 @@ if (isset($_POST['signup'])) {
         $stmt->bindValue(':last_name', $result['data']['last_name']);
         $stmt->execute();
 
-        $newId = $pdo->lastInsertId();
         header('Location: login.php?status=success&message=Account created! Please log in.');
         exit;
     } catch (PDOException $e) {
@@ -59,7 +58,6 @@ if (isset($_POST['login'])) {
         session_regenerate_id(true);
         $_SESSION['user_id'] = $user['id'];
 
-        // Remember me
         if ($result['data']['remember']) {
             $token = bin2hex(random_bytes(32));
             setcookie('remember_token', $token, time() + 86400 * 30, '/');
@@ -67,19 +65,17 @@ if (isset($_POST['login'])) {
             $stmt->execute([$token, $user['id']]);
         }
 
-        // ✅ Redirect: admin to dashboard, others to homepage
-        $redirect = isset($_GET['redirect']) ? $_GET['redirect'] : 'index.php';
-
-        // If user is admin and no specific redirect was provided, go to admin dashboard
+        // ---------- REDIRECT LOGIC ----------
+        // Check if user is admin
         if ($user['role'] === 'admin') {
-            // If redirect is empty or points to index, go to admin dashboard
-            if (empty($redirect) || $redirect === 'index.php') {
-                $redirect = '../admin/index.php';
-            }
+            // Admin goes to dashboard
+            header('Location: /stride/admin/index.php');
+            exit;
+        } else {
+            // Customer goes to homepage
+            header('Location: /stride/index.php');
+            exit;
         }
-
-        header('Location: ' . $redirect);
-        exit;
     } else {
         header('Location: login.php?status=error&message=Invalid email or password.');
         exit;
