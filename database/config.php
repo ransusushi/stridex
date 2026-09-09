@@ -34,14 +34,14 @@ $footerGroups = [
         ['label' => 'Collections',  'href' => '/stride/nav/collection.php'],
     ],
     'COMPANY' => [
-        ['label' => 'About Us',    'href' => '#about'],
-        ['label' => 'Our Mission', 'href' => '#mission'],
-        ['label' => 'Why StrideX', 'href' => '#why'],
+        ['label' => 'About Us',    'href' => '/stride/nav/about.php'],
+        ['label' => 'Our Mission', 'href' => '/stride/index.php#mission'],
+        ['label' => 'Why StrideX', 'href' => '/stride/index.php#why'],
     ],
     'SUPPORT' => [
-        ['label' => 'Contact',           'href' => '#contact'],
-        ['label' => 'Shipping & Returns', 'href' => '#shipping'],
-        ['label' => 'FAQ',               'href' => '#faq'],
+        ['label' => 'Contact',           'href' => '/stride/nav/about.php#contact'],
+        ['label' => 'Shipping & Returns', 'href' => '/stride/nav/about.php#shipping'],
+        ['label' => 'FAQ',               'href' => '/stride/nav/about.php#faq'],
     ],
     'FOLLOW US' => [
         ['label' => 'Instagram', 'href' => '#'],
