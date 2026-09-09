@@ -44,9 +44,7 @@ $footerGroups = [
         ['label' => 'FAQ',               'href' => '/stride/nav/about.php#faq'],
     ],
     'FOLLOW US' => [
-        ['label' => 'Instagram', 'href' => '#'],
-        ['label' => 'Facebook',  'href' => '#'],
-        ['label' => 'TikTok',    'href' => '#'],
+        ['label' => 'Facebook',  'href' => 'https://www.facebook.com/uknow.ecnal69'],
     ],
 ];
 
