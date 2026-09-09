@@ -2,6 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+session_start();
 require '../database/config.php';
 require 'auth_validation.php';
 
@@ -29,6 +30,7 @@ if (isset($_POST['signup'])) {
         $stmt->bindValue(':last_name', $result['data']['last_name']);
         $stmt->execute();
 
+        $newId = $pdo->lastInsertId();
         header('Location: login.php?status=success&message=Account created! Please log in.');
         exit;
     } catch (PDOException $e) {
@@ -65,8 +67,18 @@ if (isset($_POST['login'])) {
             $stmt->execute([$token, $user['id']]);
         }
 
-        // ✅ FIXED: Redirect to the homepage
-        header('Location: /stride/index.php');
+        // ✅ Redirect: admin to dashboard, others to homepage
+        $redirect = isset($_GET['redirect']) ? $_GET['redirect'] : 'index.php';
+
+        // If user is admin and no specific redirect was provided, go to admin dashboard
+        if ($user['role'] === 'admin') {
+            // If redirect is empty or points to index, go to admin dashboard
+            if (empty($redirect) || $redirect === 'index.php') {
+                $redirect = '../admin/index.php';
+            }
+        }
+
+        header('Location: ' . $redirect);
         exit;
     } else {
         header('Location: login.php?status=error&message=Invalid email or password.');

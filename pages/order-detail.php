@@ -1,9 +1,8 @@
 <?php
-require_once 'database/config.php';
+require_once '../database/config.php';
 
-// Protect page: require login
 if (!isLoggedIn()) {
-    header('Location: login/login.php?redirect=order-detail.php?id=' . ($_GET['id'] ?? ''));
+    header('Location: ../auth/login.php?redirect=order-detail.php?id=' . ($_GET['id'] ?? ''));
     exit;
 }
 
@@ -15,18 +14,15 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
 $order_id = (int)$_GET['id'];
 $pdo = getConnection();
 
-// Fetch order and verify it belongs to the logged-in user
 $stmt = $pdo->prepare("SELECT * FROM orders WHERE id = ? AND user_id = ?");
 $stmt->execute([$order_id, $_SESSION['user_id']]);
 $order = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$order) {
-    // If order not found or doesn't belong to user, redirect
     header('Location: profile.php');
     exit;
 }
 
-// Fetch order items
 $stmt = $pdo->prepare("SELECT * FROM order_items WHERE order_id = ?");
 $stmt->execute([$order_id]);
 $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -40,7 +36,7 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/stridex.css">
+    <link rel="stylesheet" href="../css/stridex.css">
     <style>
         .order-detail-page { padding: 80px 0; background: var(--bg); }
         .order-detail-box { max-width: 700px; margin: 0 auto; background: #0e0e0e; padding: 30px; border-radius: var(--radius); border: 1px solid var(--line); }
@@ -57,7 +53,7 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </style>
 </head>
 <body>
-<?php include 'header.php'; ?>
+<?php include '../includes/header.php'; ?>
 
 <section class="order-detail-page">
     <div class="container">
@@ -87,6 +83,6 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 </section>
 
-<?php include 'footer.php'; ?>
+<?php include '../includes/footer.php'; ?>
 </body>
 </html>
