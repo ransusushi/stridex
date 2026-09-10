@@ -1,9 +1,7 @@
 <?php
 require_once '../database/config.php';
-$pdo = getConnection();
-$stmt = $pdo->prepare("SELECT * FROM products WHERE gender = 'women' OR gender = 'unisex' ORDER BY id DESC");
-$stmt->execute();
-$womenProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
 $pageTitle = "Collections";
 $pageHeading = "OUR COLLECTIONS";
 
@@ -27,7 +25,7 @@ $collections = [
     [
         'name'        => 'LIMITED EDITION',
         'description' => 'Exclusive designs crafted in small batches. Own a piece of history.',
-        'image'       => '../image/limited-collection.png',
+        'image'       => '../image/Stridex Shift.png',
         'badge'       => 'LIMITED',
         'link'        => '#shop',
         'bg'          => 'bg-gray',

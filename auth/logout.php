@@ -1,6 +1,5 @@
 <?php
 session_start();
-require '../database/config.php';
-logout();
-header('Location: /stride/index.php');   // ← fixed
-exit;
+session_destroy();
+header('Location: /stride/auth/login.php');
+exit;  

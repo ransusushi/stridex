@@ -1,20 +1,8 @@
 <?php
-// Fetch products from database
-try {
-    $pdo = getConnection();
-    $stmt = $pdo->query("
-        SELECT p.*, 
-               COALESCE(AVG(r.rating), 0) AS avg_rating, 
-               COUNT(r.id) AS review_count
-        FROM products p
-        LEFT JOIN reviews r ON p.id = r.product_id
-        GROUP BY p.id
-        ORDER BY p.id DESC LIMIT 3
-    ");
-    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (Exception $e) {
-    $products = [];
-}
+// Fetch products from database (for homepage)
+$pdo = getConnection();
+$stmt = $pdo->query("SELECT * FROM products ORDER BY id DESC LIMIT 3");
+$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <section class="products" id="shop">
     <div class="product-grid">
@@ -38,18 +26,6 @@ try {
                         <div class="product-row">
                             <h3 class="product-name"><?= e($p['name']) ?></h3>
                             <span class="product-price">$<?= e($p['price']) ?></span>
-                        </div>
-                        <div class="product-rating">
-                            <?php
-                            $avg = round($p['avg_rating'], 1);
-                            $count = (int)$p['review_count'];
-                            if ($count > 0) {
-                                echo star_row($avg);
-                                echo ' <span class="reviews">(' . $count . ')</span>';
-                            } else {
-                                echo '<span class="reviews">No reviews</span>';
-                            }
-                            ?>
                         </div>
                         <p style="color: var(--muted); font-size: 12px; margin-top: 6px;">
                             <?= $p['quantity'] ?? 0 ?> in stock

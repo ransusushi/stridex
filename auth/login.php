@@ -25,6 +25,7 @@ $redirect = isset($_GET['redirect']) ? $_GET['redirect'] : 'index.php';
         .auth-form label { display: block; font-size: 12px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
         .auth-form input { width: 100%; padding: 12px 16px; background: rgba(255,255,255,.05); border: 1px solid var(--line); border-radius: var(--radius); color: #fff; font-size: 14px; outline: none; margin-bottom: 16px; }
         .auth-form input:focus { border-color: var(--accent); }
+        .auth-form input::placeholder { color: #666; }   /* placeholder color */
         .auth-form .btn { width: 100%; justify-content: center; margin-top: 8px; }
         .auth-form .error { color: var(--accent); font-size: 14px; margin-bottom: 12px; }
         .auth-form .success { color: #4ade80; font-size: 14px; margin-bottom: 12px; }
@@ -53,10 +54,10 @@ $redirect = isset($_GET['redirect']) ? $_GET['redirect'] : 'index.php';
 
             <form method="POST" action="auth_function.php?redirect=<?= urlencode($redirect) ?>">
                 <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" required>
+                <input type="email" id="email" name="email" placeholder="james@example.com" required>
 
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
 
                 <div class="remember">
                     <input type="checkbox" id="remember" name="remember" value="1">

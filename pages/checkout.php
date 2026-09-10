@@ -57,8 +57,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                 $pdo->rollBack();
             } else {
                 $user_id = isLoggedIn() ? $_SESSION['user_id'] : null;
-                $stmt = $pdo->prepare("INSERT INTO orders (user_id, first_name, last_name, email, address, city, postal, country, payment_method, total) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                $stmt->execute([$user_id, $first_name, $last_name, $email, $address, $city, $postal, $country, $payment, $total]);
+
+                // ✅ Generate a unique transaction ID
+                $transaction_id = 'TXN-' . date('Ymd') . '-' . strtoupper(bin2hex(random_bytes(3)));
+
+                // Insert order with transaction_id
+                $stmt = $pdo->prepare("
+                    INSERT INTO orders 
+                    (user_id, first_name, last_name, email, address, city, postal, country, payment_method, total, transaction_id) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ");
+                $stmt->execute([$user_id, $first_name, $last_name, $email, $address, $city, $postal, $country, $payment, $total, $transaction_id]);
                 $order_id = $pdo->lastInsertId();
 
                 $stmt = $pdo->prepare("INSERT INTO order_items (order_id, product_name, price, quantity, total) VALUES (?, ?, ?, ?, ?)");

@@ -33,7 +33,7 @@ $message = $_GET['message'] ?? null;
 </head>
 <body>
 
-<?php include '../header.php'; ?>
+<?php include '../includes/header.php'; ?>
 
 <section class="auth-page">
     <div class="container">
@@ -77,6 +77,6 @@ $message = $_GET['message'] ?? null;
     </div>
 </section>
 
-<?php include '../footer.php'; ?>
+<?php include '../includes/footer.php'; ?>
 </body>
 </html>

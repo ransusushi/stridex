@@ -6,15 +6,7 @@ $results = [];
 
 if (!empty($query)) {
     $pdo = getConnection();
-    $stmt = $pdo->prepare("
-        SELECT p.*, 
-               COALESCE(AVG(r.rating), 0) AS avg_rating, 
-               COUNT(r.id) AS review_count
-        FROM products p
-        LEFT JOIN reviews r ON p.id = r.product_id
-        WHERE p.name LIKE ? OR p.color LIKE ?
-        GROUP BY p.id
-    ");
+    $stmt = $pdo->prepare("SELECT * FROM products WHERE name LIKE ? OR color LIKE ?");
     $like = '%' . $query . '%';
     $stmt->execute([$like, $like]);
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -51,11 +43,6 @@ $pageTitle = "Search Results";
         .product-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
         .product-name { font-family: var(--font-display); font-size: 22px; letter-spacing: .04em; font-weight: 400; margin: 0; text-transform: uppercase; color: #fff; }
         .product-price { color: var(--accent); font-weight: 600; font-size: 16px; }
-        .product-rating { display: flex; align-items: center; gap: 4px; color: #fff; }
-        .star svg { width: 14px; height: 14px; display: block; }
-        .star.is-filled { color: #fff; }
-        .star:not(.is-filled) { color: rgba(255,255,255,.4); }
-        .reviews { font-size: 12px; color: var(--muted); margin-left: 8px; }
         .product-actions { margin-top: 16px; }
         .btn--small { padding: 8px 16px; font-size: 10px; }
         @media (max-width: 640px) {
@@ -109,18 +96,6 @@ $pageTitle = "Search Results";
                             <div class="product-row">
                                 <h3 class="product-name"><?= e($p['name']) ?></h3>
                                 <span class="product-price">$<?= e($p['price']) ?></span>
-                            </div>
-                            <div class="product-rating">
-                                <?php
-                                $avg = round($p['avg_rating'], 1);
-                                $count = (int)$p['review_count'];
-                                if ($count > 0) {
-                                    echo star_row($avg);
-                                    echo ' <span class="reviews">(' . $count . ')</span>';
-                                } else {
-                                    echo '<span class="reviews">No reviews</span>';
-                                }
-                                ?>
                             </div>
                             <p style="color: var(--muted); font-size: 12px; margin-top: 6px;">
                                 <?= $p['quantity'] ?? 0 ?> in stock

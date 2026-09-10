@@ -152,3 +152,49 @@ function getProductById($id) {
     $stmt->execute([$id]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
+// In database/config.php – add this function
+
+function getRevenueStats(PDO $pdo): array
+{
+    // Total revenue from completed orders
+    $stmt = $pdo->query("
+        SELECT COALESCE(SUM(total), 0) as total_revenue
+        FROM orders
+        WHERE status IN ('paid', 'shipped', 'delivered')
+    ");
+    $totalRevenue = $stmt->fetchColumn();
+
+    // Monthly revenue
+    $stmt = $pdo->query("
+        SELECT COALESCE(SUM(total), 0) as monthly_revenue
+        FROM orders
+        WHERE status IN ('paid', 'shipped', 'delivered')
+        AND MONTH(created_at) = MONTH(CURRENT_DATE())
+        AND YEAR(created_at) = YEAR(CURRENT_DATE())
+    ");
+    $monthlyRevenue = $stmt->fetchColumn();
+
+    // Total completed orders
+    $stmt = $pdo->query("
+        SELECT COUNT(*) as total_orders
+        FROM orders
+        WHERE status IN ('paid', 'shipped', 'delivered')
+    ");
+    $orderCount = $stmt->fetchColumn();
+
+    // Recent orders (last 5)
+    $stmt = $pdo->query("
+        SELECT id, total, status, created_at
+        FROM orders
+        ORDER BY id DESC
+        LIMIT 5
+    ");
+    $recentOrders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    return [
+        'total_revenue'   => (float) $totalRevenue,
+        'monthly_revenue' => (float) $monthlyRevenue,
+        'order_count'     => (int) $orderCount,
+        'recent_orders'   => $recentOrders,
+    ];
+}

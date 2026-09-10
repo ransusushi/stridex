@@ -5,25 +5,66 @@ requireAdmin();
 $error = '';
 $success = '';
 
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    header('Location: products.php');
+    exit;
+}
+
+$id  = (int)$_GET['id'];
+$pdo = getConnection();
+
+$stmt = $pdo->prepare("SELECT * FROM products WHERE id = ?");
+$stmt->execute([$id]);
+$product = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$product) {
+    header('Location: products.php');
+    exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = trim($_POST['name']);
-    $price = $_POST['price'];
-    $quantity = (int)$_POST['quantity'];
+    $name      = trim($_POST['name']);
+    $price     = $_POST['price'];
+    $quantity  = (int)$_POST['quantity'];
+    $imagePath = $product['image'];   // keep current image unless a new one is uploaded
 
     if (empty($name) || empty($price)) {
         $error = 'Name and price are required.';
     } else {
-        $pdo = getConnection();
-        $sql = "INSERT INTO products (name, price, quantity) 
-                VALUES (:name, :price, :quantity)";
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindValue(':name', $name);
-        $stmt->bindValue(':price', $price);
-        $stmt->bindValue(':quantity', $quantity, PDO::PARAM_INT);
-        if ($stmt->execute()) {
-            $success = 'Product added successfully!';
-        } else {
-            $error = 'Failed to add product.';
+        // ---------- Image upload ----------
+        if (!empty($_FILES['image']['name'])) {
+            $allowed = ['jpg', 'jpeg', 'png', 'webp'];
+            $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
+
+            if (!in_array($ext, $allowed)) {
+                $error = 'Image must be JPG, PNG or WEBP.';
+            } elseif ($_FILES['image']['size'] > 10 * 1024 * 1024) {
+                $error = 'Image must be under 10 MB.';
+            } else {
+                $uploadDir = __DIR__ . '/../image/products/';
+                if (!is_dir($uploadDir)) {
+                    mkdir($uploadDir, 0777, true);
+                }
+                $fileName = uniqid('prod_') . '.' . $ext;
+                if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadDir . $fileName)) {
+                    $imagePath = 'image/products/' . $fileName;
+                } else {
+                    $error = 'Failed to save the image.';
+                }
+            }
+        }
+
+        // ---------- Update product ----------
+        if (!$error) {
+            $stmt = $pdo->prepare("UPDATE products SET name = ?, price = ?, quantity = ?, image = ? WHERE id = ?");
+            if ($stmt->execute([$name, $price, $quantity, $imagePath, $id])) {
+                $success = 'Product updated successfully!';
+                $stmt = $pdo->prepare("SELECT * FROM products WHERE id = ?");
+                $stmt->execute([$id]);
+                $product = $stmt->fetch(PDO::FETCH_ASSOC);
+            } else {
+                $error = 'Failed to update product.';
+            }
         }
     }
 }
@@ -33,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Add Product – Admin</title>
+    <title>Edit Product – Admin</title>
     <link rel="stylesheet" href="../css/stridex.css">
     <style>
         .admin-page { padding: 80px 0; background: var(--bg); }
@@ -41,9 +82,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .admin-form label { display: block; font-size: 12px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
         .admin-form input { width: 100%; padding: 12px 16px; background: rgba(255,255,255,.05); border: 1px solid var(--line); border-radius: var(--radius); color: #fff; font-size: 14px; outline: none; margin-bottom: 16px; }
         .admin-form input:focus { border-color: var(--accent); }
+        .admin-form input[type="file"] { padding: 10px; cursor: pointer; }
+        .admin-form input[type="file"]::file-selector-button { background: #fff; color: #000; border: 0; padding: 6px 14px; border-radius: 4px; font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; margin-right: 12px; }
         .admin-form .btn { width: 100%; justify-content: center; }
         .admin-form .error { color: var(--accent); font-size: 14px; margin-bottom: 12px; }
         .admin-form .success { color: #4ade80; font-size: 14px; margin-bottom: 12px; }
+        .current-image { height: 120px; width: auto; display: block; margin-bottom: 16px; border-radius: 6px; border: 1px solid var(--line); }
+        .no-image { color: var(--muted); font-size: 13px; margin-bottom: 16px; }
     </style>
 </head>
 <body>
@@ -56,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <li><a href="index.php">Dashboard</a></li>
                 <li><a href="products.php">Products</a></li>
                 <li><a href="orders.php">Orders</a></li>
-                <li><a href="../login/logout.php">Logout</a></li>
+                <li><a href="../auth/logout.php">Logout</a></li>
             </ul>
         </nav>
     </div>
@@ -64,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <section class="admin-page">
     <div class="container">
-        <h1 class="section-title">Add Product</h1>
+        <h1 class="section-title">Edit Product</h1>
         <div class="admin-form">
             <?php if ($error): ?>
                 <div class="error"><?= e($error) ?></div>
@@ -72,17 +117,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php if ($success): ?>
                 <div class="success"><?= e($success) ?></div>
             <?php endif; ?>
-            <form method="post">
+
+            <form method="post" enctype="multipart/form-data">
                 <label for="name">Name *</label>
-                <input type="text" id="name" name="name" required>
+                <input type="text" id="name" name="name" value="<?= e($product['name']) ?>" required>
 
                 <label for="price">Price *</label>
-                <input type="number" step="0.01" id="price" name="price" required>
+                <input type="number" step="0.01" id="price" name="price" value="<?= e($product['price']) ?>" required>
 
                 <label for="quantity">Quantity in Stock</label>
-                <input type="number" id="quantity" name="quantity" value="0" min="0">
+                <input type="number" id="quantity" name="quantity" value="<?= (int)$product['quantity'] ?>" min="0">
 
-                <button type="submit" class="btn btn--primary">Add Product</button>
+                <label>Current Image</label>
+                <?php if (!empty($product['image'])): ?>
+                    <img id="image-preview" class="current-image" src="<?= e($product['image']) ?>" alt="<?= e($product['name']) ?>">
+                <?php else: ?>
+                    <img id="image-preview" class="current-image" alt="Preview" style="display:none;">
+                    <p class="no-image" id="no-image-text">No image yet</p>
+                <?php endif; ?>
+
+                <label for="image">Upload New Image</label>
+                <input type="file" id="image" name="image" accept=".jpg,.jpeg,.png,.webp"
+                       onchange="const p=document.getElementById('image-preview'); const t=document.getElementById('no-image-text'); if(this.files[0]){p.src=URL.createObjectURL(this.files[0]); p.style.display='block'; if(t) t.style.display='none';}">
+
+                <button type="submit" class="btn btn--primary">Update Product</button>
             </form>
             <p style="margin-top: 20px;"><a href="products.php">← Back to Products</a></p>
         </div>

@@ -18,7 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_role'])) {
 // Handle user deletion
 if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
     $id = (int)$_GET['delete'];
-    // Prevent admin from deleting themselves
     if ($id != $_SESSION['user_id']) {
         $stmt = $pdo->prepare("DELETE FROM users WHERE id = ?");
         $stmt->execute([$id]);
@@ -44,6 +43,9 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Manage Users – Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/stridex.css">
     <style>
         .admin-page { padding: 80px 0; background: var(--bg); }
@@ -53,9 +55,6 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
         .admin-table .role-badge { padding: 4px 12px; border-radius: 4px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; }
         .role-admin { background: var(--accent); color: #000; }
         .role-user { background: #222; color: #fff; }
-        .admin-nav { display: flex; gap: 20px; margin-bottom: 40px; flex-wrap: wrap; }
-        .admin-nav a { background: #0e0e0e; padding: 12px 24px; border-radius: var(--radius); border: 1px solid var(--line); color: var(--text); text-decoration: none; transition: all .25s; }
-        .admin-nav a:hover { border-color: var(--accent); color: var(--accent); }
         .btn--small { padding: 4px 12px; font-size: 10px; }
         .btn--danger { background: #ff5a1f; color: #fff; }
         .btn--danger:hover { background: #e04a10; }
@@ -85,12 +84,6 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <section class="admin-page">
     <div class="container">
         <h1 class="section-title">Customers</h1>
-        <div class="admin-nav">
-            <a href="index.php">Dashboard</a>
-            <a href="products.php">Products</a>
-            <a href="orders.php">Orders</a>
-            <a href="users.php">Users</a>
-        </div>
 
         <?= $message ?? '' ?>
 

@@ -1,10 +1,10 @@
 <?php
 session_start();
-require_once 'database/config.php';
+require_once __DIR__ . '/database/config.php';
 
 if (!isLoggedIn()) {
     $redirect = isset($_GET['redirect']) ? $_GET['redirect'] : 'pages/cart.php';
-    header('Location: auth/login.php?redirect=' . urlencode($redirect));
+    header('Location: /stride/auth/login.php?redirect=' . urlencode($redirect));
     exit;
 }
 
@@ -13,7 +13,7 @@ $action = isset($_GET['action']) ? $_GET['action'] : 'add';
 $quantity = isset($_GET['quantity']) ? (int)$_GET['quantity'] : 1;
 
 if (empty($id) && $action != 'clear') {
-    header('Location: index.php');
+    header('Location: /stride/index.php');
     exit;
 }
 
@@ -21,14 +21,13 @@ if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
 
-// Only fetch product if we have an ID and it's not a clear action
 if (!empty($id) && $action != 'clear') {
     $pdo = getConnection();
     $stmt = $pdo->prepare("SELECT * FROM products WHERE id = ?");
     $stmt->execute([$id]);
     $product = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$product) {
-        header('Location: index.php');
+        header('Location: /stride/index.php');
         exit;
     }
 }
@@ -66,7 +65,7 @@ switch ($action) {
         break;
 }
 
-// Redirect to cart page (absolute path)
+// Redirect to cart page
 $redirect = isset($_GET['redirect']) ? $_GET['redirect'] : 'pages/cart.php';
-header('Location: ' . $redirect);
+header('Location: /stride/' . ltrim($redirect, '/'));
 exit;
