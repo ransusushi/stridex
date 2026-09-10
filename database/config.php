@@ -88,10 +88,11 @@ require_once __DIR__ . '/data.php';
 function getConnection(): PDO
 {
     $host = '127.0.0.1';
-    $port = '3307';
+    $port = '3306';
     $db   = 'stridex_db';
     $user = 'root';
     $pass = '';
+
     try {
         $pdo = new PDO(
             "mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4",
@@ -101,8 +102,99 @@ function getConnection(): PDO
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         return $pdo;
     } catch (PDOException $e) {
-        die("Connection failed: " . $e->getMessage());
+        // Log the real error (admins can see it in logs/error.log)
+        if (defined('ERROR_LOG_FILE')) {
+            file_put_contents(
+                ERROR_LOG_FILE,
+                "[" . date('Y-m-d H:i:s') . "] DATABASE ERROR: " . $e->getMessage() . "\n",
+                FILE_APPEND
+            );
+        }
+        // Show friendly maintenance page
+        showMaintenancePage();
+        exit;
     }
+}
+
+/**
+ * Friendly "site unavailable" page shown when the database is down
+ */
+function showMaintenancePage()
+{
+    if (headers_sent()) return;
+    http_response_code(503);
+    header('Retry-After: 60');
+    echo '<!doctype html><html lang="en"><head><meta charset="utf-8">';
+    echo '<meta name="viewport" content="width=device-width, initial-scale=1">';
+    echo '<title>StrideX — Temporarily Unavailable</title>';
+    echo '<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">';
+    echo '<style>
+        body {
+            background: #000;
+            color: #f5f5f5;
+            font-family: "Inter", system-ui, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 20px;
+        }
+        .box { max-width: 520px; }
+        .icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            color: #ff5a1f;
+        }
+        h1 {
+            font-family: "Bebas Neue", "Anton", sans-serif;
+            font-size: 72px;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+            margin: 0 0 16px;
+            color: #fff;
+            line-height: 1;
+        }
+        h1 span { color: #ff5a1f; }
+        p {
+            color: #9a9a9a;
+            font-size: 16px;
+            line-height: 1.7;
+            margin: 0 0 24px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 14px 28px;
+            background: #fff;
+            color: #000;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .22em;
+            text-transform: uppercase;
+            border-radius: 4px;
+            transition: all .25s ease;
+        }
+        .btn:hover {
+            background: #ff5a1f;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+        .small {
+            color: #555;
+            font-size: 12px;
+            margin-top: 32px;
+            letter-spacing: .1em;
+        }
+    </style></head><body>';
+    echo '<div class="box">';
+    echo '<div class="icon">⚠️</div>';
+    echo '<h1>WE&rsquo;LL BE <span>RIGHT BACK</span></h1>';
+    echo '<p>Sorry, the site is temporarily unavailable.<br>We&rsquo;re doing a quick tune‑up — please try again shortly.</p>';
+    echo '<a href="/stride/index.php" class="btn">TRY AGAIN</a>';
+    echo '<p class="small">ERROR 503 &middot; SERVICE UNAVAILABLE</p>';
+    echo '</div></body></html>';
 }
 
 // ---------- Authentication Functions ----------

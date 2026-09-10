@@ -24,6 +24,7 @@ $message = $_GET['message'] ?? null;
         .auth-form label { display: block; font-size: 12px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
         .auth-form input { width: 100%; padding: 12px 16px; background: rgba(255,255,255,.05); border: 1px solid var(--line); border-radius: var(--radius); color: #fff; font-size: 14px; outline: none; margin-bottom: 16px; }
         .auth-form input:focus { border-color: var(--accent); }
+        .auth-form input::placeholder { color: #666; }
         .auth-form .btn { width: 100%; justify-content: center; margin-top: 8px; }
         .auth-form .error { color: var(--accent); font-size: 14px; margin-bottom: 12px; }
         .auth-form .success { color: #4ade80; font-size: 14px; margin-bottom: 12px; }
@@ -51,21 +52,21 @@ $message = $_GET['message'] ?? null;
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                     <div>
                         <label for="first_name">First Name</label>
-                        <input type="text" id="first_name" name="first_name" required>
+                        <input type="text" id="first_name" name="first_name" placeholder="Juan" required>
                     </div>
                     <div>
                         <label for="last_name">Last Name</label>
-                        <input type="text" id="last_name" name="last_name" required>
+                        <input type="text" id="last_name" name="last_name" placeholder="Dela Cruz" required>
                     </div>
                 </div>
                 <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" required>
+                <input type="email" id="email" name="email" placeholder="juan@example.com" required>
 
                 <label for="password">Password (min. 6 characters)</label>
-                <input type="password" id="password" name="password" required>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
 
                 <label for="confirm_password">Confirm Password</label>
-                <input type="password" id="confirm_password" name="confirm_password" required>
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Re-enter your password" required>
 
                 <button type="submit" name="signup" class="btn btn--primary">CREATE ACCOUNT</button>
             </form>
