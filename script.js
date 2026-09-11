@@ -4,9 +4,7 @@
 
 document.addEventListener('DOMContentLoaded', function() {
 
-    // ----------------------------------------------------------
-    // 1. Delete confirmation for admin actions
-    // ----------------------------------------------------------
+
     const deleteLinks = document.querySelectorAll('.delete-confirm, .btn--danger, [onclick*="confirm"]');
     deleteLinks.forEach(link => {
         // Only if it doesn't already have a confirm handler
@@ -21,9 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // ----------------------------------------------------------
-    // 2. Auto-hide success messages after 5 seconds
-    // ----------------------------------------------------------
+
     const successMessages = document.querySelectorAll('.success, .success-message, .alert-success');
     successMessages.forEach(msg => {
         setTimeout(() => {
@@ -35,9 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 5000);
     });
 
-    // ----------------------------------------------------------
-    // 3. Auto-hide error messages after 8 seconds (optional)
-    // ----------------------------------------------------------
+
     const errorMessages = document.querySelectorAll('.error, .error-message, .alert-danger');
     errorMessages.forEach(msg => {
         setTimeout(() => {
@@ -49,15 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 8000);
     });
 
-    // ----------------------------------------------------------
-    // 4. Toggle edit profile (if you have the inline function)
-    // ----------------------------------------------------------
-    // This is a fallback – you already have toggleEdit() in profile.php.
-    // We'll keep it as a global function.
 
-    // ----------------------------------------------------------
-    // 5. Cart quantity – prevent negative or zero values
-    // ----------------------------------------------------------
     const quantityInputs = document.querySelectorAll('.cart-quantity-input');
     quantityInputs.forEach(input => {
         input.addEventListener('change', function() {
@@ -68,17 +54,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // ----------------------------------------------------------
-    // 6. Responsive navigation toggle (optional – add a hamburger menu later)
-    // ----------------------------------------------------------
-    // If you add a hamburger button with id="menu-toggle", this will work:
-    // const menuToggle = document.getElementById('menu-toggle');
-    // const mainNav = document.querySelector('.main-nav');
-    // if (menuToggle && mainNav) {
-    //     menuToggle.addEventListener('click', function() {
-    //         mainNav.classList.toggle('open');
-    //     });
-    // }
 
     console.log('✅ StrideX JavaScript loaded!');
 });

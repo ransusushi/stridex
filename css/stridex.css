@@ -164,18 +164,24 @@ ul { list-style: none; margin: 0; padding: 0; }
 .hero {
     position: relative;
     overflow: hidden;
+    min-height: 700px;  
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
     background:
         linear-gradient(to right, rgba(6,6,6,.95) 0%, rgba(6,6,6,.7) 30%, rgba(6,6,6,.15) 60%, rgba(6,6,6,0) 80%),
-        url('../image/hero.png') 40% / 100%,
+        url('../image/hero.png') center / cover no-repeat,
         var(--bg);
 }
+
 .hero-inner {
     display: grid;
     grid-template-columns: minmax(0, 400px) 1fr;
     gap: 40px;
     align-items: center;
     max-width: none;
-    padding: 80px 64px 60px;
+    width: 100%;
+    padding: 10px 64px;
 }
 
 .hero-title {
@@ -205,9 +211,10 @@ ul { list-style: none; margin: 0; padding: 0; }
 .hero-stats {
     display: flex;
     gap: 0;
-    padding-top: 28px;
+    padding-top: 10px;
     border-top: 1px solid var(--line);
     max-width: 480px;
+    margin-bottom: 0;
 }
 .hero-stats .stat {
     display: flex; flex-direction: column; gap: 6px;
@@ -243,7 +250,11 @@ ul { list-style: none; margin: 0; padding: 0; }
 }
 
 /* ---------- Products ---------- */
-.products { background: var(--bg); padding: 0; }
+.products {
+    background: var(--bg);
+    padding: 0;
+    margin-top: 0;                  /* Ensure zero margin at top */
+}
 .product-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -276,7 +287,7 @@ ul { list-style: none; margin: 0; padding: 0; }
     z-index: 3;
     background: #fff;
     color: #000;
-    padding: 9px 14px;
+    padding: 1px 14px;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: .22em;
@@ -427,7 +438,150 @@ ul { list-style: none; margin: 0; padding: 0; }
     line-height: 1.55;
     margin: 0;
 }
+/* ─── Contact Form ─── */
+.contact-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* This forces the header and card to the center */
+    padding: 100px 0;
+    background: var(--bg);
+    clear: both;
+}
 
+/* New: Add this to center the "GET IN TOUCH" header */
+.contact-header {
+    text-align: center;
+    margin-bottom: 50px;
+    width: 100%;
+}
+
+.contact-header .contact-subtitle {
+    font-size: 12px;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+    display: block;
+}
+
+.contact-main-title {
+    font-family: var(--font-display);
+    font-size: 56px;
+    text-transform: uppercase;
+    color: #fff;
+    margin: 0;
+    line-height: 1;
+}
+
+.contact-card {
+    width: 100%;
+    max-width: 600px; 
+    margin: 0 auto; 
+    background: #0e0e0e;
+    padding: 50px;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    text-align: left; 
+}
+
+.contact-title {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 400;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: #fff;
+    margin: 0 0 8px;
+}
+
+.contact-subtitle {
+    color: var(--muted);
+    font-size: 14px;
+    margin: 0 0 32px;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: #ccc;
+    margin-bottom: 6px;
+}
+
+.form-field .required {
+    color: var(--accent);
+}
+
+.form-field input,
+.form-field textarea {
+    width: 100%;
+    padding: 14px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    color: #fff;
+    font-size: 14px;
+    font-family: var(--font-body);
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.form-field input:focus,
+.form-field textarea:focus {
+    border-color: var(--accent);
+}
+
+.form-field input::placeholder,
+.form-field textarea::placeholder {
+    color: rgba(255, 255, 255, 0.25);
+}
+
+.form-field textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.contact-btn {
+    width: 100%;
+    padding: 16px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    margin-top: 8px;
+}
+
+.contact-alert {
+    padding: 14px 18px;
+    border-radius: var(--radius);
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.contact-alert--success {
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    color: #22c55e;
+}
+
+.contact-alert--error {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #ef4444;
+}
+
+@media (max-width: 640px) {
+    .contact-card {
+        padding: 32px 20px;
+    }
+}
 /* ---------- CTA Banner ---------- */
 .cta {
     padding: 0;
@@ -803,7 +957,7 @@ ul { list-style: none; margin: 0; padding: 0; }
     .mission-visual { clip-path: none; min-height: 360px; }
     .mission-copy  { padding: 48px 32px; }
     .hero-visual, .cta-visual { order: -1; }
-    .product-grid   { grid-template-columns: repeat(2, 1fr); }
+    .product-grid   { grid-template-columns: repeat(10, 1fr); }
     .feature-grid   { grid-template-columns: repeat(2, 1fr); }
     .feature        { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
     .feature:nth-child(2n) { border-right: none; }
