@@ -58,6 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$error) {
             $stmt = $pdo->prepare("UPDATE products SET name = ?, price = ?, quantity = ?, image = ? WHERE id = ?");
             if ($stmt->execute([$name, $price, $quantity, $imagePath, $id])) {
+                cacheProducts();
                 $success = 'Product updated successfully!';
                 $stmt = $pdo->prepare("SELECT * FROM products WHERE id = ?");
                 $stmt->execute([$id]);

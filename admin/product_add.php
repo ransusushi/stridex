@@ -43,6 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $pdo  = getConnection();
             $stmt = $pdo->prepare("INSERT INTO products (name, price, quantity, image) VALUES (?, ?, ?, ?)");
             if ($stmt->execute([$name, $price, $quantity, $imagePath])) {
+                cacheProducts();   
                 $success = 'Product added successfully!';
             } else {
                 $error = 'Failed to add product.';

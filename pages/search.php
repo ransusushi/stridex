@@ -5,11 +5,14 @@ $query = isset($_GET['q']) ? trim($_GET['q']) : '';
 $results = [];
 
 if (!empty($query)) {
-    $pdo = getConnection();
-    $stmt = $pdo->prepare("SELECT * FROM products WHERE name LIKE ? OR color LIKE ?");
-    $like = '%' . $query . '%';
-    $stmt->execute([$like, $like]);
-    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $all = loadProducts();          // DB or cache
+    $q = strtolower($query);
+    foreach ($all as $p) {
+        if (strpos(strtolower($p['name']), $q) !== false ||
+            strpos(strtolower($p['color'] ?? ''), $q) !== false) {
+            $results[] = $p;
+        }
+    }
 }
 
 $pageTitle = "Search Results";

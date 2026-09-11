@@ -1,8 +1,6 @@
 <?php
-// Fetch products from database (for homepage)
-$pdo = getConnection();
-$stmt = $pdo->query("SELECT * FROM products ORDER BY id DESC LIMIT 3");
-$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// Fetch products — DB first, JSON cache as fallback
+$products = loadProducts(3);
 ?>
 <section class="products" id="shop">
     <div class="product-grid">

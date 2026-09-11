@@ -12,6 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['order_id'], $_POST['s
         $stmt->bindValue(':status', $status);
         $stmt->bindValue(':id', $orderId, PDO::PARAM_INT);
         $stmt->execute();
+        cacheProducts();
     }
 }
 header('Location: orders.php');

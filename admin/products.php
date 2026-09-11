@@ -12,6 +12,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_stock'])) {
     if ($product_id > 0 && $new_quantity >= 0) {
         $stmt = $pdo->prepare("UPDATE products SET quantity = ? WHERE id = ?");
         $stmt->execute([$new_quantity, $product_id]);
+
+        // ✅ Sync cache so the frontend always has the latest data
+        cacheProducts();
+
         $message = '<div style="color: #4ade80; padding: 10px; background: #0e0e0e; border-radius: 4px; margin-bottom: 20px;">✅ Stock updated successfully!</div>';
     }
 }
@@ -54,7 +58,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <li><a href="index.php">Dashboard</a></li>
                 <li><a href="products.php">Products</a></li>
                 <li><a href="orders.php">Orders</a></li>
-                <a href="/stride/auth/logout.php">Logout</a>
+                <li><a href="/stride/auth/logout.php">Logout</a></li>
             </ul>
         </nav>
     </div>

@@ -4,9 +4,8 @@ require_once '../database/config.php';
 $pageTitle = "Shop All";
 $pageHeading = "ALL PRODUCTS";
 
-$pdo = getConnection();
-$stmt = $pdo->query("SELECT * FROM products ORDER BY id DESC");
-$allProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// Load all products — DB first, cache as fallback
+$allProducts = loadProducts();
 ?>
 <!doctype html>
 <html lang="en">
