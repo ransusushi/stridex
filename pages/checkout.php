@@ -164,6 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                             <select id="payment" name="payment">
                                 <option value="card">Credit Card</option>
                                 <option value="paypal">PayPal</option>
+                                <option value="paypal">COD</option>
                             </select>
                         </div>
                     </div>

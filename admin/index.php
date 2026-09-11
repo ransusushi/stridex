@@ -17,6 +17,15 @@ $userCount = $stmt->fetchColumn();
 // ---------- Revenue Stats ----------
 $revenue = getRevenueStats($pdo);
 
+// ---------- Unread messages ----------
+$unreadMsgs = 0;
+try {
+    $stmt = $pdo->query("SELECT COUNT(*) FROM messages WHERE is_read = 0");
+    $unreadMsgs = $stmt->fetchColumn();
+} catch (Exception $e) {
+    // messages table doesn't exist yet
+}
+
 // ---------- Stock Update Handler ----------
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_stock'])) {
     $product_id = (int) $_POST['product_id'];
@@ -70,6 +79,18 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         .status-shipped { color: #60a5fa; }
         .status-delivered { color: #a78bfa; }
         .no-orders { color: var(--muted); padding: 20px 0; text-align: center; }
+
+        /* Messages badge */
+        .main-nav .badge {
+            background: #ff5a1f;
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 10px;
+            margin-left: 6px;
+            vertical-align: middle;
+        }
     </style>
 </head>
 <body>
@@ -82,6 +103,14 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <li><a href="/stride/admin/index.php">Dashboard</a></li>
                 <li><a href="/stride/admin/products.php">Products</a></li>
                 <li><a href="/stride/admin/orders.php">Orders</a></li>
+                <li>
+                    <a href="/stride/admin/messages.php">
+                        Messages
+                        <?php if ($unreadMsgs > 0): ?>
+                            <span class="badge"><?= $unreadMsgs ?></span>
+                        <?php endif; ?>
+                    </a>
+                </li>
                 <li><a href="/stride/auth/logout.php">Logout</a></li>
             </ul>
         </nav>
@@ -91,9 +120,11 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <section class="admin-page">
     <div class="container">
         <h1 class="section-title">Admin Dashboard</h1>
+
         <div class="admin-nav">
             <a href="/stride/admin/products.php">Manage Products</a>
             <a href="/stride/admin/orders.php">Manage Orders</a>
+            <a href="/stride/admin/messages.php">View Messages</a>
             <a href="/stride/auth/logout.php">Logout</a>
         </div>
 
