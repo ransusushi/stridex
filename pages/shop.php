@@ -4,22 +4,9 @@ require_once '../database/config.php';
 $pageTitle = "Shop All";
 $pageHeading = "ALL PRODUCTS";
 
-// Load all products — DB first, cache as fallback
 $allProducts = loadProducts();
+include '../includes/header.php';
 ?>
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?= e($pageTitle) ?> — <?= e($site['brand']) ?></title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/stridex.css">
-</head>
-<body>
-<?php include '../includes/header.php'; ?>
 
 <section class="shop-page-header" style="padding: 60px 0 20px;">
     <div class="container">
@@ -55,7 +42,7 @@ $allProducts = loadProducts();
                             <?= $p['quantity'] ?? 0 ?> in stock
                         </p>
                         <div class="product-actions" style="margin-top: 16px;">
-                            <a href="/stride/add_to_cart.php?id=<?= e($p['id']) ?>&action=add" class="btn btn--primary" style="padding: 10px 20px; font-size: 10px;">ADD TO CART</a>
+                            <a href="/stride/actions/add_to_cart.php?id=<?= e($p['id']) ?>&action=add" class="btn btn--primary" style="padding: 10px 20px; font-size: 10px;">ADD TO CART</a>
                         </div>
                     </div>
                 </article>
@@ -65,5 +52,3 @@ $allProducts = loadProducts();
 </section>
 
 <?php include '../includes/footer.php'; ?>
-</body>
-</html>

@@ -2,7 +2,7 @@
 require_once 'database/config.php';
 include 'includes/header.php';
 include 'includes/hero.php';
-include 'includes/products-grid.php';   // ← correct file
+include 'includes/products-grid.php';
 include 'includes/mission.php';
 include 'includes/why.php';
 include 'includes/cta.php';

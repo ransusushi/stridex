@@ -1,6 +1,7 @@
 <?php
 session_start();
-require_once __DIR__ . '/database/config.php';
+require_once '../database/config.php';
+
 
 if (!isLoggedIn()) {
     $redirect = isset($_GET['redirect']) ? $_GET['redirect'] : 'pages/cart.php';

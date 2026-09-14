@@ -8,6 +8,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/stride/css/stridex.css">
+    <link rel="stylesheet" href="/stride/css/collection.css">
+    <?php if (basename($_SERVER['PHP_SELF']) === 'collection.php'): ?>
+    <link rel="stylesheet" href="/stride/css/collection.css">
+<?php endif; ?>
     <style>
         .cta-form .form-group {
             flex: 1;

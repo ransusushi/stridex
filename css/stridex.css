@@ -584,24 +584,45 @@ ul { list-style: none; margin: 0; padding: 0; }
 }
 /* ---------- CTA Banner ---------- */
 .cta {
-    padding: 0;
-    background: var(--bg);
-    overflow: hidden;
     position: relative;
-}
-.cta-inner {
-    height: auto;
-    position: relative;          
-    display: grid;
-    grid-template-columns: minmax(0, 1000px) 1fr;
-    gap: 50px;
-    align-items: center;
-    min-height: 600px;
-    max-width: none;
-    padding: 60px 64px 60px 100px;
+    overflow: hidden;
+    min-height: 620px;
+    padding: 0;
+    margin: 0;
+    background: #000;
+    border: none;              /* no border anywhere */
 }
 
-/* Copy sits ABOVE the visual so the form is always clickable */
+.cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(
+            to right,
+            rgba(0,0,0,1) 0%,
+            rgba(0,0,0,.85) 40%,
+            rgba(0,0,0,.25) 70%,
+            rgba(0,0,0,0) 100%
+        ),
+        url('/stride/image/stridex-cta-shoes.png');
+    background-size: contain;              /* ← shows the WHOLE shoe */
+     background-position: 40% center;        /* shoe on right, vertically centered */
+    background-repeat: no-repeat;
+}
+
+.cta-inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 620px) 1fr;
+    gap: 40px;
+    align-items: center;
+    min-height: 620px;
+    max-width: none;
+    padding: 60px 64px;
+}
+
 .cta-copy {
     position: relative;
     z-index: 2;
@@ -637,17 +658,18 @@ ul { list-style: none; margin: 0; padding: 0; }
     justify-content: center;
 }
 
-    .cta-visual img {
-        position: relative;
-        z-index: 1;
-        height: 1000%;
-        width: 100%;
-        max-height: 6000px;
-        object-fit: contain;
-        mix-blend-mode: screen;
-        transform: translateX(-55%);   /* was margin-left: -800px */
-    }
-
+.cta-visual img {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 1000px;      
+    height: auto;
+    max-height: 520px;   
+    object-fit: contain;
+    object-position: center;
+    mix-blend-mode: screen;
+    transform: translateX(-15%); 
+}
 /* ---------- CTA Form & Features ---------- */
 .cta-form-row { margin: 28px 0 20px; }
 

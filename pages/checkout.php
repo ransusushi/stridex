@@ -162,10 +162,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                         <div class="form-group">
                             <label for="payment">PAYMENT METHOD</label>
                             <select id="payment" name="payment">
-                                <option value="card">Credit Card</option>
-                                <option value="paypal">PayPal</option>
-                                <option value="paypal">COD</option>
-                            </select>
+ <option value="cod" selected>Cash on Delivery (COD)</option>
+    <option value="gcash">GCash</option>
+    <option value="maya">Maya (PayMaya)</option>
+    <option value="bank_transfer">Bank Transfer</option>
+    <option value="card">Credit Card</option>
+    <option value="paypal">PayPal</option>
+                            </select>   
                         </div>
                     </div>
 

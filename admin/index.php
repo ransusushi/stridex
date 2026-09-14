@@ -216,6 +216,5 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php endif; ?>
     </div>
 </section>
-
 </body>
 </html>

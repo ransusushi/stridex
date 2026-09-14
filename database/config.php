@@ -15,8 +15,8 @@ $site = [
 $navLinks = [
     ['label' => 'Home',        'href' => '/stride/index.php'],
     ['label' => 'Shop',        'href' => '/stride/pages/shop.php'],
-    ['label' => 'Collections', 'href' => '/stride/nav/collection.php'],
-    ['label' => 'About Us',    'href' => '/stride/nav/about.php'],
+    ['label' => 'Collections', 'href' => '/stride/pages/collection.php'],
+    ['label' => 'About Us',    'href' => '/stride/pages/about.php'],    
 ];
 
 // ---------- Feature bullets ----------
@@ -31,17 +31,17 @@ $features = [
 $footerGroups = [
     'SHOP' => [
         ['label' => 'All Products', 'href' => '/stride/pages/shop.php'],
-        ['label' => 'Collections',  'href' => '/stride/nav/collection.php'],
+        ['label' => 'Collections',  'href' => '/stride/pages/collection.php'],
     ],
     'COMPANY' => [
-        ['label' => 'About Us',    'href' => '/stride/nav/about.php'],
-        ['label' => 'Our Mission', 'href' => '/stride/index.php#mission'],
-        ['label' => 'Why StrideX', 'href' => '/stride/index.php#why'],
+        ['label' => 'About Us',    'href' => '/stride/pages/about.php'],
+        ['label' => 'Our Mission', 'href' => '/stride/pages/about.php#mission'],
+        ['label' => 'Why StrideX', 'href' => '/stride/pages/about.php#why'],
     ],
     'SUPPORT' => [
-        ['label' => 'Contact',           'href' => '/stride/nav/about.php#contact'],
-        ['label' => 'Shipping & Returns', 'href' => '/stride/nav/about.php#shipping'],
-        ['label' => 'FAQ',               'href' => '/stride/nav/about.php#faq'],
+        ['label' => 'Contact',            'href' => '/stride/pages/about.php#contact'],
+        ['label' => 'Shipping & Returns', 'href' => '/stride/pages/about.php#shipping'],
+        ['label' => 'FAQ',                'href' => '/stride/pages/about.php#faq'],
     ],
     'FOLLOW US' => [
         ['label' => 'Facebook',  'href' => 'https://www.facebook.com/uknow.ecnal69'],

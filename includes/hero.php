@@ -6,7 +6,7 @@
             <p class="hero-lead">Performance. Comfort. Style. Every step you take,<br>we&rsquo;ve got your back.</p>
             <div class="hero-ctas">
                 <a href="#shop" class="btn btn--primary">SHOP NOW <?= icon('arrow') ?></a>
-                <a href="/stride/nav/collection.php" class="btn btn--ghost">EXPLORE COLLECTION</a>
+                <a href="/stride/pages/collection.php" class="btn btn--ghost">EXPLORE COLLECTION</a>
             </div>
             <div class="hero-stats">
                 <div class="stat"><span class="stat-num">12K+</span><span class="stat-label">ATHLETES</span></div>

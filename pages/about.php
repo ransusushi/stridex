@@ -72,8 +72,8 @@ if (file_exists('../includes/about_data.php')) {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/stridex.css">
-    <link rel="stylesheet" href="../nav/about.css">
+<link rel="stylesheet" href="../css/stridex.css">
+<link rel="stylesheet" href="../css/about.css">
 </head>
 <body>
 <?php include '../includes/header.php'; ?>

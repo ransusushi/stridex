@@ -1,2 +1,18 @@
-image/
+# Cache files
+cache/
 cache/products.json
+
+# Logs
+*.log
+error.log
+
+# Environment
+.env
+
+# System files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
