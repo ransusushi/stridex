@@ -18,9 +18,9 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
         .admin-table { width: 100%; border-collapse: collapse; color: var(--text); }
         .admin-table th { text-align: left; padding: 12px 0; border-bottom: 1px solid var(--line); font-weight: 600; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); }
         .admin-table td { padding: 12px 0; border-bottom: 1px solid var(--line); vertical-align: middle; }
-        .status-pending { color: #f5b342; }
-        .status-paid { color: #4ade80; }
-        .status-shipped { color: #60a5fa; }
+        .status-pending   { color: #f5b342; }
+        .status-paid      { color: #4ade80; }
+        .status-shipped   { color: #60a5fa; }
         .status-delivered { color: #a78bfa; }
         .btn--small { padding: 4px 12px; font-size: 10px; }
     </style>
@@ -35,7 +35,8 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <li><a href="index.php">Dashboard</a></li>
                 <li><a href="products.php">Products</a></li>
                 <li><a href="orders.php">Orders</a></li>
-                <a href="/stride/auth/logout.php">Logout</a>
+                <li><a href="messages.php">Messages</a></li>
+                <li><a href="/stride/auth/logout.php">Logout</a></li>
             </ul>
         </nav>
     </div>
@@ -61,12 +62,18 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <tbody>
                     <?php foreach ($orders as $o): ?>
                         <tr>
-                            <td>#<?= $o['id'] ?></td>
+                            <td>
+                                <a href="order_detail.php?id=<?= $o['id'] ?>" style="color: var(--accent); font-weight: 600;">
+                                    #<?= $o['id'] ?>
+                                </a>
+                            </td>
                             <td><?= e($o['first_name']) . ' ' . e($o['last_name']) ?></td>
                             <td>$<?= number_format($o['total'], 2) ?></td>
                             <td class="status-<?= $o['status'] ?>"><?= strtoupper($o['status']) ?></td>
                             <td><?= date('M d, Y', strtotime($o['created_at'])) ?></td>
                             <td>
+                                <a href="order_detail.php?id=<?= $o['id'] ?>" class="btn btn--small" style="padding: 6px 12px; font-size: 10px; margin-right: 8px;">VIEW</a>
+
                                 <form method="post" action="order_update.php" style="display:inline;">
                                     <input type="hidden" name="order_id" value="<?= $o['id'] ?>">
                                     <select name="status">

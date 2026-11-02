@@ -7,7 +7,7 @@ if (!isLoggedIn()) {
     exit;
 }
 
-// ✅ If admin, redirect to order management dashboard
+// If admin, redirect to order management dashboard
 if (isAdmin()) {
     header('Location: ../admin/orders.php');
     exit;
@@ -53,30 +53,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                     break;
                 }
             }
+
             if ($insufficient) {
                 $pdo->rollBack();
             } else {
                 $user_id = isLoggedIn() ? $_SESSION['user_id'] : null;
 
-                // ✅ Generate a unique transaction ID
+                // Generate a unique transaction ID
                 $transaction_id = 'TXN-' . date('Ymd') . '-' . strtoupper(bin2hex(random_bytes(3)));
 
-                // Insert order with transaction_id
+                // 1. Insert order
                 $stmt = $pdo->prepare("
                     INSERT INTO orders 
                     (user_id, first_name, last_name, email, address, city, postal, country, payment_method, total, transaction_id) 
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ");
-                $stmt->execute([$user_id, $first_name, $last_name, $email, $address, $city, $postal, $country, $payment, $total, $transaction_id]);
+                $stmt->execute([
+                    $user_id,
+                    $first_name,
+                    $last_name,
+                    $email,
+                    $address,
+                    $city,
+                    $postal,
+                    $country,
+                    $payment,
+                    $total,
+                    $transaction_id
+                ]);
+
+                // 2. Get the new order ID
                 $order_id = $pdo->lastInsertId();
 
-                $stmt = $pdo->prepare("INSERT INTO order_items (order_id, product_name, price, quantity, total) VALUES (?, ?, ?, ?, ?)");
+                // 3. Insert order items
+                $stmt = $pdo->prepare("
+                    INSERT INTO order_items 
+                        (order_id, product_id, product_name, price, quantity, total) 
+                    VALUES (?, ?, ?, ?, ?, ?)
+                ");
                 foreach ($cartItems as $item) {
                     $item_total = $item['price'] * $item['quantity'];
-                    $stmt->execute([$order_id, $item['name'], $item['price'], $item['quantity'], $item_total]);
+                    $stmt->execute([
+                        $order_id,
+                        $item['id'],
+                        $item['name'],
+                        $item['price'],
+                        $item['quantity'],
+                        $item_total
+                    ]);
                 }
 
-                // Reduce stock
+                // 4. Reduce stock
                 foreach ($cartItems as $item) {
                     $stmt = $pdo->prepare("UPDATE products SET quantity = quantity - ? WHERE id = ?");
                     $stmt->execute([$item['quantity'], $item['id']]);
@@ -162,13 +189,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                         <div class="form-group">
                             <label for="payment">PAYMENT METHOD</label>
                             <select id="payment" name="payment">
- <option value="cod" selected>Cash on Delivery (COD)</option>
-    <option value="gcash">GCash</option>
-    <option value="maya">Maya (PayMaya)</option>
-    <option value="bank_transfer">Bank Transfer</option>
-    <option value="card">Credit Card</option>
-    <option value="paypal">PayPal</option>
-                            </select>   
+                                <option value="cod" selected>Cash on Delivery (COD)</option>
+                                <option value="gcash">GCash</option>
+                                <option value="maya">Maya (PayMaya)</option>
+                                <option value="bank_transfer">Bank Transfer</option>
+                                <option value="card">Credit Card</option>
+                                <option value="paypal">PayPal</option>
+                            </select>
                         </div>
                     </div>
 

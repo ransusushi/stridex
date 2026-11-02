@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard — StrideX Admin{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block body %}
+    <div class="stat-grid">
+        <div class="stat stat--orange">
+            <div class="value">{{ stats.orders }}</div>
+            <div class="label">Orders</div>
+        </div>
+        <div class="stat">
+            <div class="value">{{ stats.products }}</div>
+            <div class="label">Products</div>
+        </div>
+        <div class="stat">
+            <div class="value">{{ stats.users }}</div>
+            <div class="label">Users</div>
+        </div>
+        <div class="stat">
+            <div class="value">{{ stats.messages }}</div>
+            <div class="label">Messages</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 28px; margin-bottom: 12px;">Welcome to StrideX Admin</h2>
+        <p style="color: #666; line-height: 1.6;">
+            Use the sidebar on the left to manage orders, products, customers, and messages.
+        </p>
+    </div>
+{% endblock %}
