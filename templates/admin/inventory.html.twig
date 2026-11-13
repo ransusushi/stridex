@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inventory Stock Overview | StrideX Admin{% endblock %}
+
+{% block body %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">StrideX Inventory &amp; Stock Control</h1>
+        <p class="page-subtitle">Quickly adjust stock quantities across all StrideX sneakers ({{ lowStockCount }} low-stock alert(s)).</p>
+    </div>
+    <div class="page-actions">
+        <a href="{{ path('app_product_new') }}" class="btn btn-primary" style="background: #ff5a1f;">+ Add Product</a>
+        <a href="{{ path('app_product_index') }}" class="btn btn-secondary">Full Product Catalog</a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Sneaker</th>
+                    <th>SKU</th>
+                    <th>Price</th>
+                    <th>Current Stock</th>
+                    <th>Quick Update Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 0.65rem;">
+                                {% if product.image %}
+                                    <img src="{{ asset(product.image) }}" alt="{{ product.name }}" style="width: 42px; height: 42px; object-fit: cover; border-radius: 6px; background: #111;">
+                                {% endif %}
+                                <div>
+                                    <a href="{{ path('app_product_show', {id: product.id}) }}"><strong>{{ product.name }}</strong></a>
+                                    <div style="font-size: 0.78rem; color: var(--text-muted);">{{ product.color }}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td><code>{{ product.sku }}</code></td>
+                        <td>${{ product.price }}</td>
+                        <td>
+                            {% if product.stockQuantity == 0 %}
+                                <span class="badge badge-danger">Out of Stock</span>
+                            {% elseif product.stockQuantity <= 10 %}
+                                <span class="badge badge-danger">{{ product.stockQuantity }} (Low Stock)</span>
+                            {% else %}
+                                <span class="badge badge-success">{{ product.stockQuantity }} units</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <form method="post" action="{{ path('app_admin_inventory_stock', {id: product.id}) }}" style="display: inline-flex; gap: 0.5rem; align-items: center;">
+                                <input type="hidden" name="_token" value="{{ csrf_token('update_stock_' ~ product.id) }}">
+                                <input type="number" name="quantity" value="{{ product.stockQuantity }}" min="0" style="width: 90px; padding: 0.35rem 0.5rem;">
+                                <button type="submit" class="btn btn-sm btn-primary" style="background: #ff5a1f;">Update Stock</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

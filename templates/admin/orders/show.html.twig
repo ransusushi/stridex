@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Order #{{ order.id }} | StrideX Admin{% endblock %}
+
+{% block body %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Order #{{ order.id }}</h1>
+        <p class="page-subtitle">Transaction ID: <code>{{ order.transactionId ?: 'N/A' }}</code> &bull; Placed {{ order.createdAt|date('M d, Y h:i A') }}</p>
+    </div>
+    <div class="page-actions">
+        <a href="{{ path('app_admin_orders') }}" class="btn btn-secondary">Back to Orders</a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="detail-grid">
+        <div class="detail-item">
+            <div class="detail-label">Customer</div>
+            <div class="detail-value">{{ order.customerName }} ({{ order.email }})</div>
+        </div>
+        <div class="detail-item">
+            <div class="detail-label">Shipping Address</div>
+            <div class="detail-value">{{ order.address }}, {{ order.city }}, {{ order.postal }}, {{ order.country }}</div>
+        </div>
+        <div class="detail-item">
+            <div class="detail-label">Payment Method</div>
+            <div class="detail-value">{{ order.paymentMethod|upper }}</div>
+        </div>
+        <div class="detail-item">
+            <div class="detail-label">Order Status</div>
+            <div class="detail-value"><span class="badge badge-success">{{ order.status|upper }}</span></div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">Ordered Items</h2>
+        <strong>Grand Total: ${{ order.total }}</strong>
+    </div>
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Unit Price</th>
+                    <th>Qty</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in order.items %}
+                    <tr>
+                        <td><strong>{{ item.productName }}</strong></td>
+                        <td>${{ item.price }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td><strong>${{ item.total }}</strong></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

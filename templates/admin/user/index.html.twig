@@ -1,0 +1,115 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User Management | StrideX{% endblock %}
+
+{% block body %}
+<style>
+    .page-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px; }
+    .page-title { font-family: 'Bebas Neue', sans-serif; font-size: 3.5rem; letter-spacing: 0.05em; margin: 0; color: #fff; line-height: 1; }
+
+    .filter-bar { background: #0e0e0e; border: 1px solid #222; padding: 20px; border-radius: 8px; display: flex; gap: 15px; margin-bottom: 30px; align-items: flex-end; }
+    .filter-group { flex: 1; }
+    .filter-input { width: 100%; padding: 12px 16px; background: #111; border: 1px solid #333; border-radius: 4px; color: #fff; font-family: 'Inter', sans-serif; outline: none; }
+    .filter-input:focus { border-color: #ff5a1f; }
+
+    .table-wrap { background: #0e0e0e; border: 1px solid #222; border-radius: 8px; overflow: hidden; }
+    .data-table { width: 100%; border-collapse: collapse; }
+    .data-table th { background: #111; color: #888; font-size: 10px; letter-spacing: 0.1em; padding: 16px; text-align: left; border-bottom: 1px solid #222; font-weight: 600; text-transform: uppercase; }
+    .data-table td { padding: 16px; border-bottom: 1px solid #222; font-size: 13px; vertical-align: middle; color: #ccc; }
+
+    .btn-action { padding: 6px 12px; border: 1px solid #333; background: transparent; color: #fff; font-size: 10px; font-weight: 700; border-radius: 4px; text-transform: uppercase; cursor: pointer; text-decoration: none; display: inline-block; }
+    .btn-action:hover { border-color: #fff; background: #fff; color: #000; }
+    .btn-danger { border-color: #ef4444; color: #ef4444; }
+    .btn-danger:hover { background: #ef4444; color: #fff; }
+
+    .badge { padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; }
+    .badge-admin { background: rgba(255, 90, 31, 0.15); color: #ff5a1f; border: 1px solid #ff5a1f; }
+    .badge-staff { background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid #555; }
+    .badge-active { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
+    .badge-disabled, .badge-archived { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+</style>
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Staff & User Management</h1>
+        <p style="color: #888; margin-top: 5px; font-size: 14px;">Create, update, disable/archive, or delete Admin and Staff accounts ({{ users|length }} total).</p>
+    </div>
+    <div style="display: flex; gap: 10px;">
+        <a href="{{ path('app_admin_user_new') }}" style="background: #ff5a1f; color: #fff; padding: 12px 24px; font-weight: 700; font-size: 12px; border-radius: 4px; text-decoration: none;">+ CREATE NEW USER</a>
+        <a href="{{ path('app_admin_dashboard') }}" style="background: transparent; color: #fff; border: 1px solid #333; padding: 12px 24px; font-weight: 700; font-size: 12px; border-radius: 4px; text-decoration: none;">BACK TO DASHBOARD</a>
+    </div>
+</div>
+
+<!-- Filters -->
+<form method="get" class="filter-bar">
+    <div class="filter-group" style="flex: 2;">
+        <input type="text" name="q" class="filter-input" value="{{ filters.q }}" placeholder="Search by name or email">
+    </div>
+    <div class="filter-group">
+        <select name="role" class="filter-input">
+            <option value="">All Roles</option>
+            <option value="ROLE_ADMIN" {{ filters.role == 'ROLE_ADMIN' ? 'selected' : '' }}>Admin</option>
+            <option value="ROLE_STAFF" {{ filters.role == 'ROLE_STAFF' ? 'selected' : '' }}>Staff</option>
+            <option value="ROLE_USER" {{ filters.role == 'ROLE_USER' ? 'selected' : '' }}>Customer</option>
+        </select>
+    </div>
+    <div class="filter-group">
+        <select name="status" class="filter-input">
+            <option value="">All Statuses</option>
+            <option value="active" {{ filters.status == 'active' ? 'selected' : '' }}>Active</option>
+            <option value="disabled" {{ filters.status == 'disabled' ? 'selected' : '' }}>Disabled</option>
+            <option value="archived" {{ filters.status == 'archived' ? 'selected' : '' }}>Archived</option>
+        </select>
+    </div>
+    <button type="submit" style="background: #ff5a1f; color: #fff; padding: 12px 24px; font-weight: 700; border: none; border-radius: 4px; cursor: pointer;">FILTER</button>
+</form>
+
+<!-- Data Table -->
+<div class="table-wrap">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email / Username</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Records</th>
+                <th>Date Created</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for u in users %}
+                <tr>
+                    <td style="font-weight: 600; color: #fff;">{{ u.name }}</td>
+                    <td>{{ u.email }}</td>
+                    <td>
+                        <span class="badge {{ u.isAdmin ? 'badge-admin' : (u.isStaff ? 'badge-staff' : 'badge-active') }}">{{ u.roleLabel }}</span>
+                    </td>
+                    <td>
+                        <span class="badge badge-{{ u.status }}">{{ u.status|capitalize }}</span>
+                    </td>
+                    <td>{{ u.products|length }}</td>
+                    <td>{{ u.createdAt|date('M d, Y h:i A') }}</td>
+                    <td>
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <a href="{{ path('app_admin_user_edit', {id: u.id}) }}" class="btn-action">EDIT</a>
+
+                            {% if u.id != app.user.id %}
+                                <form method="post" action="{{ path('app_admin_user_delete', {id: u.id}) }}" onsubmit="return confirm('Permanently delete this account and {{ u.products|length }} owned product record(s)? This cannot be undone.');" style="display: inline;">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete_user_' ~ u.id) }}">
+                                    <button type="submit" class="btn-action btn-danger">DELETE</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7" style="text-align: center; padding: 40px; color: #888;">No users found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,111 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User Details: {{ user.name }} | Inventory &amp; Staff Portal{% endblock %}
+
+{% block body %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">{{ user.name }}</h1>
+        <p class="page-subtitle">Account details and product records created by this user.</p>
+    </div>
+    <div class="page-actions">
+        <a href="{{ path('app_admin_user_edit', {id: user.id}) }}" class="btn btn-primary">Edit Account</a>
+        {% if user.id != app.user.id %}
+            <form
+                method="post"
+                action="{{ path('app_admin_user_delete', {id: user.id}) }}"
+                class="inline-form"
+                onsubmit="return confirm('Permanently delete this account and {{ userProducts|length }} owned product record(s)? This cannot be undone.');"
+            >
+                <input type="hidden" name="_token" value="{{ csrf_token('delete_user_' ~ user.id) }}">
+                <button type="submit" class="btn btn-danger">Delete Account</button>
+            </form>
+        {% endif %}
+        <a href="{{ path('app_admin_user_index') }}" class="btn btn-secondary">Back to Users</a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">Account Information</h2>
+        {% if user.isAdmin %}
+            <span class="badge badge-admin">Administrator</span>
+        {% else %}
+            <span class="badge badge-staff">Staff Member</span>
+        {% endif %}
+    </div>
+
+    <div class="detail-grid">
+        <div class="detail-item">
+            <div class="detail-label">Full Name</div>
+            <div class="detail-value">{{ user.name }}</div>
+        </div>
+        <div class="detail-item">
+            <div class="detail-label">Email Address</div>
+            <div class="detail-value">{{ user.email }}</div>
+        </div>
+        <div class="detail-item">
+            <div class="detail-label">Role</div>
+            <div class="detail-value">{{ user.roleLabel }} ({{ user.primaryRole }})</div>
+        </div>
+        <div class="detail-item">
+            <div class="detail-label">Status</div>
+            <div class="detail-value">
+                <span class="badge badge-{{ user.status }}">{{ user.status|capitalize }}</span>
+            </div>
+        </div>
+        <div class="detail-item">
+            <div class="detail-label">Date Created</div>
+            <div class="detail-value">{{ user.createdAt|date('M d, Y h:i A') }}</div>
+        </div>
+        <div class="detail-item">
+            <div class="detail-label">Products Created</div>
+            <div class="detail-value">{{ userProducts|length }} record(s)</div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">Product Records Created by {{ user.name }}</h2>
+    </div>
+
+    {% if userProducts is empty %}
+        <div class="empty-state">This user has not created any product records yet.</div>
+    {% else %}
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>SKU</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in userProducts %}
+                        <tr>
+                            <td><a href="{{ path('app_product_show', {id: product.id}) }}"><strong>{{ product.name }}</strong></a></td>
+                            <td><code>{{ product.sku }}</code></td>
+                            <td>{{ product.category }}</td>
+                            <td>${{ product.price }}</td>
+                            <td>{{ product.stockQuantity }}</td>
+                            <td>{{ product.createdAt|date('M d, Y') }}</td>
+                            <td>
+                                <div class="table-actions">
+                                    <a href="{{ path('app_product_show', {id: product.id}) }}" class="btn btn-sm btn-secondary">View</a>
+                                    <a href="{{ path('app_product_edit', {id: product.id}) }}" class="btn btn-sm btn-secondary">Edit</a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

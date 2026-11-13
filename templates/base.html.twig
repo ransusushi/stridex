@@ -1,24 +1,400 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}StrideX Portal{% endblock %}</title>
+    <link rel="icon" href="{{ asset('image/stridex-logo.png') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: #000; color: #fff; font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; }
 
-        {% set frankenphp_hot_reload = app.request.server.get('FRANKENPHP_HOT_RELOAD') %}
-        {% if frankenphp_hot_reload %}
-        <meta name="frankenphp-hot-reload:url" content="{{ frankenphp_hot_reload }}">
-        <script src="https://cdn.jsdelivr.net/npm/idiomorph"></script>
-        <script src="https://cdn.jsdelivr.net/npm/frankenphp-hot-reload/+esm" type="module"></script>
-        {% endif %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+        /* Sidebar */
+        .sidebar { width: 260px; background: #0e0e0e; border-right: 1px solid #222; display: flex; flex-direction: column; position: fixed; top: 0; bottom: 0; left: 0; z-index: 100; }
+        .sidebar-logo { padding: 30px 20px; display: flex; justify-content: center; border-bottom: 1px solid #222; }
+        .sidebar-logo img { height: 40px; }
+        .sidebar-nav { padding: 20px 0; display: flex; flex-direction: column; overflow-y: auto; }
+        .sidebar-nav a { padding: 14px 24px; color: #aaa; text-decoration: none; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; transition: 0.2s; border-left: 3px solid transparent; }
+        .sidebar-nav a:hover, .sidebar-nav a.active { background: #1a1a1a; color: #fff; border-left-color: #ff5a1f; }
+        .sidebar-nav .group-label { font-size: 10px; font-weight: 700; color: #555; padding: 24px 24px 8px; letter-spacing: 0.2em; text-transform: uppercase; }
+
+        /* Layouts */
+        .main-wrapper { flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+        .has-sidebar { margin-left: 260px; }
+
+        .topbar { background: #0e0e0e; border-bottom: 1px solid #222; height: 84px; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; }
+        .topbar a { color: #f5f5f5; text-decoration: none; }
+
+        .content-area { padding: 40px; flex: 1; }
+        .main-wrapper { min-width: 0; }
+
+        @media (max-width: 900px) {
+            .sidebar { width: 220px; }
+            .has-sidebar { margin-left: 220px; }
+            .topbar { padding: 0 24px; }
+            .content-area { padding: 24px; }
+            .content-area .stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+
+        @media (max-width: 640px) {
+            body { flex-direction: column; }
+            .sidebar {
+                position: static;
+                width: 100%;
+                height: auto;
+                border-right: 0;
+                border-bottom: 1px solid #222;
+            }
+            .sidebar-logo { justify-content: flex-start; padding: 12px 16px; }
+            .sidebar-logo img { height: 32px; }
+            .sidebar-nav { flex-direction: row; flex-wrap: wrap; gap: 4px; padding: 8px; }
+            .sidebar-nav .group-label { display: none; }
+            .sidebar-nav a { padding: 10px 12px; font-size: 10px; border-left: 0; border-bottom: 2px solid transparent; }
+            .sidebar-nav a:hover, .sidebar-nav a.active { border-left-color: transparent; border-bottom-color: #ff5a1f; }
+            .main-wrapper.has-sidebar { width: 100%; margin-left: 0; }
+            .topbar { height: auto; min-height: 64px; padding: 12px 16px; }
+            .topbar nav { flex-wrap: wrap; gap: 12px !important; }
+            .content-area { min-width: 0; padding: 20px 16px; overflow-x: auto; }
+            .content-area .page-header { align-items: flex-start; flex-direction: column; }
+            .content-area .page-header > div:last-child { width: 100%; flex-wrap: wrap; }
+            .content-area .stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+            .content-area .stat-card, .content-area .card { padding: 16px; }
+            .content-area .data-table { min-width: 600px; }
+        }
+
+        @media (max-width: 380px) {
+            .content-area .stat-grid { grid-template-columns: 1fr; }
+        }
+
+        .portal-page {
+            background: #080a0d;
+            color: #f5f6f8;
+        }
+
+        .portal-page .sidebar {
+            width: 214px;
+            background: #0c0f13;
+            border-right-color: #262b32;
+        }
+
+        .portal-page .sidebar-logo {
+            height: 77px;
+            padding: 16px 24px;
+            justify-content: flex-start;
+            border-bottom-color: #262b32;
+        }
+
+        .portal-page .sidebar-logo img { height: 40px; }
+        .portal-page .has-sidebar { margin-left: 214px; }
+
+        .portal-page .sidebar-nav { gap: 4px; padding: 12px 7px; }
+
+        .portal-page .sidebar-nav .group-label {
+            padding: 17px 17px 7px;
+            color: #8d96a6;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0;
+            text-transform: none;
+        }
+
+        .portal-page .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-height: 48px;
+            padding: 12px 16px;
+            border-left: 4px solid transparent;
+            border-radius: 0 7px 7px 0;
+            color: #aab2c0;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0;
+            text-transform: none;
+        }
+
+        .portal-page .sidebar-nav a svg {
+            width: 19px;
+            height: 19px;
+            flex: 0 0 19px;
+            fill: none;
+            stroke: currentColor;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-width: 1.7;
+        }
+
+        .portal-page .sidebar-nav a:hover,
+        .portal-page .sidebar-nav a.active {
+            background: linear-gradient(90deg, rgba(239, 68, 36, 0.22), rgba(239, 68, 36, 0.08));
+            border-left-color: #f04424;
+            color: #fff;
+        }
+
+        .portal-page .sidebar-nav a.active svg { color: #f04424; }
+
+        .portal-page .topbar {
+            height: 59px;
+            padding: 0 28px;
+            background: #0c0f13;
+            border-bottom-color: #262b32;
+        }
+
+        .portal-topbar-left,
+        .portal-topbar-account,
+        .portal-logout {
+            display: flex;
+            align-items: center;
+        }
+
+        .portal-topbar-left { gap: 30px; color: #aab2c0; font-size: 13px; }
+        .portal-topbar-left strong { color: #f5f6f8; font-weight: 600; }
+        .portal-topbar-separator { padding: 0 10px; color: #596170; }
+        .portal-menu-glyph { color: #c4cad3; font-size: 19px; line-height: 1; }
+        .portal-topbar-account { gap: 12px; font-size: 12px; font-weight: 600; }
+
+        .portal-topbar-avatar {
+            display: grid;
+            width: 34px;
+            height: 34px;
+            place-items: center;
+            border: 1px solid #303640;
+            border-radius: 50%;
+            background: #20252c;
+            color: #e7e9ed;
+        }
+
+        .portal-topbar-avatar svg {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.7;
+        }
+
+        .portal-account-chevron { color: #9aa2af; font-size: 16px; }
+
+        .portal-logout {
+            gap: 9px;
+            margin-left: 10px;
+            padding-left: 22px;
+            border-left: 1px solid #303640;
+            color: #f04424 !important;
+            font-size: 12px;
+        }
+
+        .portal-logout svg {
+            width: 19px;
+            height: 19px;
+            fill: none;
+            stroke: currentColor;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-width: 1.8;
+        }
+
+        .portal-page .content-area { padding: 27px 28px 24px; }
+
+        @media (max-width: 900px) {
+            .portal-page .sidebar { width: 214px; }
+            .portal-page .has-sidebar { margin-left: 214px; }
+            .portal-page .content-area { padding: 24px 20px; }
+            .portal-page .topbar { padding: 0 20px; }
+        }
+
+        @media (max-width: 640px) {
+            .portal-page .sidebar { width: 100%; }
+            .portal-page .has-sidebar { margin-left: 0; }
+            .portal-page .sidebar-logo { height: auto; }
+            .portal-page .sidebar-nav { gap: 3px; }
+            .portal-page .sidebar-nav a { min-height: 40px; }
+            .portal-page .sidebar-nav a svg { display: none; }
+            .portal-page .topbar { gap: 12px; }
+            .portal-topbar-left { gap: 12px; }
+            .portal-topbar-account { gap: 7px; }
+            .portal-topbar-avatar, .portal-account-chevron { display: none; }
+            .portal-logout { margin-left: 2px; padding-left: 10px; }
+        }
+
+        .portal-page.account-panel-page { background: #000; color: #fff; }
+        .portal-page.account-panel-page .sidebar { background: #0e0e0e; border-right-color: #222; }
+        .portal-page.account-panel-page .sidebar-logo { border-bottom-color: #222; }
+        .portal-page.account-panel-page .sidebar-nav .group-label { color: #555; }
+        .portal-page.account-panel-page .sidebar-nav a { color: #aaa; }
+        .portal-page.account-panel-page .sidebar-nav a:hover,
+        .portal-page.account-panel-page .sidebar-nav a.active {
+            background: #1a1a1a;
+            border-left-color: #ff5a1f;
+            color: #fff;
+        }
+        .portal-page.account-panel-page .sidebar-nav a.active svg { color: #ff5a1f; }
+        .portal-page.account-panel-page .topbar { background: #0e0e0e; border-bottom-color: #222; }
+
+        @media (max-width: 640px) {
+            .portal-page.account-panel-page .sidebar-nav a:hover,
+            .portal-page.account-panel-page .sidebar-nav a.active {
+                border-left-color: transparent;
+                border-bottom-color: #ff5a1f;
+            }
+        }
+    </style>
+</head>
+{% set current_route = app.request.attributes.get('_route') ?? '' %}
+<body class="{{ current_route == 'app_profile' and is_granted('ROLE_ADMIN') ? 'admin-profile-page account-panel-page' : (current_route == 'app_profile' and is_granted('ROLE_STAFF') ? 'staff-profile-page account-panel-page' : (current_route == 'app_profile' ? 'portal-page account-panel-page' : '')) }}">
+
+    {# Check if we are in the Admin or Staff dashboard areas #}
+    {% set is_dashboard = (current_route starts with 'app_admin' or current_route == 'app_staff_dashboard' or current_route starts with 'app_product' or current_route == 'app_profile') %}
+
+    {% if app.user and is_dashboard %}
+        <!-- ================= DASHBOARD SIDEBAR (Admin & Staff) ================= -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <a href="{{ path('app_home') }}"><img src="{{ asset('image/stridex-logo.png') }}" alt="StrideX"></a>
+            </div>
+            <nav class="sidebar-nav">
+                {% if current_route == 'app_profile' and not is_granted('ROLE_ADMIN') and not is_granted('ROLE_STAFF') %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <div class="group-label">Overview</div>
+                        <a href="{{ path('app_admin_dashboard') }}">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7"/><path d="M5 9v11h14V9M9 20v-6h6v6"/></svg>
+                            <span>Dashboard</span>
+                        </a>
+                        <div class="group-label">Management</div>
+                        <a href="{{ path('app_admin_user_index') }}">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            <span>Users &amp; Staff</span>
+                        </a>
+                        <a href="{{ path('app_product_index') }}">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 8 9 5 9-5M3 8v10l9 5 9-5V8M12 13v10"/></svg>
+                            <span>Inventory</span>
+                        </a>
+                        <a href="{{ path('app_admin_orders') }}">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3h16v18l-3-2-3 2-4-2-3 2-3-2V3Z"/><path d="M8 8h8M8 12h8M8 16h4"/></svg>
+                            <span>Orders</span>
+                        </a>
+                        <a href="{{ path('app_admin_messages') }}">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/></svg>
+                            <span>Messages</span>
+                        </a>
+                    {% elseif is_granted('ROLE_STAFF') %}
+                        <div class="group-label">Workspace</div>
+                        <a href="{{ path('app_staff_dashboard') }}" class="{{ current_route == 'app_staff_dashboard' ? 'active' : '' }}" {% if current_route == 'app_staff_dashboard' %}aria-current="page"{% endif %}>
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7"/><path d="M5 9v11h14V9M9 20v-6h6v6"/></svg>
+                            <span>Overview</span>
+                        </a>
+                        <a href="{{ path('app_product_index') }}">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 8 9 5 9-5M3 8v10l9 5 9-5V8M12 13v10"/></svg>
+                            <span>Inventory</span>
+                        </a>
+                    {% else %}
+                        <div class="group-label">Account</div>
+                    {% endif %}
+                    <a href="{{ path('app_profile') }}" class="{{ current_route == 'app_profile' ? 'active' : '' }}" {% if current_route == 'app_profile' %}aria-current="page"{% endif %}>
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/></svg>
+                        <span>My Profile</span>
+                    </a>
+                {% elseif is_granted('ROLE_ADMIN') %}
+                    <div class="group-label">Overview</div>
+                    <a href="{{ path('app_admin_dashboard') }}" class="{{ current_route == 'app_admin_dashboard' ? 'active' : '' }}">Dashboard</a>
+
+                    <div class="group-label">Management</div>
+                    <a href="{{ path('app_admin_user_index') }}" class="{{ current_route starts with 'app_admin_user_' ? 'active' : '' }}">Users & Staff</a>
+                    <a href="{{ path('app_product_index') }}" class="{{ current_route starts with 'app_product_' ? 'active' : '' }}">Inventory</a>
+                    <a href="{{ path('app_admin_orders') }}" class="{{ current_route starts with 'app_admin_order' ? 'active' : '' }}">Orders</a>
+                    <a href="{{ path('app_admin_messages') }}" class="{{ current_route starts with 'app_admin_message' ? 'active' : '' }}">Messages</a>
+                    <div class="group-label">Account</div>
+                    <a href="{{ path('app_profile') }}" class="{{ current_route == 'app_profile' ? 'active' : '' }}" {% if current_route == 'app_profile' %}aria-current="page"{% endif %}>My Profile</a>
+                {% elseif is_granted('ROLE_STAFF') %}
+                    <div class="group-label">Staff Menu</div>
+                    <a href="{{ path('app_staff_dashboard') }}" class="{{ current_route == 'app_staff_dashboard' ? 'active' : '' }}">Overview</a>
+                    <a href="{{ path('app_product_index') }}" class="{{ current_route starts with 'app_product_' ? 'active' : '' }}">Inventory</a>
+                    <a href="{{ path('app_profile') }}" class="{{ current_route == 'app_profile' ? 'active' : '' }}">My Profile</a>
+                {% endif %}
+
+                <div class="group-label">System</div>
+                <a href="{{ path('app_storefront') }}">View Home</a>
+                <a href="{{ path('app_logout') }}" style="color: #ff5a1f; margin-top: 10px;">Logout</a>
+            </nav>
+        </aside>
+    {% endif %}
+
+    <div class="main-wrapper {{ (app.user and is_dashboard) ? 'has-sidebar' : '' }}">
+
+        <header class="topbar">
+            {% if app.user and current_route == 'app_profile' and not is_granted('ROLE_ADMIN') and not is_granted('ROLE_STAFF') %}
+                <div class="portal-topbar-left">
+                    <span class="portal-menu-glyph" aria-hidden="true">&#9776;</span>
+                    <span>{{ current_route == 'app_profile' ? 'Account' : 'Workspace' }}<span class="portal-topbar-separator">/</span><strong>{{ current_route == 'app_profile' ? 'My Profile' : 'Overview' }}</strong></span>
+                </div>
+                <div class="portal-topbar-account">
+                    <span class="portal-topbar-avatar" aria-hidden="true">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/></svg>
+                    </span>
+                    <span>{{ app.user.name }}</span>
+                    <span class="portal-account-chevron" aria-hidden="true">&#8964;</span>
+                    {% if current_route != 'app_profile' %}
+                        <a href="{{ path('app_logout') }}" class="portal-logout">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5M15 12H3"/><path d="M12 3h7a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-7"/></svg>
+                            <span>Logout</span>
+                        </a>
+                    {% endif %}
+                </div>
+            {% elseif app.user and is_dashboard %}
+                <div></div>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <div style="display: inline-flex; align-items: center; gap: 10px; background: #0e0e0e; border: 1px solid rgba(255,255,255,0.15); border-radius: 999px; padding: 8px 14px; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);">
+                            <span style="font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #fff; font-weight: 700;">admin</span>
+                            <span style="width: 1px; height: 18px; background: rgba(255,255,255,0.18); display: inline-block;"></span>
+                            <span style="font-size: 12px; color: #d9d9d9; font-weight: 600;">{{ app.user.name|lower|replace({' ': ''}) }}</span>
+                        </div>
+                    {% else %}
+                        <div style="display: inline-flex; align-items: center; gap: 10px; background: #0e0e0e; border: 1px solid rgba(255,255,255,0.15); border-radius: 999px; padding: 8px 14px; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);">
+                            <span style="font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #fff; font-weight: 700;">staff</span>
+                            <span style="width: 1px; height: 18px; background: rgba(255,255,255,0.18); display: inline-block;"></span>
+                            <span style="font-size: 12px; color: #d9d9d9; font-weight: 600;">{{ app.user.name|lower|replace({' ': ''}) }}</span>
+                        </div>
+                    {% endif %}
+                </div>
+            {% else %}
+                <header style="background: rgba(10,10,10,.95); border-bottom: 1px solid rgba(255,255,255,.12); width: 100%; position: sticky; top: 0; z-index: 50;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; height: 84px; max-width: 1440px; margin: 0 auto; padding: 0 40px;">
+                        <a href="{{ path('app_storefront') }}" style="display: flex; align-items: center; text-decoration: none;">
+                            <img src="{{ asset('image/stridex-logo.png') }}" alt="StrideX" style="height: 44px; width: auto;">
+                        </a>
+
+                        <nav style="display: flex; gap: 36px; align-items: center;">
+                            <a href="{{ path('app_storefront') }}" style="font-size: 12px; font-weight: 600; letter-spacing: 0.2em; color: #fff; text-decoration: none; text-transform: uppercase;">HOME</a>
+                            <a href="{{ path('app_shop') }}" style="font-size: 12px; font-weight: 600; letter-spacing: 0.2em; color: #fff; text-decoration: none; text-transform: uppercase;">SHOP</a>
+                            <a href="{{ path('app_collections') }}" style="font-size: 12px; font-weight: 600; letter-spacing: 0.2em; color: #fff; text-decoration: none; text-transform: uppercase;">COLLECTIONS</a>
+                            <a href="{{ path('app_about') }}" style="font-size: 12px; font-weight: 600; letter-spacing: 0.2em; color: #fff; text-decoration: none; text-transform: uppercase;">ABOUT US</a>
+                            <a href="{{ path('app_contact') }}" style="font-size: 12px; font-weight: 600; letter-spacing: 0.2em; color: #fff; text-decoration: none; text-transform: uppercase;">CONTACT US</a>
+                        </nav>
+
+                        <div style="display: flex; align-items: center; gap: 18px;">
+                            <a href="{{ path('app_login') }}" style="font-size: 11px; font-weight: 600; letter-spacing: 0.1em; color: #fff; text-decoration: none; text-transform: uppercase;">SIGN IN</a>
+                        </div>
+                    </div>
+                </header>
+            {% endif %}
+        </header>
+
+        <main class="content-area">
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ label }}" style="background: {{ label == 'error' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(34, 197, 94, 0.1)' }}; border: 1px solid {{ label == 'error' ? '#ef4444' : '#22c55e' }}; color: {{ label == 'error' ? '#ef4444' : '#22c55e' }}; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
+            {% block body %}{% endblock %}
+        </main>
+    </div>
+
+</body>
 </html>
