@@ -1,0 +1,45 @@
+{% extends 'store/base_store.html.twig' %}
+
+{% block title %}Shop All Footwear &mdash; StrideX{% endblock %}
+
+{% block body %}
+<section class="shop-page-header" style="padding: 60px 0 20px;">
+    <div class="container">
+        <span class="eyebrow center">THE COLLECTION</span>
+        <h1 class="section-title center">ALL STRIDEX FOOTWEAR</h1>
+    </div>
+</section>
+
+<section class="products" style="padding-top: 20px;">
+    <div class="product-grid">
+        {% for p in products %}
+            <article class="product-card">
+                <div class="product-media {{ p.bg ?: 'bg-black' }}">
+                    {% if p.badge %}
+                        <span class="product-badge">{{ p.badge }}</span>
+                    {% endif %}
+                    {% if p.image %}
+                        <img src="{{ asset(p.image) }}" alt="{{ p.name }}">
+                    {% endif %}
+                </div>
+                <div class="product-info">
+                    <p class="product-color">{{ p.color ?: p.category }} &bull; {{ p.sku }}</p>
+                    <div class="product-row">
+                        <h3 class="product-name">{{ p.name }}</h3>
+                        <span class="product-price">${{ p.price }}</span>
+                    </div>
+                    <p style="color: var(--muted); font-size: 12px; margin-top: 6px;">
+                        {{ p.stockQuantity }} in stock
+                    </p>
+                    <div class="product-actions" style="margin-top: 16px; display: flex; gap: 10px;">
+                        <a href="{{ path('app_cart_action', {id: p.id, action: 'add'}) }}" class="btn btn--primary" style="padding: 10px 20px; font-size: 10px;">ADD TO CART</a>
+                        <a href="{{ path('app_product_show', {id: p.id}) }}" class="btn" style="padding: 10px 16px; font-size: 10px; border: 1px solid #333; color: #fff;">DETAILS</a>
+                    </div>
+                </div>
+            </article>
+        {% else %}
+            <p style="color: var(--muted); text-align: center; grid-column: 1 / -1;">No products found.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

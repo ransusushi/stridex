@@ -1,0 +1,346 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Profile | StrideX Portal{% endblock %}
+
+{% block body %}
+<style>
+    .account-panel-page .profile-heading h1 { font-family: 'Bebas Neue', sans-serif; font-size: 3.5rem; letter-spacing: 0.05em; }
+    .account-panel-page .profile-heading p { color: #888; }
+    .account-panel-page .profile-card { border-color: #222; background: #0e0e0e; }
+    .account-panel-page .profile-card-header { border-bottom-color: #222; }
+    .account-panel-page .profile-card-header h2,
+    .account-panel-page .profile-detail-value,
+    .account-panel-page .profile-form-group > label,
+    .account-panel-page .profile-security-note h2 { color: #fff; }
+    .account-panel-page .profile-card-header p,
+    .account-panel-page .profile-detail-label,
+    .account-panel-page .profile-security-note p { color: #888; }
+    .account-panel-page .profile-detail-row { border-bottom-color: #222; }
+    .account-panel-page .profile-password-control input { border-color: #333; border-radius: 4px; background: #111; }
+    .account-panel-page .profile-password-submit { border-radius: 4px; background: #ff5a1f; }
+
+    .profile-content { max-width: 1440px; margin: 0 auto; }
+    .profile-heading { margin: 0 0 14px; }
+    .profile-heading h1 { margin: 0; color: #f7f8fa; font-size: clamp(29px, 3vw, 36px); font-weight: 700; letter-spacing: -0.035em; line-height: 1.15; }
+    .profile-heading p { margin: 5px 0 13px; color: #a4acb9; font-size: 14px; line-height: 1.5; }
+
+    .profile-records-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 34px;
+        padding: 7px 12px;
+        border: 1px solid #f04424;
+        border-radius: 6px;
+        color: #f04424;
+        font-size: 12px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background 160ms ease, color 160ms ease;
+    }
+
+    .profile-records-link:hover { background: #f04424; color: #fff; }
+    .profile-records-link svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
+
+    .profile-cards { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 13px; }
+    .profile-card { min-width: 0; border: 1px solid #292e35; border-radius: 8px; background: linear-gradient(135deg, #111419, #0d1014); padding: 19px 21px; }
+
+    .profile-card-header { display: flex; align-items: center; gap: 14px; min-height: 50px; padding-bottom: 15px; border-bottom: 1px solid #292e35; }
+
+    .profile-icon {
+        display: grid;
+        width: 49px;
+        height: 49px;
+        flex: 0 0 49px;
+        place-items: center;
+        border-radius: 50%;
+        background: #252a30;
+        color: #d3d8e0;
+    }
+
+    .profile-icon svg { width: 25px; height: 25px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; }
+    .profile-icon-accent { background: rgba(240, 68, 36, 0.22); color: #ff613e; }
+    .profile-card-header h2 { margin: 0; color: #f3f4f6; font-size: 18px; font-weight: 650; letter-spacing: -0.02em; }
+    .profile-card-header p { margin: 4px 0 0; color: #a4acb9; font-size: 12px; line-height: 1.45; }
+
+    .profile-details { margin-top: 12px; }
+    .profile-detail-row { display: grid; grid-template-columns: minmax(135px, 36%) minmax(0, 1fr); align-items: center; min-height: 42px; border-bottom: 1px solid #252a30; }
+    .profile-detail-row:last-child { border-bottom: 0; }
+    .profile-detail-label { color: #aeb7c6; font-size: 12px; }
+    .profile-detail-value { min-width: 0; color: #f1f2f4; font-size: 13px; overflow-wrap: anywhere; }
+
+    .profile-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid #28a765;
+        border-radius: 18px;
+        padding: 4px 12px;
+        background: rgba(40, 167, 101, 0.08);
+        color: #47d68a;
+        font-size: 12px;
+    }
+
+    .profile-status::before { width: 8px; height: 8px; border-radius: 50%; background: currentColor; content: ""; }
+
+    .profile-password-form { padding-top: 14px; }
+    .profile-form-group { margin-bottom: 13px; }
+    .profile-form-group > label { display: block; margin-bottom: 6px; color: #f3f4f6; font-size: 12px; font-weight: 500; }
+
+    .profile-password-control { position: relative; display: flex; align-items: center; }
+    .profile-password-control > svg { position: absolute; left: 14px; width: 16px; height: 16px; fill: none; stroke: #c4cbd5; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; pointer-events: none; }
+
+    .profile-password-control input {
+        width: 100%;
+        height: 40px;
+        padding: 0 43px 0 46px;
+        border: 1px solid #414750;
+        border-radius: 7px;
+        outline: none;
+        background: linear-gradient(110deg, #1a1e23, #171a1f);
+        color: #f5f6f8;
+        font: inherit;
+        font-size: 12px;
+        transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .profile-password-control input::placeholder { color: #9ba3af; }
+    .profile-password-control input:focus { border-color: #f04424; box-shadow: 0 0 0 3px rgba(240, 68, 36, 0.12); }
+
+    .profile-password-toggle {
+        position: absolute;
+        right: 9px;
+        display: grid;
+        width: 27px;
+        height: 27px;
+        place-items: center;
+        border: 0;
+        background: transparent;
+        color: #aab2bd;
+        cursor: pointer;
+    }
+
+    .profile-password-toggle svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.6; }
+    .profile-password-toggle:hover { color: #fff; }
+    .profile-form-errors { margin: 5px 0 0; color: #ff7962; font-size: 11px; list-style: none; }
+
+    .profile-strength { display: flex; align-items: center; gap: 12px; margin: -2px 0 13px; color: #aeb7c6; font-size: 11px; }
+    .profile-strength-bars { display: flex; flex: 1; gap: 5px; }
+    .profile-strength-bars span { height: 6px; flex: 1; border-radius: 5px; background: #393f48; transition: background 160ms ease; }
+    .profile-strength-bars span.is-weak { background: #ef654d; }
+    .profile-strength-bars span.is-medium { background: #e7aa3f; }
+    .profile-strength-bars span.is-strong { background: #35bd75; }
+
+    .profile-password-submit {
+        display: flex;
+        width: 100%;
+        min-height: 41px;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 16px;
+        border: 0;
+        border-radius: 7px;
+        background: linear-gradient(100deg, #ed3826, #dd2d1f);
+        color: #fff;
+        font: inherit;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: filter 160ms ease, transform 160ms ease;
+    }
+
+    .profile-password-submit:hover { filter: brightness(1.12); }
+    .profile-password-submit:active { transform: translateY(1px); }
+    .profile-password-submit svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; }
+
+    .profile-security-note { display: flex; align-items: center; gap: 14px; margin-top: 13px; padding: 15px 21px; }
+    .profile-security-note h2 { margin: 0; color: #f1f2f4; font-size: 15px; font-weight: 600; }
+    .profile-security-note p { margin: 4px 0 0; color: #a4acb9; font-size: 12px; }
+
+    @media (max-width: 960px) {
+        .profile-cards { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+        .profile-heading h1 { font-size: 29px; }
+        .profile-card { padding: 16px; }
+        .profile-detail-row { grid-template-columns: minmax(110px, 40%) minmax(0, 1fr); min-height: 44px; }
+        .profile-detail-label, .profile-detail-value { font-size: 11px; }
+        .profile-strength { gap: 8px; }
+    }
+
+    @media (max-width: 380px) {
+        .profile-detail-row { grid-template-columns: 1fr; gap: 4px; padding: 9px 0; }
+        .profile-security-note { align-items: flex-start; }
+    }
+</style>
+
+<div class="profile-content">
+    <div class="profile-heading">
+        <h1>My Account Profile</h1>
+        <p>View your account details and update your security credentials.</p>
+        <a href="{{ path('app_product_index', {scope: 'mine'}) }}" class="profile-records-link">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8"/></svg>
+            <span>View My Records ({{ myRecordCount }})</span>
+        </a>
+    </div>
+
+    <div class="profile-cards">
+        <section class="profile-card" aria-labelledby="profile-information-title">
+            <header class="profile-card-header">
+                <span class="profile-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/></svg>
+                </span>
+                <div>
+                    <h2 id="profile-information-title">Profile Information</h2>
+                    <p>Your account details and role information.</p>
+                </div>
+            </header>
+
+            <div class="profile-details">
+                <div class="profile-detail-row">
+                    <span class="profile-detail-label">Account Type</span>
+                    <span class="profile-detail-value">{{ user.roleLabel }}</span>
+                </div>
+                <div class="profile-detail-row">
+                    <span class="profile-detail-label">Full Name</span>
+                    <span class="profile-detail-value">{{ user.name }}</span>
+                </div>
+                <div class="profile-detail-row">
+                    <span class="profile-detail-label">Email / Username</span>
+                    <span class="profile-detail-value">{{ user.email }}</span>
+                </div>
+                <div class="profile-detail-row">
+                    <span class="profile-detail-label">Assigned Role</span>
+                    <span class="profile-detail-value">{{ user.roleLabel }} ({{ user.primaryRole }})</span>
+                </div>
+                <div class="profile-detail-row">
+                    <span class="profile-detail-label">Account Status</span>
+                    <span class="profile-detail-value"><span class="profile-status">{{ user.status|capitalize }}</span></span>
+                </div>
+                <div class="profile-detail-row">
+                    <span class="profile-detail-label">Date Created</span>
+                    <span class="profile-detail-value">{{ user.createdAt|date('M d, Y h:i A') }}</span>
+                </div>
+                <div class="profile-detail-row">
+                    <span class="profile-detail-label">Products Created</span>
+                    <span class="profile-detail-value">{{ myRecordCount }} record(s)</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="profile-card" aria-labelledby="profile-security-title">
+            <header class="profile-card-header">
+                <span class="profile-icon profile-icon-accent" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 1 1 8 0v3"/></svg>
+                </span>
+                <div>
+                    <h2 id="profile-security-title">Security</h2>
+                    <p>Update your password to keep your account secure.</p>
+                </div>
+            </header>
+
+            {{ form_start(passwordForm, {attr: {class: 'profile-password-form', novalidate: 'novalidate'}}) }}
+                <div class="profile-form-group">
+                    {{ form_label(passwordForm.currentPassword) }}
+                    <div class="profile-password-control">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 1 1 8 0v3"/></svg>
+                        {{ form_widget(passwordForm.currentPassword, {attr: {class: 'profile-password-input'}}) }}
+                        <button class="profile-password-toggle" type="button" data-password-toggle="{{ passwordForm.currentPassword.vars.id }}" aria-label="Show current password" aria-pressed="false">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </button>
+                    </div>
+                    {{ form_errors(passwordForm.currentPassword) }}
+                </div>
+
+                <div class="profile-form-group">
+                    {{ form_label(passwordForm.newPassword.first) }}
+                    <div class="profile-password-control">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 1 1 8 0v3"/></svg>
+                        {{ form_widget(passwordForm.newPassword.first, {attr: {class: 'profile-password-input'}}) }}
+                        <button class="profile-password-toggle" type="button" data-password-toggle="{{ passwordForm.newPassword.first.vars.id }}" aria-label="Show new password" aria-pressed="false">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </button>
+                    </div>
+                    {{ form_errors(passwordForm.newPassword.first) }}
+                </div>
+
+                <div class="profile-strength" aria-live="polite">
+                    <span>Password Strength</span>
+                    <div class="profile-strength-bars" aria-label="Password strength">
+                        <span></span><span></span><span></span><span></span>
+                    </div>
+                </div>
+
+                <div class="profile-form-group">
+                    {{ form_label(passwordForm.newPassword.second) }}
+                    <div class="profile-password-control">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 1 1 8 0v3"/></svg>
+                        {{ form_widget(passwordForm.newPassword.second, {attr: {class: 'profile-password-input'}}) }}
+                        <button class="profile-password-toggle" type="button" data-password-toggle="{{ passwordForm.newPassword.second.vars.id }}" aria-label="Show password confirmation" aria-pressed="false">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </button>
+                    </div>
+                    {{ form_errors(passwordForm.newPassword.second) }}
+                </div>
+
+                <button type="submit" class="profile-password-submit">
+                    <span>Update Password</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </button>
+            {{ form_end(passwordForm) }}
+        </section>
+    </div>
+
+    <aside class="profile-card profile-security-note">
+        <span class="profile-icon profile-icon-accent" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"/><path d="m9 12 2 2 4-4"/></svg>
+        </span>
+        <div>
+            <h2>Account security</h2>
+            <p>Use a strong password and never share your credentials.</p>
+        </div>
+    </aside>
+</div>
+
+<script>
+    document.querySelectorAll('[data-password-toggle]').forEach((toggle) => {
+        toggle.addEventListener('click', () => {
+            const input = document.getElementById(toggle.dataset.passwordToggle);
+            if (!input) {
+                return;
+            }
+
+            const isVisible = 'text' === input.type;
+            input.type = isVisible ? 'password' : 'text';
+            toggle.setAttribute('aria-pressed', String(!isVisible));
+            toggle.setAttribute('aria-label', isVisible ? 'Show password' : 'Hide password');
+        });
+    });
+
+    const newPassword = document.getElementById('{{ passwordForm.newPassword.first.vars.id }}');
+    const strengthBars = document.querySelectorAll('.profile-strength-bars span');
+
+    if (newPassword && strengthBars.length) {
+        newPassword.addEventListener('input', () => {
+            const value = newPassword.value;
+            const checks = [
+                value.length >= 6,
+                value.length >= 10,
+                /[a-z]/.test(value) && /[A-Z]/.test(value),
+                /\d/.test(value) || /[^a-zA-Z0-9]/.test(value),
+            ];
+            const score = checks.filter(Boolean).length;
+            const strengthClass = score < 2 ? 'is-weak' : (score < 4 ? 'is-medium' : 'is-strong');
+
+            strengthBars.forEach((bar, index) => {
+                bar.classList.remove('is-weak', 'is-medium', 'is-strong');
+                if (index < score) {
+                    bar.classList.add(strengthClass);
+                }
+            });
+        });
+    }
+</script>
+{% endblock %}

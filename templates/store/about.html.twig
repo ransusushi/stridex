@@ -1,0 +1,47 @@
+{% extends 'store/base_store.html.twig' %}
+
+{% block title %}About Us &mdash; StrideX{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ asset('css/about.css') }}">
+{% endblock %}
+
+{% block body %}
+<section class="about-page">
+    <div class="container">
+        <h1 class="section-title" style="margin-bottom: 40px;">About Us</h1>
+
+        <div class="about-grid">
+            <div class="about-card">
+                <h2>{{ about.company_name }}</h2>
+                <p>{{ about.description }}</p>
+
+                <h2 id="faq" style="margin-top: 40px;">FAQ</h2>
+                {% for faq in about.faq %}
+                    <div class="faq-item">
+                        <div class="question">{{ faq.question }}</div>
+                        <div class="answer">{{ faq.answer }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="about-card" id="contact-info">
+                <h2>Contact Info</h2>
+                <div class="contact-item">
+                    <span class="label">Email</span>
+                    <span class="value">{{ about.email }}</span>
+                </div>
+                <div class="contact-item">
+                    <span class="label">Phone</span>
+                    <span class="value">{{ about.phone }}</span>
+                </div>
+                <div class="contact-item" style="border-bottom: none;">
+                    <span class="label">Address</span>
+                    <span class="value">{{ about.address }}</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

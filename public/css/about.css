@@ -1,0 +1,79 @@
+/* =========================================================
+   About Page – custom styles
+   ========================================================= */
+
+.about-page {
+    padding: 80px 0;
+    background: var(--bg, #000);
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 40px;
+}
+
+.about-card {
+    background: #0e0e0e;
+    padding: 30px;
+    border-radius: var(--radius, 4px);
+    border: 1px solid var(--line, rgba(255,255,255,.12));
+}
+
+.about-card h2 {
+    font-family: var(--font-display, 'Bebas Neue', 'Anton', sans-serif);
+    font-size: 28px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.about-card p {
+    color: var(--muted, #9a9a9a);
+    line-height: 1.7;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line, rgba(255,255,255,.12));
+}
+
+.contact-item .label {
+    color: var(--muted, #9a9a9a);
+    font-weight: 600;
+    width: 80px;
+}
+
+.contact-item .value {
+    color: var(--text, #f5f5f5);
+}
+
+.faq-item {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line, rgba(255,255,255,.12));
+}
+
+.faq-item .question {
+    font-weight: 600;
+    color: #fff;
+    font-size: 16px;
+}
+
+.faq-item .answer {
+    color: var(--muted, #9a9a9a);
+    margin-top: 6px;
+    line-height: 1.6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .about-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    .about-page {
+        padding: 60px 0;
+    }
+}

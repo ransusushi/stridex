@@ -1,0 +1,62 @@
+{% extends 'store/base_store.html.twig' %}
+
+{% block title %}Shopping Cart &mdash; StrideX{% endblock %}
+
+{% block body %}
+<section style="padding: 80px 0;">
+    <div class="container">
+        <h1 class="section-title" style="margin-bottom: 40px;">YOUR CART</h1>
+
+        {% if cartItems is empty %}
+            <div style="text-align: center; padding: 60px 0; color: var(--muted);">
+                <p>Your cart is empty.</p>
+                <a href="{{ path('app_shop') }}" class="btn btn--primary" style="margin-top: 20px;">START SHOPPING</a>
+            </div>
+        {% else %}
+            <table style="width: 100%; border-collapse: collapse; color: #fff;">
+                <thead>
+                    <tr style="border-bottom: 1px solid #222; text-align: left; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: #888;">
+                        <th style="padding: 12px 0;">Product</th>
+                        <th style="padding: 12px 0;">Price</th>
+                        <th style="padding: 12px 0;">Quantity</th>
+                        <th style="padding: 12px 0;">Subtotal</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for id, item in cartItems %}
+                        <tr style="border-bottom: 1px solid #222;">
+                            <td style="padding: 16px 0; display: flex; align-items: center; gap: 16px;">
+                                <img src="{{ asset(item.image) }}" alt="{{ item.name }}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;">
+                                <strong>{{ item.name }}</strong>
+                            </td>
+                            <td style="padding: 16px 0; color: #ff5a1f; font-weight: 600;">${{ item.price }}</td>
+                            <td style="padding: 16px 0;">
+                                <form method="post" action="{{ path('app_cart_action') }}" style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="hidden" name="id" value="{{ id }}">
+                                    <input type="hidden" name="action" value="update">
+                                    <input type="number" name="quantity" value="{{ item.quantity }}" min="1" style="width: 64px; padding: 6px; background: #111; border: 1px solid #333; color: #fff; text-align: center;">
+                                    <button type="submit" class="btn btn--primary" style="padding: 6px 12px; font-size: 10px;">Update</button>
+                                </form>
+                            </td>
+                            <td style="padding: 16px 0;">${{ (item.price * item.quantity)|number_format(2) }}</td>
+                            <td style="padding: 16px 0;">
+                                <a href="{{ path('app_cart_action', {id: id, action: 'remove'}) }}" style="color: #888; font-size: 12px;">Remove</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div style="text-align: right; margin-top: 24px; font-size: 20px; font-weight: 700;">
+                Total: <span style="color: #ff5a1f;">${{ total|number_format(2) }}</span>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 16px; margin-top: 24px;">
+                <a href="{{ path('app_cart_action', {action: 'clear'}) }}" class="btn" style="border: 1px solid #333; color: #fff;">CLEAR CART</a>
+                <a href="{{ path('app_checkout') }}" class="btn btn--primary">PROCEED TO CHECKOUT</a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

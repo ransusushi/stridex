@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}StrideX &mdash; Built for the Streets{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/stridex.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/collection.css') }}?v=why-stridex-5">
+    <style>
+        .store-header-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .store-header-icon:hover,
+        .store-header-icon:focus-visible {
+            color: #ff5a1f;
+        }
+
+        .store-header-icon:focus-visible {
+            outline: 2px solid currentColor;
+            outline-offset: 4px;
+        }
+
+        .store-header-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: currentColor;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-width: 1.7;
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body style="margin: 0; padding: 0; background: #000;">
+
+<!-- FORCED CLEAN HEADER -->
+<header style="background: rgba(10,10,10,.95); border-bottom: 1px solid rgba(255,255,255,.12); position: sticky; top: 0; z-index: 50; width: 100%;">
+    <div style="display: flex; justify-content: space-between; align-items: center; height: 84px; max-width: 1440px; margin: 0 auto; padding: 0 40px;">
+
+        <!-- Logo -->
+        <a href="{{ path('app_storefront') }}" style="display: flex; align-items: center; text-decoration: none;">
+            <img src="{{ asset('image/stridex-logo.png') }}" alt="StrideX" style="height: 44px; width: auto;">
+        </a>
+
+        <!-- Center Links -->
+        <nav style="display: flex; gap: 36px; align-items: center;">
+            <a href="{{ path('app_storefront') }}" style="font-size: 12px; font-weight: 600; letter-spacing: 0.2em; color: #fff; text-decoration: none; text-transform: uppercase;">HOME</a>
+            <a href="{{ path('app_shop') }}" style="font-size: 12px; font-weight: 600; letter-spacing: 0.2em; color: #fff; text-decoration: none; text-transform: uppercase;">SHOP</a>
+            <a href="{{ path('app_collections') }}" style="font-size: 12px; font-weight: 600; letter-spacing: 0.2em; color: #fff; text-decoration: none; text-transform: uppercase;">COLLECTIONS</a>
+            <a href="{{ path('app_about') }}" style="font-size: 12px; font-weight: 600; letter-spacing: 0.2em; color: #fff; text-decoration: none; text-transform: uppercase;">ABOUT US</a>
+            <a href="{{ path('app_contact') }}" style="font-size: 12px; font-weight: 600; letter-spacing: 0.2em; color: #fff; text-decoration: none; text-transform: uppercase;">CONTACT US</a>
+        </nav>
+
+        <!-- Right Actions -->
+        <div style="display: flex; align-items: center; gap: 24px;">
+            {% if app.user %}
+                <a href="{{ path('app_profile') }}" class="store-header-icon" aria-label="Profile" title="Profile">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/></svg>
+                </a>
+                <a href="{{ path('app_cart') }}" class="store-header-icon" aria-label="Cart" title="Cart">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h2l2.4 12.4a2 2 0 0 0 2 1.6h8.8a2 2 0 0 0 2-1.6L22 7H6"/><circle cx="10" cy="21" r="1"/><circle cx="18" cy="21" r="1"/></svg>
+                </a>
+                <a href="{{ path('app_logout') }}" style="font-size: 11px; font-weight: 600; letter-spacing: 0.1em; color: #fff; text-decoration: none; text-transform: uppercase;">LOGOUT</a>
+            {% else %}
+                <a href="{{ path('app_login') }}" style="font-size: 11px; font-weight: 600; letter-spacing: 0.1em; color: #fff; text-decoration: none; text-transform: uppercase;">SIGN IN</a>
+            {% endif %}
+        </div>
+    </div>
+</header>
+
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+        <div style="max-width:1200px;margin:16px auto;padding:14px 20px;border-radius:6px;background:#111;border:1px solid {{ label == 'error' ? '#ff5a1f' : '#4ade80' }};color:{{ label == 'error' ? '#ff5a1f' : '#4ade80' }};">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endfor %}
+
+{% block body %}{% endblock %}
+
+<footer class="site-footer" style="background: #000; border-top: 1px solid #222; padding: 80px 0 24px; margin-top: 60px;">
+    <div class="store-footer-main" style="max-width: 1440px; margin: 0 auto; padding: 0 40px; display: grid; grid-template-columns: 1fr 2fr; gap: 60px;">
+        <div>
+            <img src="{{ asset('image/stridex-logo.png') }}" alt="StrideX" style="height: 100px; width: auto; margin-bottom: 15px;">
+            <p style="color: #888; font-size: 11px; letter-spacing: 0.2em;">MOVE IN STYLE. LIVE WITHOUT LIMITS.</p>
+        </div>
+        <div class="store-footer-links">
+            <div class="store-footer-column">
+                <h4 class="store-footer-heading">SHOP</h4>
+                <ul class="store-footer-list">
+                    <li><a href="{{ path('app_shop') }}">All Products</a></li>
+                    <li><a href="{{ path('app_collections') }}">Collections</a></li>
+                </ul>
+            </div>
+            <div class="store-footer-column">
+                <h4 class="store-footer-heading">COMPANY</h4>
+                <ul class="store-footer-list">
+                    <li><a href="{{ path('app_about') }}">About Us</a></li>
+                    <li><a href="{{ path('app_about') }}">Our Mission</a></li>
+                </ul>
+            </div>
+            <div class="store-footer-column">
+                <h4 class="store-footer-heading">SUPPORT</h4>
+                <ul class="store-footer-list">
+                    <li><a href="{{ path('app_contact') }}">Contact Us</a></li>
+                    <li><a href="{{ path('app_about') }}#faq">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="store-footer-column">
+                <h4 class="store-footer-heading">FOLLOW US</h4>
+                <ul class="store-footer-list">
+                    <li><span>Instagram</span></li>
+                    <li><span>Facebook</span></li>
+                    <li><span>TikTok</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="store-footer-bottom" style="max-width: 1440px; margin: 40px auto 0; padding: 24px 40px 0; border-top: 1px solid #222;">
+        <p>&copy; {{ "now"|date("Y") }} STRIDEX. ALL RIGHTS RESERVED.</p>
+        <div class="store-footer-legal"><span>PRIVACY</span><span>TERMS</span><span>COOKIES</span></div>
+    </div>
+</footer>
+</body>
+</html>

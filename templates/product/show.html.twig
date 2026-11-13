@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ product.name }} | StrideX Portal{% endblock %}
+
+{% block body %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">{{ product.name }}</h1>
+        <p class="page-subtitle">SKU: <code>{{ product.sku }}</code> &bull; Category: {{ product.category }} &bull; Colorway: {{ product.color ?: 'Standard' }}</p>
+    </div>
+    <div class="page-actions">
+        {% if is_granted('PRODUCT_EDIT', product) %}
+            <a href="{{ path('app_product_edit', {id: product.id}) }}" class="btn btn-primary" style="background: #ff5a1f;">Edit Product</a>
+        {% endif %}
+
+        {% if is_granted('PRODUCT_DELETE', product) %}
+            <form
+                method="post"
+                action="{{ path('app_product_delete', {id: product.id}) }}"
+                class="inline-form"
+                onsubmit="return confirm('Are you sure you want to permanently delete {{ product.name|e('js') }}?');"
+            >
+                <input type="hidden" name="_token" value="{{ csrf_token('delete_product_' ~ product.id) }}">
+                <button type="submit" class="btn btn-danger">Delete Product</button>
+            </form>
+        {% endif %}
+
+        <a href="{{ path('app_product_index') }}" class="btn btn-secondary">Back to Products</a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">StrideX Product Record Details</h2>
+        {% if is_granted('PRODUCT_EDIT', product) %}
+            <span class="badge badge-success">Editable by You</span>
+        {% else %}
+            <span class="badge badge-neutral">Read-Only (Owned by {{ product.createdBy.name }})</span>
+        {% endif %}
+    </div>
+
+    <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: flex-start;">
+        {% if product.image %}
+            <div style="background: #111; border-radius: 12px; padding: 1rem; width: 220px; text-align: center;">
+                <img src="{{ asset(product.image) }}" alt="{{ product.name }}" style="max-width: 100%; height: auto; border-radius: 8px;">
+            </div>
+        {% endif %}
+
+        <div class="detail-grid" style="flex: 1; min-width: 280px;">
+            <div class="detail-item">
+                <div class="detail-label">Product Name</div>
+                <div class="detail-value">{{ product.name }}</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">SKU Code</div>
+                <div class="detail-value"><code>{{ product.sku }}</code></div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Colorway &amp; Fit</div>
+                <div class="detail-value">{{ product.color ?: 'Standard' }} ({{ product.gender|upper }})</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Category</div>
+                <div class="detail-value">{{ product.category }}</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Unit Price</div>
+                <div class="detail-value">${{ product.price }}</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Stock Quantity</div>
+                <div class="detail-value">{{ product.stockQuantity }} unit(s)</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Created By</div>
+                <div class="detail-value">
+                    {{ product.createdBy.name }} ({{ product.createdBy.roleLabel }})
+                </div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Date Created</div>
+                <div class="detail-value">{{ product.createdAt|date('M d, Y h:i A') }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 1.25rem;">
+        <div class="detail-label">Product Description</div>
+        <div style="margin-top: 0.4rem; padding: 1rem; background: var(--bg-subtle); border-radius: var(--radius-sm); white-space: pre-wrap;">{{ product.description ?: 'No description provided for this product.' }}</div>
+    </div>
+</div>
+{% endblock %}

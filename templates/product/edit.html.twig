@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Product: {{ product.name }} | StrideX Portal{% endblock %}
+
+{% block body %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Edit Product: {{ product.name }}</h1>
+        <p class="page-subtitle">
+            SKU: <code>{{ product.sku }}</code> &bull; Created by {{ product.createdBy.name }} ({{ product.createdBy.roleLabel }})
+        </p>
+    </div>
+    <div class="page-actions">
+        <a href="{{ path('app_product_show', {id: product.id}) }}" class="btn btn-secondary">View Details</a>
+        <a href="{{ path('app_product_index') }}" class="btn btn-secondary">Back to Products</a>
+    </div>
+</div>
+
+<div class="card" style="max-width: 780px;">
+    {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+        <div class="form-grid">
+            <div class="form-group">
+                {{ form_label(form.name) }}
+                {{ form_widget(form.name) }}
+                {{ form_errors(form.name) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.sku) }}
+                {{ form_widget(form.sku) }}
+                {{ form_errors(form.sku) }}
+            </div>
+        </div>
+
+        <div class="form-grid">
+            <div class="form-group">
+                {{ form_label(form.category) }}
+                {{ form_widget(form.category) }}
+                {{ form_errors(form.category) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.color) }}
+                {{ form_widget(form.color) }}
+                {{ form_errors(form.color) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.gender) }}
+                {{ form_widget(form.gender) }}
+                {{ form_errors(form.gender) }}
+            </div>
+        </div>
+
+        <div class="form-grid">
+            <div class="form-group">
+                {{ form_label(form.price) }}
+                {{ form_widget(form.price) }}
+                {{ form_errors(form.price) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.stockQuantity) }}
+                {{ form_widget(form.stockQuantity) }}
+                {{ form_errors(form.stockQuantity) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.badge) }}
+                {{ form_widget(form.badge) }}
+                {{ form_errors(form.badge) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.image) }}
+            {{ form_widget(form.image) }}
+            {{ form_errors(form.image) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.description) }}
+            {{ form_widget(form.description) }}
+            {{ form_errors(form.description) }}
+        </div>
+
+        <div style="margin-top: 1.25rem; display: flex; gap: 0.75rem;">
+            <button type="submit" class="btn btn-primary" style="background: #ff5a1f;">Save Changes</button>
+            <a href="{{ path('app_product_show', {id: product.id}) }}" class="btn btn-secondary">Cancel</a>
+        </div>
+    {{ form_end(form) }}
+</div>
+{% endblock %}

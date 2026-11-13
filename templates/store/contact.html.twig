@@ -1,0 +1,41 @@
+{% extends 'store/base_store.html.twig' %}
+
+{% block title %}Contact Us &mdash; StrideX{% endblock %}
+
+{% block body %}
+<section style="background:#000; color:#fff; padding: 80px 0 100px;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 24px;">
+        <div style="text-align: center; margin-bottom: 48px;">
+            <div style="font-size: 12px; letter-spacing: 0.35em; text-transform: uppercase; color: #ff5a1f; font-weight: 700; margin-bottom: 18px;">Get in Touch</div>
+            <h1 style="margin: 0; font-size: clamp(42px, 6vw, 86px); line-height: 0.95; letter-spacing: 0.08em; text-transform: uppercase; font-family: 'Bebas Neue', sans-serif;">Contact Us</h1>
+        </div>
+
+        <div style="max-width: 800px; margin: 0 auto;">
+            <div style="padding: 32px 30px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.12); border-radius: 18px;">
+                <h2 style="margin: 0 0 22px; font-size: 30px; text-transform: uppercase; letter-spacing: 0.08em;">Send a Message</h2>
+                <form method="post" action="{{ path('app_contact') }}" style="display:grid; gap: 20px;">
+                    <div>
+                        <label for="contact-name" style="display:block; margin-bottom: 8px; color:#d1d5db; font-size: 14px;">Your Name *</label>
+                        <input id="contact-name" type="text" name="name" placeholder="Juan Dela Cruz" required style="width:100%; box-sizing:border-box; background:#171717; border:1px solid rgba(255,255,255,0.12); color:#fff; padding: 14px 16px; border-radius: 10px; font-size: 16px;">
+                    </div>
+                    <div>
+                        <label for="contact-email" style="display:block; margin-bottom: 8px; color:#d1d5db; font-size: 14px;">Email Address *</label>
+                        <input id="contact-email" type="email" name="email" placeholder="juan@example.com" required style="width:100%; box-sizing:border-box; background:#171717; border:1px solid rgba(255,255,255,0.12); color:#fff; padding: 14px 16px; border-radius: 10px; font-size: 16px;">
+                    </div>
+                    <div>
+                        <label for="contact-subject" style="display:block; margin-bottom: 8px; color:#d1d5db; font-size: 14px;">Subject *</label>
+                        <input id="contact-subject" type="text" name="subject" placeholder="Order inquiry, sizing, feedback" required style="width:100%; box-sizing:border-box; background:#171717; border:1px solid rgba(255,255,255,0.12); color:#fff; padding: 14px 16px; border-radius: 10px; font-size: 16px;">
+                    </div>
+                    <div>
+                        <label for="contact-message" style="display:block; margin-bottom: 8px; color:#d1d5db; font-size: 14px;">Message *</label>
+                        <textarea id="contact-message" name="message" rows="6" placeholder="Type your message here..." required style="width:100%; box-sizing:border-box; resize: vertical; background:#171717; border:1px solid rgba(255,255,255,0.12); color:#fff; padding: 14px 16px; border-radius: 10px; font: inherit; min-height: 150px;"></textarea>
+                    </div>
+                    <button type="submit" style="background:#fff; color:#000; border:none; border-radius:10px; padding: 18px 20px; font-size: 14px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 800; cursor:pointer;">
+                        Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

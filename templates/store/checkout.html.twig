@@ -1,0 +1,90 @@
+{% extends 'store/base_store.html.twig' %}
+
+{% block title %}Checkout &mdash; StrideX{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ asset('css/checkout.css') }}">
+{% endblock %}
+
+{% block body %}
+<section class="checkout-page">
+    <div class="container">
+        <h1 class="section-title" style="margin-bottom: 40px;">CHECKOUT</h1>
+
+        <div class="checkout-grid">
+            <div class="checkout-form">
+                <form method="post" action="{{ path('app_checkout') }}">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="first_name">FIRST NAME</label>
+                            <input type="text" id="first_name" name="first_name" value="{{ user.firstName }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="last_name">LAST NAME</label>
+                            <input type="text" id="last_name" name="last_name" value="{{ user.lastName }}" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">EMAIL ADDRESS</label>
+                        <input type="email" id="email" name="email" value="{{ user.email }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">ADDRESS</label>
+                        <input type="text" id="address" name="address" placeholder="123 Balugo Road" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="city">CITY</label>
+                            <input type="text" id="city" name="city" placeholder="Dumaguete City" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="postal">POSTAL CODE</label>
+                            <input type="text" id="postal" name="postal" placeholder="6200" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="country">COUNTRY</label>
+                            <select id="country" name="country">
+                                <option value="PH" selected>Philippines</option>
+                                <option value="US">United States</option>
+                                <option value="UK">United Kingdom</option>
+                                <option value="CA">Canada</option>
+                                <option value="AU">Australia</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="payment">PAYMENT METHOD</label>
+                            <select id="payment" name="payment">
+                                <option value="cod" selected>Cash on Delivery (COD)</option>
+                                <option value="gcash">GCash</option>
+                                <option value="maya">Maya (PayMaya)</option>
+                                <option value="card">Credit Card</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="checkout-actions">
+                        <a href="{{ path('app_cart') }}" class="btn btn--ghost">&larr; BACK TO CART</a>
+                        <button type="submit" class="btn btn--primary">PLACE ORDER</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="order-summary">
+                <h3>YOUR ORDER</h3>
+                {% for item in cartItems %}
+                    <div class="order-item">
+                        <span>{{ item.name }} &times; {{ item.quantity }}</span>
+                        <span>${{ (item.price * item.quantity)|number_format(2) }}</span>
+                    </div>
+                {% endfor %}
+                <div class="order-total">
+                    <span>TOTAL</span>
+                    <span>${{ total|number_format(2) }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

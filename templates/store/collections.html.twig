@@ -1,0 +1,38 @@
+{% extends 'store/base_store.html.twig' %}
+
+{% block title %}Collections &mdash; StrideX{% endblock %}
+
+{% block body %}
+<section class="coll-hero">
+    <div class="coll-hero-inner">
+        <div class="coll-hero-copy">
+            <span class="coll-eyebrow">SPRING / SUMMER {{ "now"|date("Y") }}</span>
+            <h1 class="coll-title">MOVE WITHOUT<br><span class="outline">LIMITS</span></h1>
+            <p class="coll-lead">Engineered for every kind of motion.</p>
+            <a href="{{ path('app_shop') }}" class="coll-cta">SHOP THE DROP &rarr;</a>
+        </div>
+        <div class="coll-hero-visual">
+            <img src="{{ asset('image/collectionpage.png') }}" alt="StrideX flagship sneaker">
+        </div>
+    </div>
+</section>
+
+<section class="coll-featured">
+    <div class="coll-featured-grid">
+        {% for c in collections %}
+            <article class="coll-feature">
+                <div class="coll-feature-text">
+                    <span class="coll-cat">{{ c.category }}</span>
+                    <h3 class="coll-name">{{ c.name }}</h3>
+                    <p class="coll-desc">{{ c.description }}</p>
+                    <div class="coll-price">${{ c.price }}</div>
+                    <a href="{{ path('app_shop', {category: c.category}) }}" class="coll-arrow">&rarr;</a>
+                </div>
+                <div class="coll-feature-img">
+                    <img src="{{ asset(c.image) }}" alt="{{ c.name }}">
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

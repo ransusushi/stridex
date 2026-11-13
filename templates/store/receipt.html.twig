@@ -1,0 +1,47 @@
+{% extends 'store/base_store.html.twig' %}
+
+{% block title %}Order Receipt #{{ order.id }} &mdash; StrideX{% endblock %}
+
+{% block body %}
+<section style="padding: 60px 0;">
+    <div class="container">
+        <div style="max-width: 480px; margin: 0 auto; background: #0e0e0e; border: 1px solid #222; border-radius: 8px; padding: 32px 28px;">
+            <div style="text-align: center; padding-bottom: 20px; border-bottom: 1px dashed #333;">
+                <h1 style="font-family: 'Bebas Neue', sans-serif; font-size: 36px; margin: 0; color: #fff;">STRIDEX</h1>
+                <p style="color: #888; font-size: 11px; letter-spacing: .25em; text-transform: uppercase; margin-top: 4px;">OFFICIAL RECEIPT</p>
+            </div>
+
+            <div style="text-align: center; padding: 18px 0; border-bottom: 1px dashed #333;">
+                <p style="color: #4ade80; font-family: 'Bebas Neue', sans-serif; font-size: 24px; margin: 0;">ORDER CONFIRMED</p>
+                <p style="color: #ff5a1f; font-family: monospace; font-size: 16px; margin: 6px 0 0;">{{ order.transactionId }}</p>
+            </div>
+
+            <div style="padding: 16px 0; font-size: 13px; color: #ccc; line-height: 1.9;">
+                <div style="display: flex; justify-content: space-between;"><span>Order No.</span><strong>#{{ order.id }}</strong></div>
+                <div style="display: flex; justify-content: space-between;"><span>Customer</span><strong>{{ order.customerName }}</strong></div>
+                <div style="display: flex; justify-content: space-between;"><span>Payment</span><strong>{{ order.paymentMethod|upper }}</strong></div>
+                <div style="display: flex; justify-content: space-between;"><span>Status</span><strong>{{ order.status|upper }}</strong></div>
+            </div>
+
+            <div style="border-top: 1px dashed #333; border-bottom: 1px dashed #333; padding: 16px 0; margin-bottom: 16px;">
+                {% for item in order.items %}
+                    <div style="display: flex; justify-content: space-between; font-size: 13px; padding: 4px 0;">
+                        <span>{{ item.productName }} &times; {{ item.quantity }}</span>
+                        <span>${{ item.total }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div style="display: flex; justify-content: space-between; font-family: 'Bebas Neue', sans-serif; font-size: 26px;">
+                <span>TOTAL</span>
+                <span style="color: #ff5a1f;">${{ order.total }}</span>
+            </div>
+
+            <div style="margin-top: 24px; display: flex; flex-direction: column; gap: 10px;">
+                <a href="{{ path('app_shop') }}" class="btn btn--primary" style="justify-content: center;">CONTINUE SHOPPING</a>
+                <a href="{{ path('app_profile') }}" class="btn" style="justify-content: center; border: 1px solid #333; color: #fff;">BACK TO PROFILE</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

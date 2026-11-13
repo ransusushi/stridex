@@ -1,0 +1,167 @@
+/* =========================================================
+   Checkout Page – custom styles
+   ========================================================= */
+
+.checkout-page {
+    padding: 80px 0;
+    background: var(--bg, #000);
+}
+
+.checkout-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 40px;
+}
+
+/* ----- Billing Form ----- */
+.checkout-form label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--muted, #9a9a9a);
+    margin-bottom: 6px;
+}
+
+.checkout-form input,
+.checkout-form select {
+    width: 100%;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, .05);
+    border: 1px solid var(--line, rgba(255,255,255,.12));
+    border-radius: var(--radius, 4px);
+    color: #fff;
+    font-size: 14px;
+    outline: none;
+    transition: border-color .25s ease;
+}
+
+.checkout-form select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%239a9a9a' stroke-width='2'%3E%3Cpath d='M5 7l5 5 5-5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 14px;
+    padding-right: 40px;
+    cursor: pointer;
+}
+
+.checkout-form select option {
+    background-color: #111;
+    color: #fff;
+    padding: 8px 12px;
+}
+
+.checkout-form select option:checked,
+.checkout-form select option:hover {
+    background-color: var(--accent, #ff5a1f);
+    color: #000;
+}
+
+.checkout-form input:focus,
+.checkout-form select:focus {
+    border-color: var(--accent, #ff5a1f);
+}
+
+.checkout-form .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.checkout-form .form-group {
+    margin-bottom: 16px;
+}
+.checkout-form select[size] {
+    height: auto;
+    min-height: 100px;
+}
+/* ----- Order Summary ----- */
+.order-summary {
+    background: #0e0e0e;
+    border-radius: var(--radius, 4px);
+    padding: 24px;
+    border: 1px solid var(--line, rgba(255,255,255,.12));
+}
+
+.order-summary h3 {
+    font-family: var(--font-display, 'Bebas Neue', 'Anton', sans-serif);
+    font-size: 20px;
+    letter-spacing: .04em;
+    margin: 0 0 16px;
+    text-transform: uppercase;
+    color: #fff;
+}
+
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--line, rgba(255,255,255,.12));
+    font-size: 14px;
+}
+
+.order-item:last-child {
+    border-bottom: none;
+}
+
+.order-total {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 16px;
+    font-size: 18px;
+    font-weight: 700;
+    border-top: 2px solid var(--accent, #ff5a1f);
+    margin-top: 16px;
+}
+
+.order-total span:last-child {
+    color: var(--accent, #ff5a1f);
+}
+
+/* ----- Buttons ----- */
+.checkout-actions {
+    display: flex;
+    gap: 16px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+.checkout-actions .btn {
+    padding: 14px 28px;
+    font-size: 12px;
+    letter-spacing: .1em;
+}
+
+/* ----- Responsive ----- */
+@media (max-width: 1024px) {
+    .checkout-grid {
+        grid-template-columns: 1.5fr 1fr;
+        gap: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .checkout-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .checkout-form .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .checkout-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .checkout-page {
+        padding: 60px 0;
+    }
+}
