@@ -1,90 +1,354 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Create Product | StrideX Portal{% endblock %}
+{% block title %}Add Product | StrideX Portal{% endblock %}
+
+{% block stylesheets %}
+<style>
+    .staff-product-page {
+        --product-accent: #ff5a1f;
+        --product-border: #222;
+        --product-muted: #888;
+        max-width: 1080px;
+        margin: 0 auto;
+        color: #f5f5f5;
+    }
+
+    .staff-product-heading {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 24px;
+    }
+
+    .staff-product-eyebrow {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--product-accent);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+    }
+
+    .staff-product-heading h1 {
+        margin: 0;
+        color: #fff;
+        font-size: clamp(32px, 4vw, 46px);
+        line-height: 1;
+    }
+
+    .staff-product-heading p {
+        margin: 10px 0 0;
+        color: var(--product-muted);
+        font-size: 14px;
+    }
+
+    .staff-product-back,
+    .staff-product-button {
+        display: inline-flex;
+        min-height: 42px;
+        align-items: center;
+        justify-content: center;
+        padding: 0 16px;
+        border: 1px solid var(--product-border);
+        border-radius: 7px;
+        color: #e7e9ed;
+        font-size: 12px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: border-color .2s ease, background .2s ease, color .2s ease;
+    }
+
+    .staff-product-back:hover,
+    .staff-product-button-secondary:hover {
+        border-color: #555d68;
+        background: #1b1f25;
+        color: #fff;
+    }
+
+    .staff-product-card {
+        overflow: hidden;
+        border: 1px solid var(--product-border);
+        border-radius: 8px;
+        background: #0e0e0e;
+        box-shadow: 0 18px 48px rgb(0 0 0 / 22%);
+    }
+
+    .staff-product-card-heading {
+        padding: 22px 26px;
+        border-bottom: 1px solid var(--product-border);
+        background: #0e0e0e;
+    }
+
+    .staff-product-card-heading h2 {
+        margin: 0;
+        color: #fff;
+        font-family: inherit;
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: 0;
+        text-transform: none;
+    }
+
+    .staff-product-card-heading p {
+        margin: 5px 0 0;
+        color: var(--product-muted);
+        font-size: 12px;
+    }
+
+    .staff-product-form {
+        padding: 24px 26px 20px;
+    }
+
+    .staff-product-section + .staff-product-section {
+        margin-top: 25px;
+        padding-top: 23px;
+        border-top: 1px solid var(--product-border);
+    }
+
+    .staff-product-section-title {
+        margin: 0 0 15px;
+        color: #e6e8ec;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: .09em;
+        text-transform: uppercase;
+    }
+
+    .staff-product-fields {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 17px 20px;
+    }
+
+    .staff-product-field {
+        min-width: 0;
+    }
+
+    .staff-product-field-full {
+        grid-column: 1 / -1;
+    }
+
+    .staff-product-field label {
+        display: block;
+        margin-bottom: 7px;
+        color: #aaa;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .staff-product-page input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]),
+    .staff-product-page select,
+    .staff-product-page textarea {
+        box-sizing: border-box;
+        width: 100%;
+        min-height: 44px;
+        padding: 10px 12px;
+        border: 1px solid #333;
+        border-radius: 6px;
+        outline: none;
+        background: #111;
+        color: #fff;
+        font: inherit;
+        font-size: 13px;
+        transition: border-color .18s ease, box-shadow .18s ease;
+    }
+
+    .staff-product-page textarea {
+        min-height: 118px;
+        resize: vertical;
+    }
+
+    .staff-product-page input:focus,
+    .staff-product-page select:focus,
+    .staff-product-page textarea:focus {
+        border-color: var(--product-accent);
+        box-shadow: 0 0 0 3px rgb(255 90 31 / 14%);
+    }
+
+    .staff-product-page input[type="file"] {
+        padding: 8px;
+    }
+
+    .staff-product-page input[type="file"]::file-selector-button {
+        margin-right: 12px;
+        padding: 7px 10px;
+        border: 0;
+        border-radius: 4px;
+        background: #252a32;
+        color: #f5f6f8;
+        font: inherit;
+        cursor: pointer;
+    }
+
+    .staff-product-field ul {
+        margin: 6px 0 0;
+        padding-left: 17px;
+        color: var(--product-accent);
+        font-size: 12px;
+    }
+
+    .staff-product-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 25px;
+        padding-top: 18px;
+        border-top: 1px solid var(--product-border);
+    }
+
+    .staff-product-button {
+        min-width: 116px;
+        cursor: pointer;
+    }
+
+    .staff-product-button-primary {
+        border-color: var(--product-accent);
+        background: var(--product-accent);
+        color: #fff;
+    }
+
+    .staff-product-button-primary:hover {
+        border-color: #fff;
+        background: #fff;
+        color: #000;
+    }
+
+    .staff-product-button-secondary {
+        background: transparent;
+        cursor: pointer;
+    }
+
+    @media (max-width: 640px) {
+        .staff-product-heading {
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .staff-product-card-heading,
+        .staff-product-form {
+            padding-right: 18px;
+            padding-left: 18px;
+        }
+
+        .staff-product-fields {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        .staff-product-field-full {
+            grid-column: auto;
+        }
+
+        .staff-product-actions {
+            flex-direction: column-reverse;
+        }
+
+        .staff-product-button {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}
 
 {% block body %}
-<div class="page-header">
-    <div>
-        <h1 class="page-title">Create New StrideX Product Record</h1>
-        <p class="page-subtitle">Add a new footwear or catalog item to the StrideX inventory.</p>
-    </div>
-    <div class="page-actions">
-        <a href="{{ path('app_product_index') }}" class="btn btn-secondary">Back to Products</a>
-    </div>
-</div>
+<div class="staff-product-page">
+    <header class="staff-product-heading">
+        <div>
+            <span class="staff-product-eyebrow">Product inventory</span>
+            <h1>Add a new product</h1>
+            <p>Add a footwear or catalog item to the StrideX inventory.</p>
+        </div>
+        <a href="{{ path('app_product_index') }}" class="staff-product-back">Back to products</a>
+    </header>
 
-<div class="card" style="max-width: 780px;">
-    {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
-        <div class="form-grid">
-            <div class="form-group">
-                {{ form_label(form.name) }}
-                {{ form_widget(form.name) }}
-                {{ form_errors(form.name) }}
-            </div>
-
-            <div class="form-group">
-                {{ form_label(form.sku) }}
-                {{ form_widget(form.sku) }}
-                {{ form_errors(form.sku) }}
-            </div>
+    <section class="staff-product-card">
+        <div class="staff-product-card-heading">
+            <h2>Product information</h2>
+            <p>Enter the product details, pricing, and inventory information below.</p>
         </div>
 
-        <div class="form-grid">
-            <div class="form-group">
-                {{ form_label(form.category) }}
-                {{ form_widget(form.category) }}
-                {{ form_errors(form.category) }}
+        {{ form_start(form, {attr: {class: 'staff-product-form', novalidate: 'novalidate'}}) }}
+            <section class="staff-product-section">
+                <h3 class="staff-product-section-title">Product identity</h3>
+                <div class="staff-product-fields">
+                    <div class="staff-product-field">
+                        {{ form_label(form.name) }}
+                        {{ form_widget(form.name) }}
+                        {{ form_errors(form.name) }}
+                    </div>
+                    <div class="staff-product-field">
+                        {{ form_label(form.sku) }}
+                        {{ form_widget(form.sku) }}
+                        {{ form_errors(form.sku) }}
+                    </div>
+                </div>
+            </section>
+
+            <section class="staff-product-section">
+                <h3 class="staff-product-section-title">Catalog and appearance</h3>
+                <div class="staff-product-fields">
+                    <div class="staff-product-field">
+                        {{ form_label(form.category) }}
+                        {{ form_widget(form.category) }}
+                        {{ form_errors(form.category) }}
+                    </div>
+                    <div class="staff-product-field">
+                        {{ form_label(form.color) }}
+                        {{ form_widget(form.color) }}
+                        {{ form_errors(form.color) }}
+                    </div>
+                    <div class="staff-product-field">
+                        {{ form_label(form.gender) }}
+                        {{ form_widget(form.gender) }}
+                        {{ form_errors(form.gender) }}
+                    </div>
+                    <div class="staff-product-field">
+                        {{ form_label(form.badge) }}
+                        {{ form_widget(form.badge) }}
+                        {{ form_errors(form.badge) }}
+                    </div>
+                </div>
+            </section>
+
+            <section class="staff-product-section">
+                <h3 class="staff-product-section-title">Pricing and stock</h3>
+                <div class="staff-product-fields">
+                    <div class="staff-product-field">
+                        {{ form_label(form.price) }}
+                        {{ form_widget(form.price) }}
+                        {{ form_errors(form.price) }}
+                    </div>
+                    <div class="staff-product-field">
+                        {{ form_label(form.stockQuantity) }}
+                        {{ form_widget(form.stockQuantity) }}
+                        {{ form_errors(form.stockQuantity) }}
+                    </div>
+                </div>
+            </section>
+
+            <section class="staff-product-section">
+                <h3 class="staff-product-section-title">Media and description</h3>
+                <div class="staff-product-fields">
+                    <div class="staff-product-field staff-product-field-full">
+                        {{ form_label(form.image) }}
+                        {{ form_widget(form.image) }}
+                        {{ form_errors(form.image) }}
+                    </div>
+                    <div class="staff-product-field staff-product-field-full">
+                        {{ form_label(form.description) }}
+                        {{ form_widget(form.description) }}
+                        {{ form_errors(form.description) }}
+                    </div>
+                </div>
+            </section>
+
+            <div class="staff-product-actions">
+                <a href="{{ path('app_product_index') }}" class="staff-product-button staff-product-button-secondary">Cancel</a>
+                <button type="submit" class="staff-product-button staff-product-button-primary">Create Product</button>
             </div>
-
-            <div class="form-group">
-                {{ form_label(form.color) }}
-                {{ form_widget(form.color) }}
-                {{ form_errors(form.color) }}
-            </div>
-
-            <div class="form-group">
-                {{ form_label(form.gender) }}
-                {{ form_widget(form.gender) }}
-                {{ form_errors(form.gender) }}
-            </div>
-        </div>
-
-        <div class="form-grid">
-            <div class="form-group">
-                {{ form_label(form.price) }}
-                {{ form_widget(form.price) }}
-                {{ form_errors(form.price) }}
-            </div>
-
-            <div class="form-group">
-                {{ form_label(form.stockQuantity) }}
-                {{ form_widget(form.stockQuantity) }}
-                {{ form_errors(form.stockQuantity) }}
-            </div>
-
-            <div class="form-group">
-                {{ form_label(form.badge) }}
-                {{ form_widget(form.badge) }}
-                {{ form_errors(form.badge) }}
-            </div>
-        </div>
-
-        <div class="form-group">
-            {{ form_label(form.image) }}
-            {{ form_widget(form.image) }}
-            {{ form_errors(form.image) }}
-        </div>
-
-        <div class="form-group">
-            {{ form_label(form.description) }}
-            {{ form_widget(form.description) }}
-            {{ form_errors(form.description) }}
-        </div>
-
-        <div style="margin-top: 1.25rem; display: flex; gap: 0.75rem;">
-            <button type="submit" class="btn btn-primary" style="background: #ff5a1f;">Create Product</button>
-            <a href="{{ path('app_product_index') }}" class="btn btn-secondary">Cancel</a>
-        </div>
-    {{ form_end(form) }}
+        {{ form_end(form) }}
+    </section>
 </div>
 {% endblock %}

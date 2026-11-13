@@ -242,6 +242,7 @@
             }
         }
     </style>
+    {% block stylesheets %}{% endblock %}
 </head>
 {% set current_route = app.request.attributes.get('_route') ?? '' %}
 <body class="{{ current_route == 'app_profile' and is_granted('ROLE_ADMIN') ? 'admin-profile-page account-panel-page' : (current_route == 'app_profile' and is_granted('ROLE_STAFF') ? 'staff-profile-page account-panel-page' : (current_route == 'app_profile' ? 'portal-page account-panel-page' : '')) }}">
