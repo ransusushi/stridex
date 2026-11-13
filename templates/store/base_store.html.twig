@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/stridex.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/collection.css') }}?v=why-stridex-5">
+    <link rel="stylesheet" href="{{ asset('css/collection.css') }}?v=why-stridex-hero-17">
     <style>
         .store-header-icon {
             display: inline-flex;
@@ -44,26 +44,32 @@
 </head>
 <body style="margin: 0; padding: 0; background: #000;">
 
-<!-- FORCED CLEAN HEADER -->
-<header style="background: rgba(10,10,10,.95); border-bottom: 1px solid rgba(255,255,255,.12); position: sticky; top: 0; z-index: 50; width: 100%;">
-    <div style="display: flex; justify-content: space-between; align-items: center; height: 84px; max-width: 1440px; margin: 0 auto; padding: 0 40px;">
-
-        <!-- Logo -->
-        <a href="{{ path('app_storefront') }}" style="display: flex; align-items: center; text-decoration: none;">
-            <img src="{{ asset('image/stridex-logo.png') }}" alt="StrideX" style="height: 44px; width: auto;">
+<header class="store-header">
+    <div class="store-header-inner">
+        <a href="{{ path('app_storefront') }}" class="store-logo">
+            <img src="{{ asset('image/stridex-logo.png') }}" alt="StrideX">
         </a>
 
-        <!-- Center Links -->
-        <nav style="display: flex; gap: 36px; align-items: center;">
-            <a href="{{ path('app_storefront') }}" style="font-size: 12px; font-weight: 600; letter-spacing: 0.2em; color: #fff; text-decoration: none; text-transform: uppercase;">HOME</a>
-            <a href="{{ path('app_shop') }}" style="font-size: 12px; font-weight: 600; letter-spacing: 0.2em; color: #fff; text-decoration: none; text-transform: uppercase;">SHOP</a>
-            <a href="{{ path('app_collections') }}" style="font-size: 12px; font-weight: 600; letter-spacing: 0.2em; color: #fff; text-decoration: none; text-transform: uppercase;">COLLECTIONS</a>
-            <a href="{{ path('app_about') }}" style="font-size: 12px; font-weight: 600; letter-spacing: 0.2em; color: #fff; text-decoration: none; text-transform: uppercase;">ABOUT US</a>
-            <a href="{{ path('app_contact') }}" style="font-size: 12px; font-weight: 600; letter-spacing: 0.2em; color: #fff; text-decoration: none; text-transform: uppercase;">CONTACT US</a>
+        <nav class="store-desktop-nav" aria-label="Primary navigation">
+            <a href="{{ path('app_storefront') }}">HOME</a>
+            <a href="{{ path('app_shop') }}">SHOP</a>
+            <a href="{{ path('app_collections') }}">COLLECTIONS</a>
+            <a href="{{ path('app_about') }}">ABOUT US</a>
+            <a href="{{ path('app_contact') }}">CONTACT US</a>
         </nav>
 
-        <!-- Right Actions -->
-        <div style="display: flex; align-items: center; gap: 24px;">
+        <details class="store-mobile-menu">
+            <summary aria-label="Open navigation menu">MENU</summary>
+            <nav class="store-mobile-menu-links" aria-label="Mobile navigation">
+                <a href="{{ path('app_storefront') }}">HOME</a>
+                <a href="{{ path('app_shop') }}">SHOP</a>
+                <a href="{{ path('app_collections') }}">COLLECTIONS</a>
+                <a href="{{ path('app_about') }}">ABOUT US</a>
+                <a href="{{ path('app_contact') }}">CONTACT US</a>
+            </nav>
+        </details>
+
+        <div class="store-header-actions">
             {% if app.user %}
                 <a href="{{ path('app_profile') }}" class="store-header-icon" aria-label="Profile" title="Profile">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/></svg>
@@ -71,9 +77,9 @@
                 <a href="{{ path('app_cart') }}" class="store-header-icon" aria-label="Cart" title="Cart">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h2l2.4 12.4a2 2 0 0 0 2 1.6h8.8a2 2 0 0 0 2-1.6L22 7H6"/><circle cx="10" cy="21" r="1"/><circle cx="18" cy="21" r="1"/></svg>
                 </a>
-                <a href="{{ path('app_logout') }}" style="font-size: 11px; font-weight: 600; letter-spacing: 0.1em; color: #fff; text-decoration: none; text-transform: uppercase;">LOGOUT</a>
+                <a class="store-header-action-link" href="{{ path('app_logout') }}">LOGOUT</a>
             {% else %}
-                <a href="{{ path('app_login') }}" style="font-size: 11px; font-weight: 600; letter-spacing: 0.1em; color: #fff; text-decoration: none; text-transform: uppercase;">SIGN IN</a>
+                <a class="store-header-action-link" href="{{ path('app_login') }}">SIGN IN</a>
             {% endif %}
         </div>
     </div>
@@ -89,10 +95,10 @@
 
 {% block body %}{% endblock %}
 
-<footer class="site-footer" style="background: #000; border-top: 1px solid #222; padding: 80px 0 24px; margin-top: 60px;">
-    <div class="store-footer-main" style="max-width: 1440px; margin: 0 auto; padding: 0 40px; display: grid; grid-template-columns: 1fr 2fr; gap: 60px;">
+<footer class="site-footer store-footer">
+    <div class="store-footer-main">
         <div>
-            <img src="{{ asset('image/stridex-logo.png') }}" alt="StrideX" style="height: 100px; width: auto; margin-bottom: 15px;">
+            <img class="store-footer-logo" src="{{ asset('image/stridex-logo.png') }}" alt="StrideX">
             <p style="color: #888; font-size: 11px; letter-spacing: 0.2em;">MOVE IN STYLE. LIVE WITHOUT LIMITS.</p>
         </div>
         <div class="store-footer-links">
@@ -127,7 +133,7 @@
             </div>
         </div>
     </div>
-    <div class="store-footer-bottom" style="max-width: 1440px; margin: 40px auto 0; padding: 24px 40px 0; border-top: 1px solid #222;">
+    <div class="store-footer-bottom">
         <p>&copy; {{ "now"|date("Y") }} STRIDEX. ALL RIGHTS RESERVED.</p>
         <div class="store-footer-legal"><span>PRIVACY</span><span>TERMS</span><span>COOKIES</span></div>
     </div>

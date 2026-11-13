@@ -23,22 +23,10 @@
                 <div class="coll-hero-stat"><strong>50+</strong><span>STYLES</span></div>
             </div>
         </div>
-<div class="coll-hero-visual" style="width: 100%; display: flex; justify-content: flex-end;">
-    <img id="force-big-shoe" src="{{ asset('image/hero.png') }}" alt="StrideX Shoe">
-</div>
-
-<style>
-    #force-big-shoe {
-        width: 100% !important;
-        max-width: 800px !important;
-        height: 600px !important;
-        object-fit: cover !important;
-        object-position: 70% center !important; /* Positions the image */
-        transform: scale(2.5);
-        transform-origin: 70% center; /* Zooms in from that spot */
-        mix-blend-mode: screen;
-    }
-</style>
+        <div class="coll-hero-visual">
+            <img src="{{ asset('image/hero.png') }}" alt="StrideX Shoe">
+        </div>
+    </div>
 </section>
 
 <section class="dark-section">
@@ -46,7 +34,7 @@
         <div class="section-header-split" style="align-items: flex-end; margin-bottom: 40px;">
             <div>
                 <span class="eyebrow" style="color: var(--accent);">THE NEW DROP</span>
-                <h2 class="light-title" style="font-size: 56px; line-height: 0.9;">YOUR NEXT PAIR<span style="color: var(--accent);">.</span></h2>
+                <h2 class="light-title home-drop-title">YOUR NEXT PAIR<span>.</span></h2>
             </div>
             <div>
                 <a href="{{ path('app_shop') }}" class="btn btn--primary">VIEW ALL FOOTWEAR &rarr;</a>
@@ -89,16 +77,16 @@
     </div>
 </section>
 
-<section style="background: #000; padding: 100px 0; color: #fff;">
+<section class="home-editorial">
     <div class="container split-editorial">
         <div class="editorial-img">
             <img src="{{ asset('image/white_edge.png') }}" alt="Movement">
         </div>
         <div class="editorial-copy">
-            <span class="eyebrow editorial-eyebrow" style="color: #fff;">THE STRIDEX STANDARD</span>
-            <h2 class="light-title" style="color: #fff;">MOVEMENT SHOULD NEVER <span style="color: var(--accent);">FEEL LIMITED.</span></h2>
-            <p style="color: #aaa;">We make footwear for people who move through the city with purpose. Responsive comfort, durable construction, and a silhouette that works beyond the track.</p>
-            <a href="{{ path('app_about') }}" class="btn btn--primary" style="background: #fff; color: #000;">READ OUR STORY &rarr;</a>
+            <span class="eyebrow editorial-eyebrow home-editorial-eyebrow">THE STRIDEX STANDARD</span>
+            <h2 class="light-title home-editorial-title">MOVEMENT SHOULD NEVER <span>FEEL LIMITED.</span></h2>
+            <p class="home-editorial-copy">We make footwear for people who move through the city with purpose. Responsive comfort, durable construction, and a silhouette that works beyond the track.</p>
+            <a href="{{ path('app_about') }}" class="btn btn--primary home-editorial-link">READ OUR STORY &rarr;</a>
         </div>
     </div>
 </section>
