@@ -40,6 +40,7 @@ security:
         - { path: ^/register, roles: PUBLIC_ACCESS }
 
         # 2. Allow everyone (guests) to see the storefront pages
+        - { path: ^/home, roles: PUBLIC_ACCESS }
         - { path: ^/store, roles: PUBLIC_ACCESS }
         - { path: ^/shop, roles: PUBLIC_ACCESS }
         - { path: ^/collections, roles: PUBLIC_ACCESS }

@@ -19,12 +19,18 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class StorefrontController extends AbstractController
 {
-    #[Route('/store', name: 'app_storefront', methods: ['GET'])]
+    #[Route('/home', name: 'app_storefront', methods: ['GET'])]
     public function home(ProductRepository $productRepository): Response
     {
         return $this->render('store/home.html.twig', [
             'featuredProducts' => $productRepository->findRecent(6),
         ]);
+    }
+
+    #[Route('/store', name: 'app_storefront_legacy', methods: ['GET'])]
+    public function legacyHome(): Response
+    {
+        return $this->redirectToRoute('app_storefront', status: Response::HTTP_MOVED_PERMANENTLY);
     }
 
     #[Route('/shop', name: 'app_shop', methods: ['GET'])]

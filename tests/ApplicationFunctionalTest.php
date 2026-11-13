@@ -631,8 +631,11 @@ class ApplicationFunctionalTest extends WebTestCase
     public function testStrideXStorefrontCheckoutAndAdminOrderManagement(): void
     {
         // Public storefront pages work
-        $this->client->request('GET', '/store');
+        $this->client->request('GET', '/home');
         self::assertResponseIsSuccessful();
+
+        $this->client->request('GET', '/store');
+        self::assertResponseRedirects('/home', Response::HTTP_MOVED_PERMANENTLY);
 
         $this->client->request('GET', '/shop');
         self::assertResponseIsSuccessful();
